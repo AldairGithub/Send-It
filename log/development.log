@@ -1,0 +1,2 @@
+  [1m[35m (340.9ms)[0m  [1m[35mCREATE DATABASE "Send_It_development" ENCODING = 'unicode'[0m
+  [1m[35m (56.3ms)[0m  [1m[35mCREATE DATABASE "Send_It_test" ENCODING = 'unicode'[0m

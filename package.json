@@ -1,0 +1,24 @@
+{
+  "name": "Send-It",
+  "version": "1.0.0",
+  "description": "- [Overview](#overview) - [MVP](#mvp)   - [Goals](#goals)   - [Libraries and Dependencies](#libraries-and-dependencies)   - [Client (Front End)](#client-front-end)     - [Wireframes](#wireframes)     - [Component Tree](#component-tree)     - [Component Hierarchy](#component-hierarchy)     - [Component Breakdown](#component-breakdown)     - [Time Estimates](#time-estimates)   - [Server (Back End)](#server-back-end)     - [ERD Model](#erd-model) - [Post-MVP](#post-mvp) - [Code Showcase](#code-showcase) - [Code Issues & Resolutions](#code-issues--resolutions)",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AldairGithub/Send-It.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AldairGithub/Send-It/issues"
+  },
+  "homepage": "https://github.com/AldairGithub/Send-It#readme"
+}
