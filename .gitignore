@@ -1,2 +1,13 @@
+
 /config/master.key
+/log/*
 /tmp/*
+!/log/.keep
+!/tmp/.keep
+/.bundle
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/storage/*
+!/storage/.keep
+/public/assets
+.byebug_history
