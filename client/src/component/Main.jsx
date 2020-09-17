@@ -5,10 +5,10 @@ import { readAllUsers } from '../services/user'
 import SignIn from './sign_in/SignIn'
 import SignUp from './sign_up/SignUp'
 import Home from './home/Home'
+import UpdateUser from './update_user/UpdateUser'
 
 export default function Main(props) {
-  const { currentUser } = props
-  const { setCurrentUser } = props
+  const { currentUser, setCurrentUser } = props
 
   const [allUsers, setAllUsers] = useState([])
 
@@ -42,6 +42,14 @@ export default function Main(props) {
           setCurrentUser={setCurrentUser}
         />
       )} />
+      <Route exact path='/update_account' render={(props) => (
+        <UpdateUser
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
+          allUsers={allUsers}
+          setAllUsers={setAllUsers}
+        />
+      )}/>
     </main>
   )
 }
