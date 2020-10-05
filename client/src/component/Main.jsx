@@ -6,6 +6,8 @@ import SignIn from './sign_in/SignIn'
 import SignUp from './sign_up/SignUp'
 import Home from './home/Home'
 import UpdateUser from './update_user/UpdateUser'
+import ForgotPassword from '../component/forgot_password/ForgotPassword'
+import ResetPassword from '../component/reset_password/ResetPassword'
 
 export default function Main(props) {
   const { currentUser, setCurrentUser } = props
@@ -44,12 +46,24 @@ export default function Main(props) {
       )} />
       <Route exact path='/update_account' render={(props) => (
         <UpdateUser
+          {...props}
           currentUser={currentUser}
           setCurrentUser={setCurrentUser}
           allUsers={allUsers}
           setAllUsers={setAllUsers}
         />
-      )}/>
+      )} />
+      <Route exact path='/forgot_password' render={(props) => (
+        <ForgotPassword
+          {...props}
+        />
+      )} />
+
+      <Route exact path={`/reset_account/:token`} render={(props) => (
+        <ResetPassword
+        {...props}
+        />
+      )} />
     </main>
   )
 }

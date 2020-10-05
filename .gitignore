@@ -12,3 +12,5 @@
 /config/master.key
 /log/development.log
 /tmp/cache/*
+/config/local_env.yml
+

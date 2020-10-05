@@ -45,6 +45,7 @@ export default function SignIn(props) {
       </form>
       <p>Dont have an account?</p>
       <Link to='/register'><button>Sign Up</button></Link>
+      <Link to='forgot_password'><button>Forgot Password</button></Link>
     </>
   )
 }
