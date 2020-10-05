@@ -1,10 +1,19 @@
 Rails.application.routes.draw do
 
+
+
+  # creates users, gets all users
   resources :users
 
+  # authorization
   post '/auth/login', to: 'authentication#login'
   get '/auth/verify', to: 'authentication#verify'
 
+  # requests forgot and reset passwords
+  post '/password/forgot', to: 'passwords#forgot'
+  post '/password/reset', to: 'passwords#reset'
+
+  # user friends
   get '/users/:id/user_list', to: 'users#user_list'
   get '/users/:id/user_friends', to: 'users#user_friends'
 

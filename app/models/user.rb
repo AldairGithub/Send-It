@@ -12,6 +12,30 @@ class User < ApplicationRecord
   validates :username, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :password, length: { minimum: 6 }
+  # when a reset_password_token was created, it was validating for a password,
+  # on: :create makes it so it validates only when :create is called
+  validates :password, presence: true, length: { minimum: 6 }, on: :create
+
+  def generate_password_token!
+    self.reset_password_token = generate_token
+    self.reset_password_sent_at = Time.now.utc
+    save!
+  end
+    
+  def password_token_valid?
+    (self.reset_password_sent_at + 4.hours) > Time.now.utc
+  end
+  
+  def reset_password!(password)
+    self.reset_password_token = nil
+    self.reset_password_sent_at = nil
+    self.password = password
+    save!
+  end
+
+  private
+  def generate_token
+    SecureRandom.hex(10)
+  end
 
 end

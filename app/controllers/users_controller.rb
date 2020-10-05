@@ -1,24 +1,24 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy, :update_password]
   before_action :authorize_request, except: [:create, :index]
 
   # GET /users
   def index
     @users = User.all
-
     render json: @users
   end
 
   # GET /users/1
-  def show
-    render json: @user
-  end
+  # def show
+  #   render json: @user
+  # end
 
   # POST /users
   def create
     @user = User.new(user_params)
     # render json: @user, status: :created, location: @user
     if @user.save
+      UserMailer.welcome_email(@user).deliver_now
       @token = encode({id: @user.id})
       render json: {
         user: @user.attributes.except("password_digest"),
@@ -36,6 +36,11 @@ class UsersController < ApplicationController
     else
       render json: @user.errors, status: :unprocessable_entity
     end
+  end
+
+  def update_password=(new_password)
+    @password = Password.create(new_password)
+    self.password_digest = @password
   end
 
   # DELETE /users/1
@@ -60,6 +65,7 @@ class UsersController < ApplicationController
     render json: @user_friends
   end
 
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -70,4 +76,5 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:username, :email, :password)
     end
+
 end

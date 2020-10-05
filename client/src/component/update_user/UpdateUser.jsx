@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { updateUser } from '../../services/user'
 import { useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default function UpdateUser(props) {
   const history = useHistory()
 
-  const { allUsers, setAllUsers, setCurrentUser } = props
+  const { allUsers, setAllUsers, currentUser, setCurrentUser } = props
   // because react updates everytime and this needs the id it is best to declare it automatically
-  // const {currentUserId} = props
-  const currentUserId = 1
+  // const currentUserId = 1
 
   const [userData, setUserData] = useState({
     username: "",
@@ -16,13 +16,15 @@ export default function UpdateUser(props) {
     password: ""
   })
 
+  const [user, setUser] = useState({})
+
   useEffect(() => {
     defaultUserData()
   }, [allUsers])
 
   const defaultUserData = () => {
     const userExists = allUsers.find((user) => {
-      return user.id === parseInt(currentUserId)
+      return user.id === parseInt(currentUser.id)
     })
     if (userExists) {
       setUserData({
@@ -31,19 +33,17 @@ export default function UpdateUser(props) {
         password: userExists.password
       })
     }
+    // we can use password_digest and created_at to create a hash for updating user passwords
+    setUser(userExists)
   }
-// front end dev position in education - writing web components
-  // tell me about yourself, whereabouts, projects
-  // situations that were challenging
-  // javascript, if we have a div with an idea of textbox(turn a textbox into an input field)
-  // write a function into a palindrome
-  
+
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const updatedUser = await updateUser(currentUserId, userData)
+    const updatedUser = await updateUser(currentUser.id, userData)
     setAllUsers(
       allUsers.map((user) => {
-        return user.id === parseInt(currentUserId) ? updatedUser : user
+        return user.id === parseInt(currentUser.id) ? updatedUser : user
       })
     )
     setCurrentUser(userData)
@@ -60,7 +60,7 @@ export default function UpdateUser(props) {
 
   return (
     <>
-      <h4>Update Account</h4>
+      <Link to='/'><h4>Update Account</h4></Link>
       <form onSubmit={handleSubmit}>
         <input
           placeholder='username'
