@@ -59,7 +59,7 @@ export default function Main(props) {
         />
       )} />
 
-      <Route exact path={`/reset_account/:token`} render={(props) => (
+      <Route exact path={`/reset_account/:id/:token`} render={(props) => (
         <ResetPassword
         {...props}
         />

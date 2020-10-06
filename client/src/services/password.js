@@ -5,8 +5,9 @@ export const forgotPassword = async (userEmail) => {
   return response.data
 }
 
-export const resetPassword = async (userToken, userPassword) => {
+export const resetPassword = async (userId, userToken, userPassword) => {
   const response = await api.post('/password/reset', {
+    id: userId,
     token: userToken,
     password: userPassword
   })

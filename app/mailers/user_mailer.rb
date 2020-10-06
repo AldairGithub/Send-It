@@ -8,7 +8,7 @@ class UserMailer < ApplicationMailer
   # User forgot their password and needs an url to the reset component
   def forgot_password(user)
     @user = user
-    # @url = `http://localhost:3001/reset_account/#{@user.reset_password_token}`
+    # @url = `localhost:3001/reset_account/#{@user.reset_password_token}`
     mail(to: @user.email, subject: 'Send It Reset Password URL')
   end
 end

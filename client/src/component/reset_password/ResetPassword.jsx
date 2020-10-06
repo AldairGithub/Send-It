@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+
+import {Link} from 'react-router-dom'
 
 import {resetPassword} from '../../services/password'
 
 export default function ResetPassword(props) {
   const { token } = props.match.params
+  const { id } = props.match.params
   
   const [userData, setUserData] = useState({
     password: "",
     confirmPassword: ""
   })
-
-  // useEffect(() => {
-  //   const getUserPasswordReset = resetPassword(token, userData.password)
-  // }, [])
+  const [passwordSubmitted, setPasswordSubmitted] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -24,9 +24,13 @@ export default function ResetPassword(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const getUserPasswordReset = await resetPassword(token, userData.password)
-    if (userData.password == userData.confirmPassword) {
-      getUserPasswordReset()
+    if (userData.password === userData.confirmPassword) {
+      await resetPassword(id, token, userData.password)
+      setUserData({
+        password: "",
+        confirmPassword: ""
+      })
+      setPasswordSubmitted(true)
     }
   }
 
@@ -39,6 +43,7 @@ export default function ResetPassword(props) {
           name='password'
           value={userData.password}
           onChange={handleChange}
+          disabled= {passwordSubmitted ? "disabled" : ""}
         />
         <input
           placeholder='Confirm New Password'
@@ -46,9 +51,18 @@ export default function ResetPassword(props) {
           name='confirmPassword'
           value={userData.confirmPassword}
           onChange={handleChange}
+          disabled= {passwordSubmitted ? "disabled" : ""}
         />
         <button>Reset Password</button>
       </form>
+      {passwordSubmitted ? 
+        <>
+          <Link to='/'><button>Go back to sign in</button></Link>
+        </>
+        :
+        <>
+        </>
+      }
     </>
   )
 }
