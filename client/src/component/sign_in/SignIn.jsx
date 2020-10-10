@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+
+import './SignIn.css'
 import { loginUser } from '../../services/auth'
 import { Link } from 'react-router-dom'
 
@@ -26,26 +28,34 @@ export default function SignIn(props) {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+    <div className='text-center'>
+      <h1 className='title-signin'>Send It</h1>
+      <form className='form-signin' onSubmit={handleSubmit}>
         <input
-          placeholder="username"
+          className='form-control'
+          placeholder="Username"
           type="text"
           name="username"
           value={setNewUserData.username}
           onChange={handleChange}
         />
         <input
-          placeholder="password"
+          className='form-control'
+          placeholder="Password"
           type="password"
           name="password"
           value={setNewUserData.password}
           onChange={handleChange}
         />
-        <button>Sign In</button>
-      </form>
-      <p>Dont have an account?</p>
-      <Link to='/register'><button>Sign Up</button></Link>
-      <Link to='forgot_password'><button>Forgot Password</button></Link>
+        <button className='btn btn-lg btn-info btn-block'>Sign In</button>
+        </form>
+        <div className='forgot-password-container'>
+          <Link className='forgot-password-link' to='/forgot_password'>Forgot Password?</Link>
+        </div>
+      </div>
+      <div className='text-center'>
+        <p className='sign-up-text'>Dont have an account? <Link className='sign-up-link'to='/register'>Sign Up</Link></p>
+      </div>
     </>
   )
 }
