@@ -29,8 +29,8 @@ export default function SignIn(props) {
   return (
     <>
     <div className='text-center'>
-      <h1 className='title-signin'>Send It</h1>
-      <form className='form-signin' onSubmit={handleSubmit}>
+      <h1 className='title'>Send It</h1>
+      <form className='form' onSubmit={handleSubmit}>
         <input
           className='form-control'
           placeholder="Username"
@@ -54,7 +54,8 @@ export default function SignIn(props) {
         </div>
       </div>
       <div className='text-center'>
-        <p className='sign-up-text'>Dont have an account? <Link className='sign-up-link'to='/register'>Sign Up</Link></p>
+        <div className='top-space'></div>
+        <p>Dont have an account? <Link className='sign-link' to='/register'>Sign Up</Link></p>
       </div>
     </>
   )
