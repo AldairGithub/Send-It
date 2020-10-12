@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 
+import './SignUp.css'
+
+import { Link } from 'react-router-dom'
 import { registerUser } from '../../services/auth'
 import { useHistory } from 'react-router-dom'
 
@@ -30,31 +33,41 @@ export default function SignUp(props) {
 
   return (
     <>
-      <h4>Sign Up</h4>
-      <form onSubmit={handleSubmit}>
-        <input
+      <div className='text-center'>
+      <h1 className='title' >Sign Up</h1>
+      <form className='form' onSubmit={handleSubmit}>
+          <input
+            className='form-control'
           placeholder='username'
           type='text'
           name='username'
           value={newUserData.username}
           onChange={handleChange}
         />
-        <input
+          <input
+            className='form-control'
           placeholder='email'
           type='text'
           name='email'
           value={newUserData.email}
           onChange={handleChange}
         />
-        <input
+          <input
+            className='form-control'
           placeholder='password'
           type='password'
           name='password'
           value={newUserData.password}
           onChange={handleChange}
         />
-        <button>Submit</button>
-      </form>
+        <button className='btn btn-lg btn-info btn-block'>Submit</button>
+        </form>
+        <div className='bottom-space'></div>
+      </div>
+      <div className='text-center'>
+        <div className='top-space'></div>
+        <p>Have an account? <Link className='sign-link' to='/'>Sign in</Link></p>
+      </div>
     </>
   )
 }
