@@ -28,7 +28,7 @@ export default function SignIn(props) {
 
   return (
     <>
-    <div className='text-center'>
+    <div className='container-sm'>
       <h1 className='title'>Send It</h1>
       <form className='form' onSubmit={handleSubmit}>
         <input
@@ -53,7 +53,7 @@ export default function SignIn(props) {
           <Link className='forgot-password-link' to='/forgot_password'>Forgot Password?</Link>
         </div>
       </div>
-      <div className='text-center'>
+      <div className='container-sm'>
         <div className='top-space'></div>
         <p>Dont have an account? <Link className='sign-link' to='/register'>Sign Up</Link></p>
       </div>

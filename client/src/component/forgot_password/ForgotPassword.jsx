@@ -29,7 +29,7 @@ export default function ForgotPassword(props) {
 
   return (
     <>
-    <div className='text-center'>
+    <div className='container-sm'>
       <div className='forgot-password-container'>
         <FontAwesomeIcon icon={faUserLock} size='3x'/>
         <h2>Problem logging in?</h2>
@@ -51,7 +51,7 @@ export default function ForgotPassword(props) {
         <Link className='sign-link' to='register'>Create New Account</Link>
       </div>
       </div>
-      <div className='text-center'>
+      <div className='container-sm'>
         <div className='top-space'>
           <p><Link className='sign-link' to='/'>Back To Log In</Link></p>
         </div>

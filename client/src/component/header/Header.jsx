@@ -1,17 +1,55 @@
 import React from 'react'
+
 import { Link } from 'react-router-dom'
 
-import SignOut from '../sign_out/SignOut'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHouseUser } from '@fortawesome/free-solid-svg-icons'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
+
+import { useHistory } from 'react-router-dom'
+import { logOut } from '../log_out/LogOut'
 
 export default function Header(props) {
   const { setCurrentUser } = props
+  const history = useHistory()
+
+  const handleLogOut = () => {
+    setCurrentUser(null)
+    logOut()
+    history.push('/')
+  }
 
   return (
-    <div>
-      <SignOut
-        setCurrentUser={setCurrentUser}
-      />
-      <Link to='/update_account'><button>Update Account</button></Link>
-    </div>
+    <>
+      <nav className='navbar sticky-top navbar-expand-lg navbar-light bg-light'>
+        <h1 className='navbar-brand'>Send It</h1>
+        <div className='collapse navbar-collapse'>
+          <ul className='navbar-nav'>
+            <li className='nav-item active'>
+              <Link className='nav-link' to='/home'><FontAwesomeIcon icon={faHouseUser} size='2x'/></Link>
+            </li>
+            <li className='nav-item dropdown'>
+              <a
+                className='nav-link dropdown-toggle'
+                href='#'
+                role='button'
+                data-toggle='dropdown'
+                aria-haspopup='true'
+                aria-expanded='false'
+              >
+                <FontAwesomeIcon icon={faUser} size='2x'/>
+                </a>
+              <div className='dropdown-menu'>
+                <p className='dropdown-item'>Profile</p>
+                <p className='dropdown-item'>Saved</p>
+                <Link to='/update_account'><p className='dropdown-item'>Settings</p></Link>
+                <div class="dropdown-divider"></div>
+                <p className='dropdown-item' onClick={handleLogOut}>Log Out</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </>
   )
 }
