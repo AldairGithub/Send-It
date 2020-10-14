@@ -1,0 +1,21 @@
+.container-md {
+  text-align: center;
+  width: 40%;
+  height: 100%;
+  margin: 5% auto;
+  padding: 3%;
+  background-color: #F5F5F5;
+  border: 1px #BDBDBD solid;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+}
+
+hr {
+  border-top: 1px solid #bbb;
+  width: 100%;
+}
+
+.personal-info-title {
+  margin: 0 auto;
+  padding-bottom: 5%;
+}

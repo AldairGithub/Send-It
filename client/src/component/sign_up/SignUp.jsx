@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 
-import './SignUp.css'
-
 import { Link } from 'react-router-dom'
 import { registerUser } from '../../services/auth'
 import { useHistory } from 'react-router-dom'
@@ -33,7 +31,7 @@ export default function SignUp(props) {
 
   return (
     <>
-      <div className='text-center'>
+      <div className='container-sm'>
       <h1 className='title' >Sign Up</h1>
       <form className='form' onSubmit={handleSubmit}>
           <input
@@ -64,7 +62,7 @@ export default function SignUp(props) {
         </form>
         <div className='bottom-space'></div>
       </div>
-      <div className='text-center'>
+      <div className='container-sm'>
         <div className='top-space'></div>
         <p>Have an account? <Link className='sign-link' to='/'>Sign in</Link></p>
       </div>
