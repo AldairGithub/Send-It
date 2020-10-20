@@ -9,6 +9,12 @@ export const updateUser = async (id, userData) => {
   const response = await api.put(`/users/${id}`, { user: userData })
   return response.data
 }
+
+export const allUserPhotos = async (id) => {
+  const response = await api.get(`/entities/user/${id}`)
+  return response.data
+}
+
 // PATCH would let the user change their password, but we want to add credentials for user security
 // export const updatePassword = async (id, newPassword) => {
 //   const response = await api.patch(`/users/${id}/update_password`, { user: newPassword })

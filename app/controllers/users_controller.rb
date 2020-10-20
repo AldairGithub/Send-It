@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy, :update_password]
-  before_action :authorize_request, except: [:create, :index]
+  before_action :set_user, only: [:show, :update, :destroy, :update_password, :user_list, :user_friends]
+  before_action :authorize_request, except: [:create, :index, :user_list, :user_friends]
 
   # GET /users
   def index
@@ -51,7 +51,6 @@ class UsersController < ApplicationController
   # GET /users/1/user_list
   # .where returns all objects, while find_by returns the first one
   def user_list
-    @user = User.find(params[:id])
     @user_list = UserRelationship.where(user_one_id: @user)
 
     render json: @user_list
@@ -59,12 +58,10 @@ class UsersController < ApplicationController
 
   # GET /users/1/user_friends
   def user_friends
-    @user = User.find(params[:id])
     @user_friends = UserRelationship.where(user_one_id: @user, status: 'Accepted')
 
     render json: @user_friends
   end
-
 
   private
     # Use callbacks to share common setup or constraints between actions.
