@@ -38,7 +38,14 @@ puts "#{User.count} users created"
 @post_one = Entity.create(name: 'Post', content: 'This is my first post', user: @admin)
 @post_two = Entity.create(name: 'Post', content: 'Check out admin\'s first post', user: @vasu)
 @post_three = Entity.create(name: 'Post', content: 'Third times the charm', user: @aldair)
-@photo_one = Entity.create(name: 'Photo', content: 'https://i.imgur.com/Tu1cfB0.jpg', user: @admin)
+
+@photo_one = Entity.create(name: 'Photo', content: 'First Photo' , url: 'https://i.imgur.com/Tu1cfB0.jpg', user: @admin)
+@photo_two = Entity.create(name: 'Photo', content: 'Second Photo', url: 'https://i.imgur.com/zAP8jQt.jpg', user: @admin)
+@photo_three = Entity.create(name: 'Photo', content: 'Third Photo', url: 'https://i.imgur.com/hV2Ohdf.jpg', user: @admin)
+@photo_four = Entity.create(name: 'Photo', content: 'Fourth Photo', url: 'https://i.imgur.com/KSlSLjG.jpg', user: @admin)
+@photo_five = Entity.create(name: 'Photo', content: 'Fifth Photo', url: 'https://i.imgur.com/kqQpLzy.jpg', user: @admin)
+@photo_six = Entity.create(name: 'Photo', content: 'Sixth Photo', url: 'https://i.imgur.com/70YkoE0.jpg', user: @admin)
+
 @article_one = Entity.create(name: 'Article', content: 'This is my first article! Loving this database so far for sureeeee', user: @kelly)
 puts "#{Entity.count} entities created"
 
@@ -54,10 +61,21 @@ puts "#{Tag.count} tags created"
 @like_two = Action.create(type_of_entity: 'Post', type_of_action: 'Like', user: @chris, entity: @firstPost)
 @like_three = Action.create(type_of_entity: 'Post', type_of_action: 'Like', user: @vasu, entity: @firstPost)
 @like_four = Action.create(type_of_entity: 'Post', type_of_action: 'Like', user: @kelly, entity: @firstPost)
+@like_six = Action.create(type_of_entity: 'Photo', type_of_action: 'Like', user: @aldair, entity: @photo_one)
+@like_seven = Action.create(type_of_entity: 'Photo', type_of_action: 'Like', user: @chris, entity: @photo_one)
+@like_eight = Action.create(type_of_entity: 'Photo', type_of_action: 'Like', user: @vasu, entity: @photo_one)
+@like_nine = Action.create(type_of_entity: 'Photo', type_of_action: 'Like', user: @kelly, entity: @photo_one)
+@like_ten = Action.create(type_of_entity: 'Photo', type_of_action: 'Like', user: @aldair, entity: @photo_two)
+@like_eleven = Action.create(type_of_entity: 'Photo', type_of_action: 'Like', user: @chris, entity: @photo_two)
+@like_twelve = Action.create(type_of_entity: 'Photo', type_of_action: 'Like', user: @vasu, entity: @photo_two)
+@like_thirteen = Action.create(type_of_entity: 'Photo', type_of_action: 'Like', user: @aldair, entity: @photo_three)
+@like_fourteen = Action.create(type_of_entity: 'Photo', type_of_action: 'Like', user: @chris, entity: @photo_three)
+@like_fifteen = Action.create(type_of_entity: 'Photo', type_of_action: 'Like', user: @aldair, entity: @photo_four)
 # comment
-@comment_one = Action.create(type_of_entity: 'Post', type_of_action: 'Comment', content: 'Welcome to the best up and comming social media app!', user: @aldair, entity: @firstPost)
-@comment_two = Action.create(type_of_entity: 'Post', type_of_action: 'Comment', content: 'AY its lit', user: @chris, entity: @firstPost)
-@comment_three = Action.create(type_of_entity: 'Post', type_of_action: 'Comment', content: 'Let me get on this', user: @vasu, entity: @firstPost)
+@comment_one = Action.create(type_of_entity: 'Photo', type_of_action: 'Comment', content: 'Welcome to the best up and comming social media app!', user: @aldair, entity: @photo_one)
+@comment_two = Action.create(type_of_entity: 'Photo', type_of_action: 'Comment', content: 'AY its lit', user: @chris, entity: @photo_one)
+@comment_three = Action.create(type_of_entity: 'Photo', type_of_action: 'Comment', content: 'Let me get on this', user: @vasu, entity: @photo_one)
+@comment_four = Action.create(type_of_entity: 'Photo', type_of_action: 'Comment', content: 'Testinggg', user: @aldair, entity: @photo_two)
 # tag
 @tag_one = Action.create(type_of_entity: 'Post', type_of_action: 'Tag', user: @vasu, tag: @testingTag, entity: @secondPost)
 @tag_two = Action.create(type_of_entity: 'Post', type_of_action: 'Tag', user: @aldair, tag: @why_is_tagging_so_hard, entity: @third_post)

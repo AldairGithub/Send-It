@@ -1,5 +1,7 @@
 import React from 'react'
 
+import './Header.css'
+
 import { Link } from 'react-router-dom'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,6 +12,7 @@ import { useHistory } from 'react-router-dom'
 import { logOut } from '../log_out/LogOut'
 
 export default function Header(props) {
+  const { currentUser } = props
   const { setCurrentUser } = props
   const history = useHistory()
 
@@ -23,7 +26,7 @@ export default function Header(props) {
     <>
       <nav className='navbar sticky-top navbar-expand-lg navbar-light bg-light'>
         <h1 className='navbar-brand'>Send It</h1>
-        <div className='collapse navbar-collapse'>
+        <div className='collapse navbar-collapse justify-content-end navbar-space-right'>
           <ul className='navbar-nav'>
             <li className='nav-item active'>
               <Link className='nav-link' to='/home'><FontAwesomeIcon icon={faHouseUser} size='2x'/></Link>
@@ -40,10 +43,10 @@ export default function Header(props) {
                 <FontAwesomeIcon icon={faUser} size='2x'/>
                 </a>
               <div className='dropdown-menu'>
-                <p className='dropdown-item'>Profile</p>
+                <Link to={`/account/${currentUser.username}`}><p className='dropdown-item'>Profile</p></Link>
                 <p className='dropdown-item'>Saved</p>
                 <Link to='/update_account'><p className='dropdown-item'>Settings</p></Link>
-                <div class="dropdown-divider"></div>
+                <div className="dropdown-divider"></div>
                 <p className='dropdown-item' onClick={handleLogOut}>Log Out</p>
               </div>
             </li>

@@ -23,24 +23,24 @@ export default function UpdateUser(props) {
 
   const [user, setUser] = useState({})
 
-  // useEffect(() => {
-  //   defaultUserData()
-  // }, [allUsers])
+  useEffect(() => {
+    defaultUserData()
+  }, [allUsers])
 
-  // const defaultUserData = () => {
-  //   const userExists = allUsers.find((user) => {
-  //     return user.id === parseInt(currentUser.id)
-  //   })
-  //   if (userExists) {
-  //     setUserData({
-  //       username: userExists.username,
-  //       email: userExists.email,
-  //       password: userExists.password
-  //     })
-  //   }
-  //   // we can use password_digest and created_at to create a hash for updating user passwords
-  //   setUser(userExists)
-  // }
+  const defaultUserData = () => {
+    const userExists = allUsers.find((user) => {
+      return user.id === parseInt(currentUser.id)
+    })
+    if (userExists) {
+      setUserData({
+        username: userExists.username,
+        email: userExists.email,
+        password: userExists.password
+      })
+    }
+    // we can use password_digest and created_at to create a hash for updating user passwords
+    setUser(userExists)
+  }
 
 
   const handleSubmit = async (e) => {
@@ -66,6 +66,7 @@ export default function UpdateUser(props) {
   return (
     <>
       <Header
+        currentUser={currentUser}
         setCurrentUser={setCurrentUser}
       />
       <div className='container-md rounded'>

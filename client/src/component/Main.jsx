@@ -8,11 +8,15 @@ import Home from './home/Home'
 import UpdateUser from './update_user/UpdateUser'
 import ForgotPassword from '../component/forgot_password/ForgotPassword'
 import ResetPassword from '../component/reset_password/ResetPassword'
+import UserHome from '../component/user_home/UserHome'
 
 export default function Main(props) {
   const { currentUser, setCurrentUser } = props
 
   const [allUsers, setAllUsers] = useState([])
+  // Because main render all components, it will always make the currentUser.id to null
+  // By calling userPhotos and passing it down, we can update it the moment the user logs in
+  const [userPhotos, setUserPhotos] = useState([])
 
   useEffect(() => {
     getUsers()
@@ -31,19 +35,24 @@ export default function Main(props) {
           setCurrentUser={setCurrentUser}
         />
       )} />
+
       <Route exact path='/register' render={(props) => (
         <SignUp
           {...props}
           setCurrentUser={setCurrentUser}
         />
       )} />
+
       <Route exact path='/home' render={(props) => (
         <Home
           {...props}
           currentUser={currentUser}
           setCurrentUser={setCurrentUser}
+          userPhotos={userPhotos}
+          setUserPhotos={setUserPhotos}
         />
       )} />
+
       <Route exact path='/update_account' render={(props) => (
         <UpdateUser
           {...props}
@@ -53,6 +62,7 @@ export default function Main(props) {
           setAllUsers={setAllUsers}
         />
       )} />
+
       <Route exact path='/forgot_password' render={(props) => (
         <ForgotPassword
           {...props}
@@ -62,6 +72,16 @@ export default function Main(props) {
       <Route exact path={`/reset_account/:id/:token`} render={(props) => (
         <ResetPassword
         {...props}
+        />
+      )} />
+
+      <Route path={`/account/:user`} render={(props) => (
+        <UserHome
+          {...props}
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
+          userPhotos={userPhotos}
+          setUserPhotos={setUserPhotos}
         />
       )} />
     </main>
