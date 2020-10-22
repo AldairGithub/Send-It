@@ -12,7 +12,15 @@ import Header from '../header/Header'
 export default function UserHome(props) {
   const { currentUser, setCurrentUser, userPhotos } = props
 
-
+  const getActions = (arr, str) => {
+    let count = 0
+    arr.forEach(action => {
+      if (action.type_of_action === str) {
+        count += 1
+      }
+    })
+    return count
+  }
   
   return (
     <>
@@ -40,8 +48,12 @@ export default function UserHome(props) {
         <div className='d-flex flex-wrap-reverse justify-content-center'>
         {userPhotos.map((arr) => (
           <>
-            <div>
-              <img className='user-img flex-fill' src={arr[0].url}/>
+            <div className='user-img-container'>
+              <img className='user-img flex-fill' src={arr[0].url} />
+              <div className='user-img-text'>
+                <p>{getActions(arr[1], 'Like')} Likes</p><br/>
+                <p>{getActions(arr[1], 'Comment')} Comments</p>
+              </div>
             </div>
           </>
         ))}
