@@ -2,6 +2,12 @@
   margin-top: 5%;
 }
 
+.username-title {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 20px;
+  margin-right: 10px;
+  
+}
 .userlock {
   color: rgb(25,28,31);
 }
@@ -33,10 +39,15 @@
   width: 100%;
   background-color: rgba(0, 0, 0, 0);
   visibility: hidden;
+  font-weight: bold;
 }
 /* ':hover >' lets us change both the parent and child attributes */
 .user-img-container:hover > .user-img-text {
   background-color: rgba(0, 0, 0, 0.5);
   visibility: visible;
+}
+
+.userhome-right-space {
+  margin-right: 30px;
 }
 
