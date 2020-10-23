@@ -83,11 +83,11 @@ puts "#{Action.count} actions created"
 
 # user relationships
 @pending_one = UserRelationship.create!(user_one: @admin, user_two: @aldair, status: 'Pending', last_user_action: @admin)
-@pending_two = UserRelationship.create(user_one: @aldair, user_two: @nate, status: 'Pending', last_user_action: @aldair)
-@accepted_one = UserRelationship.create(user_one: @aldair, user_two: @chris, status: 'Accepted', last_user_action: @chris)
-@accepted_two = UserRelationship.create(user_one: @aldair, user_two: @vasu, status: 'Accepted', last_user_action: @vasu)
-@accepted_three = UserRelationship.create(user_one: @aldair, user_two: @kelly, status: 'Accepted', last_user_action: @kelly)
-@accepted_four = UserRelationship.create(user_one: @kelly, user_two: @roffaden, status: 'Accepted', last_user_action: @roffaden)
+@pending_two = UserRelationship.create(user_one: @admin, user_two: @nate, status: 'Accepted', last_user_action: @nate)
+@accepted_one = UserRelationship.create(user_one: @admin, user_two: @chris, status: 'Accepted', last_user_action: @chris)
+@accepted_two = UserRelationship.create(user_one: @admin, user_two: @vasu, status: 'Accepted', last_user_action: @vasu)
+@accepted_three = UserRelationship.create(user_one: @admin, user_two: @kelly, status: 'Accepted', last_user_action: @kelly)
+@accepted_four = UserRelationship.create(user_one: @admin, user_two: @roffaden, status: 'Pending', last_user_action: @admin)
 @accepted_five = UserRelationship.create(user_one: @kelly, user_two: @jordon, status: 'Accepted', last_user_action: @jordon)
 @denied_one = UserRelationship.create(user_one: @kelly, user_two: @yomar, status: 'Denied', last_user_action: @yomar)
 @denied_two = UserRelationship.create(user_one: @roffaden, user_two: @moises, status: 'Denied', last_user_action: @moises)

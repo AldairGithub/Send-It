@@ -18,7 +18,9 @@ export default function UpdateUser(props) {
   const [userData, setUserData] = useState({
     username: "",
     email: "",
-    password: ""
+    password: "",
+    name: "",
+    bio: ""
   })
 
   const [user, setUser] = useState({})
@@ -35,7 +37,9 @@ export default function UpdateUser(props) {
       setUserData({
         username: userExists.username,
         email: userExists.email,
-        password: userExists.password
+        password: userExists.password,
+        name: userExists.name,
+        bio: userExists.bio
       })
     }
     // we can use password_digest and created_at to create a hash for updating user passwords
@@ -73,6 +77,19 @@ export default function UpdateUser(props) {
         <form className='form' onSubmit={handleSubmit}>
 
           <div className='form-group row'>
+
+          <label for='updateName' className='col-sm-3 col-form-label'>Name</label>
+            <div className='col-sm-8'>
+                <input
+                  id='updateName'
+                  className='form-control'
+                  placeholder='Name'
+                  type='text'
+                  name='name'
+                  value={userData.name}
+                  onChange={handleChange}
+                />
+            </div>
             <label for='updateUsername' className='col-sm-3 col-form-label'>Username</label>
               <div className='col-sm-8'>
                 <input
@@ -85,6 +102,21 @@ export default function UpdateUser(props) {
                   onChange={handleChange}
                 />
             </div>
+
+            <label for='updateBio' className='col-sm-3 col-form-label'>Bio</label>
+            <div className='col-sm-8'>
+                <textarea
+                  id='updateBio'
+                  className='form-control extra-height-for-bio'
+                  placeholder='Description'
+                  type='text'
+                  max='500'
+                  name='bio'
+                  value={userData.bio}
+                  onChange={handleChange}
+                />
+            </div>
+
           </div>
 
             <hr className='solid' />

@@ -15,6 +15,11 @@ export const allUserPhotos = async (id) => {
   return response.data
 }
 
+export const allUserRelationships = async (id) => {
+  const response = await api.get(`/users/${id}/user_list`)
+  return response.data
+}
+
 // PATCH would let the user change their password, but we want to add credentials for user security
 // export const updatePassword = async (id, newPassword) => {
 //   const response = await api.patch(`/users/${id}/update_password`, { user: newPassword })

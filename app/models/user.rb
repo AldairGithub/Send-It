@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :last_user_action, class_name: :user_relationships, foreign_key: :last_user_action_id
 
   validates :username, presence: true, uniqueness: true
+  validates :name, format: {with: /\A[a-zA-Z]+\z/}, length: {minimum: 2}, allow_blank: true, allow_nil: true
+  validates :bio, length: { maximum: 500}, allow_blank: true, allow_nil: true
   validates :email, presence: true, uniqueness: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   # when a reset_password_token was created, it was validating for a password,

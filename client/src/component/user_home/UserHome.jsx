@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import './UserHome.css'
 
@@ -7,10 +7,21 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCog } from '@fortawesome/free-solid-svg-icons'
 import { faCog } from '@fortawesome/free-solid-svg-icons'
+import { faComment } from '@fortawesome/free-solid-svg-icons'
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import Header from '../header/Header'
 
 export default function UserHome(props) {
-  const { currentUser, setCurrentUser, userPhotos } = props
+  const { currentUser, setCurrentUser, userPhotos, userFriends } = props
+
+  const [relationships, setRelationships] = useState({
+    followers: 0,
+    following: 0
+  })
+
+  useEffect(() => {
+    getUserFollows()
+  }, [])
 
   const getActions = (arr, str) => {
     let count = 0
@@ -21,6 +32,29 @@ export default function UserHome(props) {
     })
     return count
   }
+
+  const getUserFollows = () => {
+    let numberOfFollowers = 0
+    let numberOfFollowing = 0
+    userFriends.forEach(user => {
+      switch (user.status) {
+        case 'Accepted':
+          numberOfFollowers += 1
+          numberOfFollowing += 1
+          break;
+        case 'Pending':
+          numberOfFollowing += 1
+          break;
+        default:
+          break;
+      }
+    })
+    setRelationships({
+      ...relationships,
+      followers: numberOfFollowers,
+      following: numberOfFollowing
+    })
+  }
   
   return (
     <>
@@ -29,17 +63,30 @@ export default function UserHome(props) {
         setCurrentUser={setCurrentUser}
       /> */}
       <div className='userhome-container-topspace container'>
-        <div className='row justify-content-md-center'>
-          <div className='col-sm-1'>
-            admin
+        <div className='d-flex flex-row justify-content-center'>
+          <div className='p-2 username-title'>
+            {/* {currentUser.username} */}
+            adminUsername
           </div>
-          <div className='col-sm-1'>
+          <div className='p-2'>
             <Link to='/update_account'>
               <FontAwesomeIcon className='userlock' icon={faUserCog} size='2x'/>
             </Link>
           </div>
-          <div className='col-sm-1'>
+          <div className='p-2'>
             <FontAwesomeIcon icon={faCog} size='2x'/>
+          </div>
+        </div>
+
+        <div className='d-flex flex-row justify-content-center'>
+          <div className='p-2'>
+            {userPhotos.length} Posts
+          </div>
+          <div className='p-2'>
+            {relationships.followers} followers
+          </div>
+          <div className='p-2'>
+            {relationships.following} following
           </div>
         </div>
 
@@ -51,8 +98,9 @@ export default function UserHome(props) {
             <div className='user-img-container'>
               <img className='user-img flex-fill' src={arr[0].url} />
               <div className='user-img-text'>
-                <p>{getActions(arr[1], 'Like')} Likes</p><br/>
-                <p>{getActions(arr[1], 'Comment')} Comments</p>
+                <FontAwesomeIcon icon={faHeart} size='1x' />{getActions(arr[1], 'Like')}
+                <div className='userhome-right-space'/>
+                <FontAwesomeIcon icon={faComment} size='1x'/>{getActions(arr[1], 'Comment')}
               </div>
             </div>
           </>
