@@ -1,12 +1,17 @@
 .userhome-container-topspace {
   margin-top: 5%;
 }
+.userhome-container-bottomspace {
+  margin-bottom: 15px;  
+}
 
 .username-title {
   font-family: 'Noto Sans TC', sans-serif;
   font-size: 20px;
-  margin-right: 10px;
-  
+  /* margin-right: 10px; */
+}
+.username-container {
+  min-width: 0;
 }
 .userlock {
   color: rgb(25,28,31);
@@ -51,3 +56,6 @@
   margin-right: 30px;
 }
 
+.userhome-container-bio {
+  line-height: 16px;
+}

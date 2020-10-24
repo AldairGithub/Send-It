@@ -58,38 +58,53 @@ export default function UserHome(props) {
   
   return (
     <>
-      {/* <Header
-        currentUser={currentUser}
-        setCurrentUser={setCurrentUser}
-      /> */}
+      <Header
+        // currentUser={currentUser}
+        // setCurrentUser={setCurrentUser}
+      />
       <div className='userhome-container-topspace container'>
-        <div className='d-flex flex-row justify-content-center'>
-          <div className='p-2 username-title'>
-            {/* {currentUser.username} */}
-            adminUsername
-          </div>
-          <div className='p-2'>
-            <Link to='/update_account'>
-              <FontAwesomeIcon className='userlock' icon={faUserCog} size='2x'/>
-            </Link>
-          </div>
-          <div className='p-2'>
-            <FontAwesomeIcon icon={faCog} size='2x'/>
-          </div>
-        </div>
+        <div className='d-flex position-relative userhome-container-info flex-shrink-0 flex-column align-items-stretch'>
 
-        <div className='d-flex flex-row justify-content-center'>
-          <div className='p-2'>
-            {userPhotos.length} Posts
+          <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center flex-shrink-1'>
+            <div className='p-2 username-title'>
+              {/* {currentUser.username} */}
+              adminUsername
+            </div>
+            <div className='p-2'>
+              <Link to='/update_account'>
+                <FontAwesomeIcon className='userlock' icon={faUserCog} size='2x'/>
+              </Link>
+            </div>
+            <div className='p-2'>
+              <FontAwesomeIcon icon={faCog} size='2x'/>
+            </div>
           </div>
-          <div className='p-2'>
-            {relationships.followers} followers
-          </div>
-          <div className='p-2'>
-            {relationships.following} following
-          </div>
-        </div>
 
+          <div className='d-flex userhome-container-bottomspace flex-row flex-grow-2 justify-content-start'>
+            <div className='p-2'>
+              {userPhotos.length} Posts
+            </div>
+            <div className='p-2'>
+              {relationships.followers} followers
+            </div>
+            <div className='p-2'>
+              {relationships.following} following
+            </div>
+          </div>
+
+          <div className='d-flex userhome-container-bio userhome-container-bottomspace flex-column align-items-start'>
+            <div className='p-2'>
+              {/* {currentUser.name} */}
+              ADMIN
+            </div>
+            <div className='p-2'>
+              {/* {currentUser.bio} */}
+              WE ADD STUFF HERE FOR BIO
+            </div>
+          </div>
+
+        </div>
+        
         <hr />
 
         <div className='d-flex flex-wrap-reverse justify-content-center'>
