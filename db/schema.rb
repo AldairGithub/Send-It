@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_22_154317) do
+ActiveRecord::Schema.define(version: 2020_10_26_151303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 2020_10_22_154317) do
     t.datetime "reset_password_sent_at"
     t.string "name"
     t.text "bio"
+    t.string "user_self_img"
   end
 
   add_foreign_key "actions", "entities"

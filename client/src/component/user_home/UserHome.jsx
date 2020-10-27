@@ -10,14 +10,26 @@ import { faCog } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import Header from '../header/Header'
+import UserPhotoPop from './user_photo_pop/UserPhotoPop'
 
 export default function UserHome(props) {
-  const { currentUser, setCurrentUser, userPhotos, userFriends } = props
+  const { setCurrentUser, userPhotos, userFriends } = props
+
+  const currentUser = {username: 'admin'}
 
   const [relationships, setRelationships] = useState({
     followers: 0,
     following: 0
   })
+
+  // Modal display
+  const [isOpen, setIsOpen] = useState(false)
+  const showModal = () => {
+    setIsOpen(true)
+  }
+  const hideModal = () => {
+    setIsOpen(false)
+  }
 
   useEffect(() => {
     getUserFollows()
@@ -67,8 +79,8 @@ export default function UserHome(props) {
 
           <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center flex-shrink-1'>
             <div className='p-2 username-title'>
-              {/* {currentUser.username} */}
-              adminUsername
+              {currentUser.username}
+              {/* adminUsername */}
             </div>
             <div className='p-2'>
               <Link to='/update_account'>
@@ -110,7 +122,7 @@ export default function UserHome(props) {
         <div className='d-flex flex-wrap-reverse justify-content-center'>
         {userPhotos.map((arr) => (
           <>
-            <div className='user-img-container'>
+            <div className='user-img-container' onClick={showModal}>
               <img className='user-img flex-fill' src={arr[0].url} />
               <div className='user-img-text'>
                 <FontAwesomeIcon icon={faHeart} size='1x' />{getActions(arr[1], 'Like')}
@@ -118,6 +130,7 @@ export default function UserHome(props) {
                 <FontAwesomeIcon icon={faComment} size='1x'/>{getActions(arr[1], 'Comment')}
               </div>
             </div>
+            <UserPhotoPop photo={arr} show={isOpen} hide={hideModal}/>        
           </>
         ))}
       </div>
