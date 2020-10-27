@@ -130,6 +130,7 @@ export default function UserHome(props) {
                 <FontAwesomeIcon icon={faComment} size='1x'/>{getActions(arr[1], 'Comment')}
               </div>
             </div>
+            {/* modal */}
             <UserPhotoPop photo={arr} show={isOpen} hide={hideModal}/>        
           </>
         ))}
