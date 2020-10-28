@@ -23,12 +23,22 @@ export default function UserHome(props) {
   })
 
   // Modal display
-  const [isOpen, setIsOpen] = useState(false)
-  const showModal = () => {
-    setIsOpen(true)
+  const [isOpen, setIsOpen] = useState({
+    show: false,
+    modalId: null,
+  })
+
+  const showModal = (e, index) => {
+    setIsOpen({
+      show: true,
+      modalId: index
+    })
   }
-  const hideModal = () => {
-    setIsOpen(false)
+  const hideModal = (e) => {
+    setIsOpen({
+      show: false,
+      modalId: null
+    })
   }
 
   useEffect(() => {
@@ -120,9 +130,9 @@ export default function UserHome(props) {
         <hr />
 
         <div className='d-flex flex-wrap-reverse justify-content-center'>
-        {userPhotos.map((arr) => (
+        {userPhotos.map((arr, index) => (
           <>
-            <div className='user-img-container' onClick={showModal}>
+            <div className='user-img-container' onClick={(e) => showModal(e, index)}>
               <img className='user-img flex-fill' src={arr[0].url} />
               <div className='user-img-text'>
                 <FontAwesomeIcon icon={faHeart} size='1x' />{getActions(arr[1], 'Like')}
@@ -130,17 +140,12 @@ export default function UserHome(props) {
                 <FontAwesomeIcon icon={faComment} size='1x'/>{getActions(arr[1], 'Comment')}
               </div>
             </div>
-            {/* modal */}
-            <UserPhotoPop photo={arr} show={isOpen} hide={hideModal}/>        
           </>
         ))}
+        </div>
       </div>
-
-
-      </div>
-
-      
-      
+      {/* modal */}
+      {isOpen.show ? <UserPhotoPop photo={userPhotos[isOpen.modalId]} show={isOpen.show} hide={hideModal} /> : null}
     </>
   )
 }

@@ -8,10 +8,15 @@ export default function UserPhotoPop(props) {
 
   return (
     <>
-      <Modal show={show} onHide={hide} centered={true} transparent={true} >
-        <Modal.Body>
-          First modal using react bootstrap
-        </Modal.Body>
+      <Modal
+        show={show}
+        onHide={hide}
+        centered={true}
+        aria-labelledby={`user-modal-${photo[0].id}`}
+      >
+        <Modal.Header>
+          <img id={`${photo[0].id}`} alt={`${photo[0].content}`} className='userpop-img' src={photo[0].url}/>
+        </Modal.Header>
       </Modal>
     </>
   )
