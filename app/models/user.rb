@@ -12,6 +12,7 @@ class User < ApplicationRecord
   validates :username, presence: true, uniqueness: true
   validates :name, format: {with: /\A[a-zA-Z]+\z/}, length: {minimum: 2}, allow_blank: true, allow_nil: true
   validates :bio, length: { maximum: 500}, allow_blank: true, allow_nil: true
+  validates :user_self_img, allow_blank: true, allow_nil: true
   validates :email, presence: true, uniqueness: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   # when a reset_password_token was created, it was validating for a password,

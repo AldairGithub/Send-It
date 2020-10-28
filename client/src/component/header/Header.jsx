@@ -43,11 +43,11 @@ export default function Header(props) {
                 <FontAwesomeIcon icon={faUser} size='2x'/>
                 </a>
               <div className='dropdown-menu'>
-                <Link to={`/account/${currentUser.username}`}><p className='dropdown-item'>Profile</p></Link>
+                {/* <Link to={`/account/${currentUser.username}`}><p className='dropdown-item'>Profile</p></Link> */}
                 <p className='dropdown-item'>Saved</p>
                 <Link to='/update_account'><p className='dropdown-item'>Settings</p></Link>
                 <div className="dropdown-divider"></div>
-                <p className='dropdown-item' onClick={handleLogOut}>Log Out</p>
+                {/* <p className='dropdown-item' onClick={handleLogOut}>Log Out</p> */}
               </div>
             </li>
           </ul>

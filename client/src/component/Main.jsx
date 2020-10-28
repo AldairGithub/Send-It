@@ -85,6 +85,7 @@ export default function Main(props) {
           userFriends={userFriends}
         />
       )} />
+
     </main>
   )
 }

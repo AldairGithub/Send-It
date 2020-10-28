@@ -10,14 +10,36 @@ import { faCog } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import Header from '../header/Header'
+import UserPhotoPop from './user_photo_pop/UserPhotoPop'
 
 export default function UserHome(props) {
-  const { currentUser, setCurrentUser, userPhotos, userFriends } = props
+  const { setCurrentUser, userPhotos, userFriends } = props
+
+  const currentUser = {username: 'admin'}
 
   const [relationships, setRelationships] = useState({
     followers: 0,
     following: 0
   })
+
+  // Modal display
+  const [isOpen, setIsOpen] = useState({
+    show: false,
+    modalId: null,
+  })
+
+  const showModal = (e, index) => {
+    setIsOpen({
+      show: true,
+      modalId: index
+    })
+  }
+  const hideModal = (e) => {
+    setIsOpen({
+      show: false,
+      modalId: null
+    })
+  }
 
   useEffect(() => {
     getUserFollows()
@@ -58,44 +80,59 @@ export default function UserHome(props) {
   
   return (
     <>
-      {/* <Header
-        currentUser={currentUser}
-        setCurrentUser={setCurrentUser}
-      /> */}
+      <Header
+        // currentUser={currentUser}
+        // setCurrentUser={setCurrentUser}
+      />
       <div className='userhome-container-topspace container'>
-        <div className='d-flex flex-row justify-content-center'>
-          <div className='p-2 username-title'>
-            {/* {currentUser.username} */}
-            adminUsername
-          </div>
-          <div className='p-2'>
-            <Link to='/update_account'>
-              <FontAwesomeIcon className='userlock' icon={faUserCog} size='2x'/>
-            </Link>
-          </div>
-          <div className='p-2'>
-            <FontAwesomeIcon icon={faCog} size='2x'/>
-          </div>
-        </div>
+        <div className='d-flex position-relative userhome-container-info flex-shrink-0 flex-column align-items-stretch'>
 
-        <div className='d-flex flex-row justify-content-center'>
-          <div className='p-2'>
-            {userPhotos.length} Posts
+          <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center flex-shrink-1'>
+            <div className='p-2 username-title'>
+              {currentUser.username}
+              {/* adminUsername */}
+            </div>
+            <div className='p-2'>
+              <Link to='/update_account'>
+                <FontAwesomeIcon className='userlock' icon={faUserCog} size='2x'/>
+              </Link>
+            </div>
+            <div className='p-2'>
+              <FontAwesomeIcon icon={faCog} size='2x'/>
+            </div>
           </div>
-          <div className='p-2'>
-            {relationships.followers} followers
-          </div>
-          <div className='p-2'>
-            {relationships.following} following
-          </div>
-        </div>
 
+          <div className='d-flex userhome-container-bottomspace flex-row flex-grow-2 justify-content-start'>
+            <div className='p-2'>
+              {userPhotos.length} Posts
+            </div>
+            <div className='p-2'>
+              {relationships.followers} followers
+            </div>
+            <div className='p-2'>
+              {relationships.following} following
+            </div>
+          </div>
+
+          <div className='d-flex userhome-container-bio userhome-container-bottomspace flex-column align-items-start'>
+            <div className='p-2'>
+              {/* {currentUser.name} */}
+              ADMIN
+            </div>
+            <div className='p-2'>
+              {/* {currentUser.bio} */}
+              WE ADD STUFF HERE FOR BIO
+            </div>
+          </div>
+
+        </div>
+        
         <hr />
 
         <div className='d-flex flex-wrap-reverse justify-content-center'>
-        {userPhotos.map((arr) => (
+        {userPhotos.map((arr, index) => (
           <>
-            <div className='user-img-container'>
+            <div className='user-img-container' onClick={(e) => showModal(e, index)}>
               <img className='user-img flex-fill' src={arr[0].url} />
               <div className='user-img-text'>
                 <FontAwesomeIcon icon={faHeart} size='1x' />{getActions(arr[1], 'Like')}
@@ -105,13 +142,10 @@ export default function UserHome(props) {
             </div>
           </>
         ))}
+        </div>
       </div>
-
-
-      </div>
-
-      
-      
+      {/* modal */}
+      {isOpen.show ? <UserPhotoPop photo={userPhotos[isOpen.modalId]} show={isOpen.show} hide={hideModal} /> : null}
     </>
   )
 }
