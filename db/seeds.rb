@@ -13,7 +13,7 @@ User.destroy_all
 
 # users
 # 1
-@admin = User.create(username: 'admin', email: 'admin@email.com', password: 'aldair', user_self_img: )
+@admin = User.create(username: 'admin', email: 'admin@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/FFn7QzH.jpg')
 # 2
 @aldair = User.create(username: 'aldair', email: 'aldair@email.com', password: 'aldair')
 # 3

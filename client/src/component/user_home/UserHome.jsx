@@ -13,9 +13,9 @@ import Header from '../header/Header'
 import UserPhotoPop from './user_photo_pop/UserPhotoPop'
 
 export default function UserHome(props) {
-  const { setCurrentUser, userPhotos, userFriends } = props
+  const { currentUser, setCurrentUser, userPhotos, userFriends } = props
 
-  const currentUser = {username: 'admin'}
+  // const currentUser = {username: 'admin'}
 
   const [relationships, setRelationships] = useState({
     followers: 0,
@@ -85,12 +85,16 @@ export default function UserHome(props) {
         // setCurrentUser={setCurrentUser}
       />
       <div className='userhome-container-topspace container'>
-        <div className='d-flex position-relative userhome-container-info flex-shrink-0 flex-column align-items-stretch'>
 
+        <div className='d-flex position-relative flex-row justify-content-center align-items-stretch'>
+          {/* user self image */}
+          <img className='userhome-user-img' src={currentUser.user_self_img}/>
+
+          <div className='d-flex position-relative userhome-container-info flex-shrink-0 flex-column align-items-stretch'>
           <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center flex-shrink-1'>
             <div className='p-2 username-title'>
-              {currentUser.username}
-              {/* adminUsername */}
+              {/* {currentUser.username} */}
+              adminnnnnnn
             </div>
             <div className='p-2'>
               <Link to='/update_account'>
@@ -126,6 +130,11 @@ export default function UserHome(props) {
           </div>
 
         </div>
+
+        </div>
+        
+          
+        
         
         <hr />
 
@@ -145,7 +154,7 @@ export default function UserHome(props) {
         </div>
       </div>
       {/* modal */}
-      {isOpen.show ? <UserPhotoPop photo={userPhotos[isOpen.modalId]} show={isOpen.show} hide={hideModal} /> : null}
+      {isOpen.show ? <UserPhotoPop photo={userPhotos[isOpen.modalId]} currentUser={currentUser} show={isOpen.show} hide={hideModal} /> : null}
     </>
   )
 }
