@@ -1,8 +1,20 @@
 .userhome-container-topspace {
   margin-top: 5%;
+
 }
 .userhome-container-bottomspace {
   margin-bottom: 15px;  
+}
+.userhome-user-img-container {
+}
+
+.userhome-user-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 100%;
+  border-radius: 50%;
 }
 
 .username-title {
