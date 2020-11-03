@@ -83,6 +83,7 @@ export default function Main(props) {
           setCurrentUser={setCurrentUser}
           userPhotos={userPhotos}
           userFriends={userFriends}
+          allUsers={allUsers}
         />
       )} />
 

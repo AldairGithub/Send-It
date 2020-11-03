@@ -3,18 +3,19 @@
 
 }
 .userhome-container-bottomspace {
-  margin-bottom: 15px;  
+  margin-bottom: 20px;
 }
 .userhome-user-img-container {
-}
-
-.userhome-user-img {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 200px;
+  height: 200px;
+  margin-right: 5%;
+}
+.userhome-user-img {
+  top: 0;
+  width: 100%;
   height: 100%;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .username-title {

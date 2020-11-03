@@ -13,13 +13,18 @@ import Header from '../header/Header'
 import UserPhotoPop from './user_photo_pop/UserPhotoPop'
 
 export default function UserHome(props) {
-  const { currentUser, setCurrentUser, userPhotos, userFriends } = props
+  const { currentUser, setCurrentUser, userPhotos, userFriends, allUsers } = props
 
   // const currentUser = {username: 'admin'}
 
   const [relationships, setRelationships] = useState({
     followers: 0,
     following: 0
+  })
+
+  const [userComments, setUserComments] = useState({
+    username: '',
+    comment: ''
   })
 
   // Modal display
@@ -77,6 +82,13 @@ export default function UserHome(props) {
       following: numberOfFollowing
     })
   }
+
+  const userCommentModal = (id) => {
+    let userComments = userPhotos[id][1].filter(action => action.type_of_action === 'Comment')
+    let usernameComments = userComments.map(str => [str, allUsers.filter(user => user.id === str.user_id)])
+    return usernameComments
+  }
+
   
   return (
     <>
@@ -87,10 +99,15 @@ export default function UserHome(props) {
       <div className='userhome-container-topspace container'>
 
         <div className='d-flex position-relative flex-row justify-content-center align-items-stretch'>
+
           {/* user self image */}
-          <img className='userhome-user-img' src={currentUser.user_self_img}/>
+          <div className='userhome-user-img-container'>
+            {/* change user img with {currentUser.user_self_img} */}
+            <img className='userhome-user-img' src='https://i.imgur.com/FFn7QzH.jpg'/>
+          </div>
 
           <div className='d-flex position-relative userhome-container-info flex-shrink-0 flex-column align-items-stretch'>
+          
           <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center flex-shrink-1'>
             <div className='p-2 username-title'>
               {/* {currentUser.username} */}
@@ -154,7 +171,13 @@ export default function UserHome(props) {
         </div>
       </div>
       {/* modal */}
-      {isOpen.show ? <UserPhotoPop photo={userPhotos[isOpen.modalId]} currentUser={currentUser} show={isOpen.show} hide={hideModal} /> : null}
+      {isOpen.show ?
+        <UserPhotoPop
+          photo={userPhotos[isOpen.modalId]}
+          userComments={userCommentModal(isOpen.modalId)}
+          currentUser={currentUser}
+          show={isOpen.show} hide={hideModal}
+        /> : null}
     </>
   )
 }
