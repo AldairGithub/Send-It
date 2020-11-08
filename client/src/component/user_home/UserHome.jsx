@@ -83,11 +83,12 @@ export default function UserHome(props) {
     })
   }
 
-  const userCommentModal = (id) => {
-    let userComments = userPhotos[id][1].filter(action => action.type_of_action === 'Comment')
-    let usernameComments = userComments.map(str => [str, allUsers.filter(user => user.id === str.user_id)])
-    return usernameComments
+  const userAction = (id , type) => {
+    let userActions = userPhotos[id][1].filter(action => action.type_of_action === type)
+    let usernameActions = userActions.map(str => [str, allUsers.filter(user => user.id === str.user_id)])
+    return usernameActions
   }
+
 
   
   return (
@@ -174,7 +175,8 @@ export default function UserHome(props) {
       {isOpen.show ?
         <UserPhotoPop
           photo={userPhotos[isOpen.modalId]}
-          userComments={userCommentModal(isOpen.modalId)}
+          userComments={userAction(isOpen.modalId, 'Comment')}
+          userLikes={userAction(isOpen.modalId, 'Like')}
           currentUser={currentUser}
           show={isOpen.show} hide={hideModal}
         /> : null}
