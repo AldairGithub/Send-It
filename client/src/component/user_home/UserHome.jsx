@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import './UserHome.css'
 
 import { Link } from 'react-router-dom'
+import { postActionFromCurrentUser } from '../../services/action'
+import { deleteActionFromCurrentUser } from '../../services/action'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCog } from '@fortawesome/free-solid-svg-icons'
@@ -22,10 +24,7 @@ export default function UserHome(props) {
     following: 0
   })
 
-  const [userComments, setUserComments] = useState({
-    username: '',
-    comment: ''
-  })
+  const [likedPost, setLikedPost] = useState(false)
 
   // Modal display
   const [isOpen, setIsOpen] = useState({
@@ -38,6 +37,8 @@ export default function UserHome(props) {
       show: true,
       modalId: index
     })
+    // check if current user liked the post
+    currentUserLikedPost(index)
   }
   const hideModal = (e) => {
     setIsOpen({
@@ -88,8 +89,31 @@ export default function UserHome(props) {
     let usernameActions = userActions.map(str => [str, allUsers.filter(user => user.id === str.user_id)])
     return usernameActions
   }
+  // need modal to display if current user has liked the post itself, need to check argument? or check array?
+  // isOpen.modalId is the id of the photo
 
+  const handleAction = (entityId, userId, typeOfEntity, typeOfAction, contentFromUser) => {
+    let userLikedPost = userPhotos[isOpen.modalId][1].filter(action => action.type_of_action === 'Like' && action.user_id === userId)
 
+    if (userLikedPost === undefined || userLikedPost.length === 0 ) {
+      console.log('Post was liked by user')
+      let postLike = postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction)
+      setLikedPost(true)
+    } else {
+      console.log('Like was deleted from post by user')
+      let deleteLike = deleteActionFromCurrentUser(userLikedPost[0].id)
+      setLikedPost(false)
+    }
+  }
+
+  const currentUserLikedPost = (id) => {
+    const userLiked = userPhotos[id][1].filter(action => action.type_of_action === 'Like' && action.user_id === currentUser.id)
+    if (userLiked.length === 0) {
+      setLikedPost(false)
+    } else {
+      setLikedPost(true)
+    }
+  }
   
   return (
     <>
@@ -179,6 +203,8 @@ export default function UserHome(props) {
           userLikes={userAction(isOpen.modalId, 'Like')}
           currentUser={currentUser}
           show={isOpen.show} hide={hideModal}
+          likedPost={likedPost}
+          handleAction={handleAction}
         /> : null}
     </>
   )

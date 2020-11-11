@@ -2,10 +2,10 @@
 .modal-backdrop {
     background-color: rgba(0,0,0,.2) !important;
 }.modal-90w {
-  min-width: 60%;
+  min-width: 70%;
 }
 .userpop-img-container {
-  width: 500px;
+  width: 1500px;
   height: 500px;
 }
 /* fixed issue with divider and input not fully maxing out container width, needed to contain column */
