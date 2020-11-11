@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
@@ -13,7 +13,15 @@ import { faComment } from '@fortawesome/free-solid-svg-icons'
 import './UserPhotoPop.css'
 
 export default function UserPhotoPop(props) {
-  const { photo, currentUser, userComments, userLikes, show, hide } = props
+  const { photo, currentUser, userComments, userLikes, show, hide, likedPost, handleAction } = props
+
+  const [comment, setComment] = useState(null)
+
+  // On user click of the comment icon, input will be focused
+  const userCommentInput = useRef(null)
+  const handleFocus = () => {
+    userCommentInput.current.focus()
+  }
 
   const numberOfLikes = (arr) => {
     if (arr.length === 0) {
@@ -93,10 +101,18 @@ export default function UserPhotoPop(props) {
                 <div className='dropdown-divider'></div>
                   <div className='mb-3 userpop-user-container d-flex flex-row flex-nowrap'>
                     <div className='userpop-icon-right-space'>
-                      <FontAwesomeIcon icon={faHeart} size='2x' />
+                      <FontAwesomeIcon
+                        icon={faHeart}
+                        size='2x'
+                        style={{ color: `${likedPost ? "red": "black"}`}}
+                        onClick={() => handleAction(photo[0].id, photo[0].user_id, photo[0].name, 'Like', null)}
+                      />
                     </div>
                     <div>
-                      <FontAwesomeIcon icon={faComment} size='2x' />  
+                      <FontAwesomeIcon
+                        icon={faComment}
+                        size='2x'
+                        onClick={handleFocus} />
                     </div>
                 </div>
                 
@@ -130,9 +146,13 @@ export default function UserPhotoPop(props) {
                       placeholder='Add a comment...'
                       aria-label='New comment'
                       aria-describedby='new comment to post'
+                      ref={userCommentInput}
                     />
                   <InputGroup.Append className='userpop-input-button'>
-                      <Button className='rounded justify-content-end' variant='outline-secondary'>Post</Button>
+                      <Button
+                        className='rounded justify-content-end'
+                        variant='outline-secondary'
+                      >Post</Button>
                     </InputGroup.Append>
                   </InputGroup>
                 </div>
