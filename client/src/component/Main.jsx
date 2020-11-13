@@ -17,6 +17,9 @@ export default function Main(props) {
   // Because main render all components, it will always make the currentUser.id to null
   // By calling userPhotos and passing it down, we can update it the moment the user logs in
   const [userPhotos, setUserPhotos] = useState([])
+
+  const [allUserPhotos, setAllUserPhotos] = useState()
+
   const [userFriends, setUserFriends] = useState([])
 
   useEffect(() => {
@@ -49,8 +52,10 @@ export default function Main(props) {
           {...props}
           currentUser={currentUser}
           setCurrentUser={setCurrentUser}
+          allUsers={allUsers}
           setUserPhotos={setUserPhotos}
           setUserFriends={setUserFriends}
+          setAllUserPhotos={setAllUserPhotos}
         />
       )} />
 
@@ -84,6 +89,7 @@ export default function Main(props) {
           userPhotos={userPhotos}
           userFriends={userFriends}
           allUsers={allUsers}
+          allUserPhotos={allUserPhotos}
         />
       )} />
 

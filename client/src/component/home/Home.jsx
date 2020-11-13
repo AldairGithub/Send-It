@@ -9,7 +9,7 @@ import { allUserRelationships } from '../../services/user'
 import Header from '../header/Header'
 
 export default function Home(props) {
-  const { currentUser, setCurrentUser, setUserPhotos, setUserFriends } = props
+  const { currentUser, setCurrentUser, allUsers, setUserPhotos, setUserFriends, setAllUserPhotos } = props
 
   // We pass userId as a dependency on useEffect, whenever it changes it will fire off whatever functions are inside useEffect
   // Because useEffect is called on page render, it does not recognize currentUser.id as a value at first because it doesnt hold any data
@@ -17,12 +17,15 @@ export default function Home(props) {
   useEffect(() => {
     getAllUserPhotos()
     getUserRelationships()
+    // update userPhotos when a user likes a post
+    setAllUserPhotos(() => getAllUserPhotos)
   }, [currentUser.id])
 
   const getAllUserPhotos = async () => {
     const photos = await allUserPhotos(currentUser.id)
     setUserPhotos(photos)
   }
+
 
   const getUserRelationships = async () => {
     const currentUserFriends = await allUserRelationships(currentUser.id)

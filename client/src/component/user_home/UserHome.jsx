@@ -15,7 +15,14 @@ import Header from '../header/Header'
 import UserPhotoPop from './user_photo_pop/UserPhotoPop'
 
 export default function UserHome(props) {
-  const { currentUser, setCurrentUser, userPhotos, userFriends, allUsers } = props
+  const {
+    currentUser,
+    setCurrentUser,
+    userPhotos,
+    userFriends,
+    allUsers,
+    allUserPhotos
+  } = props
 
   // const currentUser = {username: 'admin'}
 
@@ -25,6 +32,8 @@ export default function UserHome(props) {
   })
 
   const [likedPost, setLikedPost] = useState(false)
+
+  const [usersThatLikedPost, setUsersThatLikedPost] = useState()
 
   // Modal display
   const [isOpen, setIsOpen] = useState({
@@ -51,7 +60,7 @@ export default function UserHome(props) {
     getUserFollows()
   }, [])
 
-  const getActions = (arr, str) => {
+  const getActionNumber = (arr, str) => {
     let count = 0
     arr.forEach(action => {
       if (action.type_of_action === str) {
@@ -86,32 +95,42 @@ export default function UserHome(props) {
 
   const userAction = (id , type) => {
     let userActions = userPhotos[id][1].filter(action => action.type_of_action === type)
-    let usernameActions = userActions.map(str => [str, allUsers.filter(user => user.id === str.user_id)])
+    let usernameActions = userActions.map(str => [str, allUsers.filter(user => user.id === str.user_id)]) 
     return usernameActions
   }
-  // need modal to display if current user has liked the post itself, need to check argument? or check array?
-  // isOpen.modalId is the id of the photo
-
-  const handleAction = (entityId, userId, typeOfEntity, typeOfAction, contentFromUser) => {
+  const handleAction = async(liked, entityId, userId, typeOfEntity, typeOfAction, contentFromUser) => {
     let userLikedPost = userPhotos[isOpen.modalId][1].filter(action => action.type_of_action === 'Like' && action.user_id === userId)
 
-    if (userLikedPost === undefined || userLikedPost.length === 0 ) {
-      console.log('Post was liked by user')
-      let postLike = postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction)
-      setLikedPost(true)
-    } else {
-      console.log('Like was deleted from post by user')
-      let deleteLike = deleteActionFromCurrentUser(userLikedPost[0].id)
+    if (liked) {
+      let deleteLike = await deleteActionFromCurrentUser(userLikedPost[0].id)
       setLikedPost(false)
+    } else {
+      let postLike = await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction)
+      setLikedPost(true)
     }
+    // recalling all photos with updated likes
+    allUserPhotos()
   }
 
+  // change color of like status if user liked post
   const currentUserLikedPost = (id) => {
     const userLiked = userPhotos[id][1].filter(action => action.type_of_action === 'Like' && action.user_id === currentUser.id)
     if (userLiked.length === 0) {
       setLikedPost(false)
     } else {
       setLikedPost(true)
+    }
+  }
+
+  const whoLikedPost = (arr) => {
+    if (arr.length === 0) {
+    setUsersThatLikedPost('No one liked your post yet')
+    } else if (arr.length === 1) {
+    setUsersThatLikedPost(`Liked by ${arr[0][1][0].username}`)
+    } else if (arr.length === 2) {
+    setUsersThatLikedPost(`Liked by ${arr[0][1][0].username} and ${arr[1][1][0].username}`)
+    } else {
+    setUsersThatLikedPost(`Liked by ${arr[0][1][0].username} and ${arr.length - 1} others`)
     }
   }
   
@@ -186,9 +205,9 @@ export default function UserHome(props) {
             <div className='user-img-container' onClick={(e) => showModal(e, index)}>
               <img className='user-img flex-fill' src={arr[0].url} />
               <div className='user-img-text'>
-                <FontAwesomeIcon icon={faHeart} size='1x' />{getActions(arr[1], 'Like')}
+                <FontAwesomeIcon icon={faHeart} size='1x' />{getActionNumber(arr[1], 'Like')}
                 <div className='userhome-right-space'/>
-                <FontAwesomeIcon icon={faComment} size='1x'/>{getActions(arr[1], 'Comment')}
+                <FontAwesomeIcon icon={faComment} size='1x'/>{getActionNumber(arr[1], 'Comment')}
               </div>
             </div>
           </>
@@ -205,6 +224,8 @@ export default function UserHome(props) {
           show={isOpen.show} hide={hideModal}
           likedPost={likedPost}
           handleAction={handleAction}
+          whoLikedPost={whoLikedPost}
+          usersThatLikedPost={usersThatLikedPost}
         /> : null}
     </>
   )
