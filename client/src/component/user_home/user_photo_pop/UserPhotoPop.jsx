@@ -13,26 +13,30 @@ import { faComment } from '@fortawesome/free-solid-svg-icons'
 import './UserPhotoPop.css'
 
 export default function UserPhotoPop(props) {
-  const { photo, currentUser, userComments, userLikes, show, hide, likedPost, handleAction } = props
+  const {
+    photo,
+    currentUser,
+    userComments,
+    userLikes,
+    show, hide,
+    likedPost,
+    handleAction,
+    whoLikedPost,
+    usersThatLikedPost
+  } = props
 
   const [comment, setComment] = useState(null)
 
   // On user click of the comment icon, input will be focused
   const userCommentInput = useRef(null)
+
   const handleFocus = () => {
     userCommentInput.current.focus()
   }
 
-  const numberOfLikes = (arr) => {
-    if (arr.length === 0) {
-      return <p>No one liked your post yet</p>
-    } else if (arr.length === 1) {
-      return <p>Liked by <strong>{arr[0][1][0].username}</strong></p>
-    } else if (arr.length === 2) {
-      return <p>Liked by <strong>{arr[0][1][0].username}</strong> and <strong>{arr[1][1][0].username}</strong></p>
-    } else {
-      return <p>Liked by <strong>{arr[0][1][0].username}</strong> and <strong>{arr.length - 1} others</strong></p>
-    }
+  const handleRequest = (liked, entityId, actionId, typeOfEntity, typeOfAction, content) => {
+    handleAction(liked, entityId, actionId, typeOfEntity, typeOfAction, content)
+    whoLikedPost(userLikes)
   }
 
   return (
@@ -104,8 +108,8 @@ export default function UserPhotoPop(props) {
                       <FontAwesomeIcon
                         icon={faHeart}
                         size='2x'
-                        style={{ color: `${likedPost ? "red": "black"}`}}
-                        onClick={() => handleAction(photo[0].id, photo[0].user_id, photo[0].name, 'Like', null)}
+                        style={{ color: `${likedPost ? "red" : "black"}` }}
+                        onClick={() => handleRequest(likedPost, photo[0].id, photo[0].user_id, photo[0].name, 'Like', null)}
                       />
                     </div>
                     <div>
@@ -118,19 +122,19 @@ export default function UserPhotoPop(props) {
                 
                 {/* Post likes and usernames, neeed to add links for each of their profile */}
                 <div className='userpop-user-container d-flex flex-row flex-nowrap'>
-                  {userLikes.length > 0 ?
+                  {whoLikedPost(userLikes) ?
                     <>
                       <div className='userpop-user-img-container '>
                         <img className='userpop-user-img' src='https://i.imgur.com/PnUuUtU.jpg'/>
                       </div>
                       <div className='userpop-user-text'>
-                        {numberOfLikes(userLikes)}
+                        {usersThatLikedPost}
                       </div>
                     </>
                     :
                     <>
                       <div>
-                        {numberOfLikes(userLikes)}
+                        {usersThatLikedPost}
                       </div>
                     </>
                   }
