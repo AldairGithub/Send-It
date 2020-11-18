@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react'
 import Modal from 'react-bootstrap/Modal'
-import InputGroup from 'react-bootstrap/InputGroup'
-import FormControl from 'react-bootstrap/FormControl'
+import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
 import { allUserPhotos } from '../../../services/user'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -20,12 +20,15 @@ export default function UserPhotoPop(props) {
     userLikes,
     show, hide,
     likedPost,
-    handleAction,
+    handleLike,
+    handleComment,
     whoLikedPost,
-    usersThatLikedPost
+    usersThatLikedPost,
   } = props
 
-  const [comment, setComment] = useState(null)
+  const [userInput, setUserInput] = useState({
+    comment: "",
+  })
 
   // On user click of the comment icon, input will be focused
   const userCommentInput = useRef(null)
@@ -34,10 +37,27 @@ export default function UserPhotoPop(props) {
     userCommentInput.current.focus()
   }
 
-  const handleRequest = (liked, entityId, actionId, typeOfEntity, typeOfAction, content) => {
-    handleAction(liked, entityId, actionId, typeOfEntity, typeOfAction, content)
+  const handleUserLike = (liked, entityId, actionId, typeOfEntity, typeOfAction) => {
+    handleLike(liked, entityId, actionId, typeOfEntity, typeOfAction)
     whoLikedPost(userLikes)
   }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setUserInput({
+      ...userInput,
+      [name]: value,
+    })
+  }
+
+
+  const handleUserComment = (actionId, entityId, userId, typeOfEntity, typeOfAction, userComment) => {
+    handleComment(actionId, entityId, userId, typeOfEntity, typeOfAction, userComment)
+    setUserInput({
+      comment: ""
+    })
+  }
+
 
   return (
     <>
@@ -95,6 +115,7 @@ export default function UserPhotoPop(props) {
                     <div className='userpop-user-text'>
                       <p><strong>{action[1][0].username}</strong> {action[0].content}</p>
                     </div>
+                    <button onClick={() => handleUserComment(action[0].id)}>Delete</button>
                   </div>
                 </>
               ))}
@@ -109,7 +130,7 @@ export default function UserPhotoPop(props) {
                         icon={faHeart}
                         size='2x'
                         style={{ color: `${likedPost ? "red" : "black"}` }}
-                        onClick={() => handleRequest(likedPost, photo[0].id, photo[0].user_id, photo[0].name, 'Like', null)}
+                        onClick={() => handleUserLike(likedPost, photo[0].id, photo[0].user_id, photo[0].name, 'Like')}
                       />
                     </div>
                     <div>
@@ -143,22 +164,34 @@ export default function UserPhotoPop(props) {
               </div>
 
               {/* Input comment */}
-              <div className='userpop-input-container d-flex'>
-                  <InputGroup className='mb-3 userpop-input'>
-                    <FormControl
-                      className='border-0 flex-grow-1 flex-fill'
-                      placeholder='Add a comment...'
-                      aria-label='New comment'
-                      aria-describedby='new comment to post'
-                      ref={userCommentInput}
-                    />
-                  <InputGroup.Append className='userpop-input-button'>
-                      <Button
-                        className='rounded justify-content-end'
-                        variant='outline-secondary'
-                      >Post</Button>
-                    </InputGroup.Append>
-                  </InputGroup>
+                <div className='userpop-input-container d-flex'>
+                  {/* <Form onSubmit={(e) => handleSubmit(true, photo[0].id, photo[0].user_id, photo[0].name, 'Comment', userInput.comment)}> */}
+                  <Form>
+                    <Form.Row className='align-items-center'>
+                      <Col xs={8}>
+                        <Form.Control
+                          className='border-0 userpop-input'
+                          type='text'
+                          placeholder='Add a comment...'
+                          aria-label='New comment'
+                          aria-describedby='New comment to post'
+                          ref={userCommentInput}
+                          name='comment'
+                          value={userInput.comment}
+                          onChange={handleChange}
+                        />
+                      </Col>
+                      <Col xs='auto'>
+                        <Button
+                          onClick={() => handleUserComment(false, photo[0].id, photo[0].user_id, photo[0].name, 'Comment', userInput.comment)}
+                          className='userpop-input-button'
+                          variant='info'
+                          disabled={userInput.comment === "" ? true : false}>
+                          Post
+                        </Button>
+                      </Col>
+                    </Form.Row>
+                  </Form>
                 </div>
               </div>
 

@@ -35,6 +35,8 @@ export default function UserHome(props) {
 
   const [usersThatLikedPost, setUsersThatLikedPost] = useState()
 
+  const [usersThatCommentedPost, setUsersThatCommentedPost] = useState([])
+
   // Modal display
   const [isOpen, setIsOpen] = useState({
     show: false,
@@ -98,9 +100,9 @@ export default function UserHome(props) {
     let usernameActions = userActions.map(str => [str, allUsers.filter(user => user.id === str.user_id)]) 
     return usernameActions
   }
-  const handleAction = async(liked, entityId, userId, typeOfEntity, typeOfAction, contentFromUser) => {
-    let userLikedPost = userPhotos[isOpen.modalId][1].filter(action => action.type_of_action === 'Like' && action.user_id === userId)
 
+  const handleLike = async(liked, entityId, userId, typeOfEntity, typeOfAction) => {
+    let userLikedPost = userPhotos[isOpen.modalId][1].filter(action => action.type_of_action === 'Like' && action.user_id === userId)
     if (liked) {
       let deleteLike = await deleteActionFromCurrentUser(userLikedPost[0].id)
       setLikedPost(false)
@@ -109,6 +111,16 @@ export default function UserHome(props) {
       setLikedPost(true)
     }
     // recalling all photos with updated likes
+    allUserPhotos()
+  }
+
+  // if no actionId, then its a new comment
+  const handleComment = async (actionId, entityId, userId, typeOfEntity, typeOfAction, contentFromUser) => {
+    if (actionId) {
+      let deleteUserComment = await deleteActionFromCurrentUser(actionId)
+    } else {
+      let postComment = await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction, contentFromUser)
+    }
     allUserPhotos()
   }
 
@@ -132,6 +144,11 @@ export default function UserHome(props) {
     } else {
     setUsersThatLikedPost(`Liked by ${arr[0][1][0].username} and ${arr.length - 1} others`)
     }
+  }
+
+  const whoCommentedPost = (id) => {
+    let userComments = userAction(id, 'Comment')
+    setUsersThatCommentedPost(userComments)
   }
   
   return (
@@ -223,9 +240,9 @@ export default function UserHome(props) {
           currentUser={currentUser}
           show={isOpen.show} hide={hideModal}
           likedPost={likedPost}
-          handleAction={handleAction}
+          handleLike={handleLike}
           whoLikedPost={whoLikedPost}
-          usersThatLikedPost={usersThatLikedPost}
+          handleComment={handleComment}
         /> : null}
     </>
   )
