@@ -15,9 +15,9 @@ User.destroy_all
 # 1
 @admin = User.create(username: 'admin', email: 'admin@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/FFn7QzH.jpg')
 # 2
-@aldair = User.create(username: 'aldair', email: 'aldair@email.com', password: 'aldair')
+@aldair = User.create(username: 'aldair', email: 'aldair@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/qDvVHCv.jpg')
 # 3
-@chris = User.create(username: 'chris', email: 'chris@email.com', password: 'aldair')
+@chris = User.create(username: 'chris', email: 'chris@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/huSgzp2.jpg')
 # 4
 @vasu = User.create(username: 'vasu', email: 'vasu@email.com', password: 'aldair')
 # 5
@@ -45,6 +45,10 @@ puts "#{User.count} users created"
 @photo_four = Entity.create(name: 'Photo', content: 'Fourth Photo', url: 'https://i.imgur.com/KSlSLjG.jpg', user: @admin)
 @photo_five = Entity.create(name: 'Photo', content: 'Fifth Photo', url: 'https://i.imgur.com/kqQpLzy.jpg', user: @admin)
 @photo_six = Entity.create(name: 'Photo', content: 'Sixth Photo', url: 'https://i.imgur.com/70YkoE0.jpg', user: @admin)
+
+@photo_seven = Entity.create(name: 'Photo', content: 'Roadtrip to the desert', url: 'https://i.imgur.com/7ltXTAq.jpg', user: @aldair)
+@photo_eight = Entity.create(name: 'Photo', content: 'Garden crown got rusty', url: 'https://i.imgur.com/p6YMG2O.jpg', user: @aldair)
+@photo_nine = Entity.create(name: 'Photo', content: 'learning to play', url: 'https://i.imgur.com/qilptGI.jpg', user: @aldair)
 
 @article_one = Entity.create(name: 'Article', content: 'This is my first article! Loving this database so far for sureeeee', user: @kelly)
 puts "#{Entity.count} entities created"

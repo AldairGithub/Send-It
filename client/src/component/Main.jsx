@@ -31,6 +31,14 @@ export default function Main(props) {
     setAllUsers(users)
   }
 
+  const handleOtherUser = (name) => {
+    allUsers.forEach(user => {
+      if (user.username === name) {
+        console.log(`new user is ${name}` + user)
+      }
+    })
+  }
+
   return (
     <main>
       <Route exact path='/' render={(props) => (
@@ -81,11 +89,13 @@ export default function Main(props) {
         />
       )} />
 
+      
       <Route path={`/account/:user`} render={(props) => (
         <UserHome
           {...props}
           currentUser={currentUser}
           setCurrentUser={setCurrentUser}
+
           userPhotos={userPhotos}
           userFriends={userFriends}
           allUsers={allUsers}
