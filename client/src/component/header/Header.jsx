@@ -47,7 +47,7 @@ export default function Header(props) {
                 <p className='dropdown-item'>Saved</p>
                 <Link to='/update_account'><p className='dropdown-item'>Settings</p></Link>
                 <div className="dropdown-divider"></div>
-                {/* <p className='dropdown-item' onClick={handleLogOut}>Log Out</p> */}
+                <p className='dropdown-item' onClick={handleLogOut}>Log Out</p>
               </div>
             </li>
           </ul>

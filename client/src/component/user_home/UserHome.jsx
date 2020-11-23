@@ -13,6 +13,7 @@ import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import Header from '../header/Header'
 import UserPhotoPop from './user_photo_pop/UserPhotoPop'
+import UserBioImg from '../user_home/user_bio_img/UserBioImg'
 
 export default function UserHome(props) {
   const {
@@ -21,10 +22,8 @@ export default function UserHome(props) {
     userPhotos,
     userFriends,
     allUsers,
-    allUserPhotos
+    allUserPhotos,
   } = props
-
-  // const currentUser = {username: 'admin'}
 
   const [relationships, setRelationships] = useState({
     followers: 0,
@@ -35,14 +34,11 @@ export default function UserHome(props) {
 
   const [usersThatLikedPost, setUsersThatLikedPost] = useState()
 
-  const [usersThatCommentedPost, setUsersThatCommentedPost] = useState([])
-
   // Modal display
   const [isOpen, setIsOpen] = useState({
     show: false,
     modalId: null,
   })
-
   const showModal = (e, index) => {
     setIsOpen({
       show: true,
@@ -55,6 +51,21 @@ export default function UserHome(props) {
     setIsOpen({
       show: false,
       modalId: null
+    })
+  }
+
+// user can change their bio img using modal
+  const [userBio, setUserBio] = useState({
+    show: false
+  })
+  const showUserBioModal = (e) => {
+    setUserBio({
+      show: true
+    })
+  }
+  const hideUserBioModal = (e) => {
+    setUserBio({
+      show:false
     })
   }
 
@@ -145,17 +156,12 @@ export default function UserHome(props) {
     setUsersThatLikedPost(`Liked by ${arr[0][1][0].username} and ${arr.length - 1} others`)
     }
   }
-
-  const whoCommentedPost = (id) => {
-    let userComments = userAction(id, 'Comment')
-    setUsersThatCommentedPost(userComments)
-  }
   
   return (
     <>
       <Header
-        // currentUser={currentUser}
-        // setCurrentUser={setCurrentUser}
+        currentUser={currentUser}
+        setCurrentUser={setCurrentUser}
       />
       <div className='userhome-container-topspace container'>
 
@@ -164,7 +170,12 @@ export default function UserHome(props) {
           {/* user self image */}
           <div className='userhome-user-img-container'>
             {/* change user img with {currentUser.user_self_img} */}
-            <img className='userhome-user-img' src='https://i.imgur.com/FFn7QzH.jpg'/>
+            <img
+              className='userhome-user-img'
+              src='https://i.imgur.com/FFn7QzH.jpg'
+              // src={currentUser.user_self_img === null ? 'https://i.imgur.com/FFn7QzH.jpg' : `${currentUser.user_self_img}`}
+              onClick={(e) => showUserBioModal(e)}
+            />
           </div>
 
           <div className='d-flex position-relative userhome-container-info flex-shrink-0 flex-column align-items-stretch'>
@@ -242,7 +253,13 @@ export default function UserHome(props) {
           likedPost={likedPost}
           handleLike={handleLike}
           whoLikedPost={whoLikedPost}
+          usersThatLikedPost={usersThatLikedPost}
           handleComment={handleComment}
+        /> : null}
+      {userBio.show ?
+        <UserBioImg
+          show={userBio.show}
+          hide={hideUserBioModal}
         /> : null}
     </>
   )

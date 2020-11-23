@@ -9,26 +9,27 @@ import { allUserRelationships } from '../../services/user'
 import Header from '../header/Header'
 
 export default function Home(props) {
-  const { currentUser, setCurrentUser, allUsers, setUserPhotos, setUserFriends, setAllUserPhotos } = props
+  const { currentUser, setCurrentUser, allUsers, setUserPhotos, setUserFriends, setAllUserPhotos, setGetUserPhotos } = props
 
   // We pass userId as a dependency on useEffect, whenever it changes it will fire off whatever functions are inside useEffect
   // Because useEffect is called on page render, it does not recognize currentUser.id as a value at first because it doesnt hold any data
   // Thus it doesnt render 
   useEffect(() => {
-    getAllUserPhotos()
-    getUserRelationships()
+    if (currentUser !== null) {
+      getAllUserPhotos(currentUser.id)
+      getUserRelationships(currentUser.id)
+    }
     // update userPhotos when a user likes a post
     setAllUserPhotos(() => getAllUserPhotos)
-  }, [currentUser.id])
+  }, [])
 
-  const getAllUserPhotos = async () => {
-    const photos = await allUserPhotos(currentUser.id)
+  const getAllUserPhotos = async (id) => {
+    const photos = await allUserPhotos(id)
     setUserPhotos(photos)
   }
 
-
-  const getUserRelationships = async () => {
-    const currentUserFriends = await allUserRelationships(currentUser.id)
+  const getUserRelationships = async (id) => {
+    const currentUserFriends = await allUserRelationships(id)
     setUserFriends(currentUserFriends)
   }
 
@@ -41,7 +42,7 @@ export default function Home(props) {
             setCurrentUser={setCurrentUser}
           />
           <div className='container d-flex justify-content-end'>
-            <div className=''>
+            <div>
               <Link to={`/account/${currentUser.username}`}><h4>{currentUser.username}</h4></Link>
             </div>
           </div>
