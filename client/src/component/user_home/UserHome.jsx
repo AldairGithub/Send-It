@@ -73,8 +73,6 @@ export default function UserHome(props) {
     getUserFollows()
   }, [])
 
-  
-
   const getActionNumber = (arr, str) => {
     let count = 0
     arr.forEach(action => {
