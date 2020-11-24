@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy, :update_password, :user_list, :user_friends]
+  before_action :set_user, only: [:update, :destroy, :update_password, :user_list, :user_friends]
   before_action :authorize_request, except: [:create, :index, :user_list, :user_friends]
 
   # GET /users
@@ -7,11 +7,6 @@ class UsersController < ApplicationController
     @users = User.all
     render json: @users
   end
-
-  # GET /users/1
-  # def show
-  #   render json: @user
-  # end
 
   # POST /users
   def create

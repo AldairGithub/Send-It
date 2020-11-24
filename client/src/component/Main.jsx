@@ -31,14 +31,6 @@ export default function Main(props) {
     setAllUsers(users)
   }
 
-  const handleOtherUser = (name) => {
-    allUsers.forEach(user => {
-      if (user.username === name) {
-        console.log(`new user is ${name}` + user)
-      }
-    })
-  }
-
   return (
     <main>
       <Route exact path='/' render={(props) => (
@@ -61,8 +53,8 @@ export default function Main(props) {
           currentUser={currentUser}
           setCurrentUser={setCurrentUser}
           allUsers={allUsers}
+          // no longer useful since we are rendering everything on the component
           setUserPhotos={setUserPhotos}
-          setUserFriends={setUserFriends}
           setAllUserPhotos={setAllUserPhotos}
         />
       )} />
@@ -95,11 +87,8 @@ export default function Main(props) {
           {...props}
           currentUser={currentUser}
           setCurrentUser={setCurrentUser}
-
-          userPhotos={userPhotos}
           userFriends={userFriends}
           allUsers={allUsers}
-          allUserPhotos={allUserPhotos}
         />
       )} />
 
