@@ -8,7 +8,7 @@ import { allUserPhotos } from '../../services/user'
 import Header from '../header/Header'
 
 export default function Home(props) {
-  const { currentUser, setCurrentUser, allUsers, setUserPhotos, setUserFriends, setAllUserPhotos, setGetUserPhotos } = props
+  const { currentUser, setCurrentUser, allUsers, setUserPhotos, setAllUserPhotos } = props
 
   // We pass userId as a dependency on useEffect, whenever it changes it will fire off whatever functions are inside useEffect
   // Because useEffect is called on page render, it does not recognize currentUser.id as a value at first because it doesnt hold any data

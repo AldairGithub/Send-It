@@ -23,27 +23,17 @@ export default function UpdateUser(props) {
     bio: ""
   })
 
-  const [user, setUser] = useState({})
-
   useEffect(() => {
     defaultUserData()
   }, [allUsers])
 
   const defaultUserData = () => {
-    const userExists = allUsers.find((user) => {
-      return user.id === parseInt(currentUser.id)
+    setUserData({
+      username: currentUser.username,
+      email: currentUser.email,
+      name: currentUser.name,
+      bio: currentUser.bio
     })
-    if (userExists) {
-      setUserData({
-        username: userExists.username,
-        email: userExists.email,
-        password: userExists.password,
-        name: userExists.name,
-        bio: userExists.bio
-      })
-    }
-    // we can use password_digest and created_at to create a hash for updating user passwords
-    setUser(userExists)
   }
 
 
@@ -78,7 +68,7 @@ export default function UpdateUser(props) {
 
           <div className='form-group row'>
 
-          <label for='updateName' className='col-sm-3 col-form-label'>Name</label>
+          <label htmlFor='updateName' className='col-sm-3 col-form-label'>Name</label>
             <div className='col-sm-8'>
                 <input
                   id='updateName'
@@ -90,7 +80,7 @@ export default function UpdateUser(props) {
                   onChange={handleChange}
                 />
             </div>
-            <label for='updateUsername' className='col-sm-3 col-form-label'>Username</label>
+            <label htmlFor='updateUsername' className='col-sm-3 col-form-label'>Username</label>
               <div className='col-sm-8'>
                 <input
                   id='updateUsername'
@@ -103,7 +93,7 @@ export default function UpdateUser(props) {
                 />
             </div>
 
-            <label for='updateBio' className='col-sm-3 col-form-label'>Bio</label>
+            <label htmlFor='updateBio' className='col-sm-3 col-form-label'>Bio</label>
             <div className='col-sm-8'>
                 <textarea
                   id='updateBio'
@@ -127,7 +117,7 @@ export default function UpdateUser(props) {
             </div>
 
             <div className='form-group row'>
-              <label for='updateEmail' className='col-sm-3 col-form-label'>Email</label>
+              <label htmlFor='updateEmail' className='col-sm-3 col-form-label'>Email</label>
                 <div className='col-sm-8'>
                   <input
                     id='updateEmail'
