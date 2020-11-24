@@ -4,7 +4,6 @@ import './Home.css'
 
 import { Link } from 'react-router-dom'
 import { allUserPhotos } from '../../services/user'
-import { allUserRelationships } from '../../services/user'
 
 import Header from '../header/Header'
 
@@ -17,7 +16,6 @@ export default function Home(props) {
   useEffect(() => {
     if (currentUser !== null) {
       getAllUserPhotos(currentUser.id)
-      getUserRelationships(currentUser.id)
     }
     // update userPhotos when a user likes a post
     setAllUserPhotos(() => getAllUserPhotos)
@@ -26,11 +24,6 @@ export default function Home(props) {
   const getAllUserPhotos = async (id) => {
     const photos = await allUserPhotos(id)
     setUserPhotos(photos)
-  }
-
-  const getUserRelationships = async (id) => {
-    const currentUserFriends = await allUserRelationships(id)
-    setUserFriends(currentUserFriends)
   }
 
   return (

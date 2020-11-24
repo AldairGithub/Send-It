@@ -3,7 +3,6 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
-import { allUserPhotos } from '../../../services/user'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
@@ -17,6 +16,7 @@ import './UserPhotoPop.css'
 export default function UserPhotoPop(props) {
   const {
     photo,
+    user,
     currentUser,
     userComments,
     userLikes,
@@ -108,10 +108,10 @@ export default function UserPhotoPop(props) {
               {/* top of column/user img and username */}
               <div className='userpop-user-container d-flex flex-row flex-nowrap'>
                 <div className='userpop-user-img-container userpop-user-left-margin-20px'>
-                  <img className='userpop-user-img' src={currentUser.user_self_img}/>
+                  <img className='userpop-user-img' src={user.user_self_img}/>
                 </div>
                 <div className='userpop-user-text font-weight-bold'>
-                  <p>{currentUser.username}</p>
+                  <p>{user.username}</p>
                 </div>
               </div>
 
@@ -121,10 +121,10 @@ export default function UserPhotoPop(props) {
               {/* username and content of photo */}
               <div className='d-flex flex-row flex-nowrap'>
                 <div className='userpop-user-img-container userpop-user-left-margin-20px'>
-                  <img className='userpop-user-img' src={currentUser.user_self_img}/>
+                  <img className='userpop-user-img' src={user.user_self_img}/>
                 </div>
                 <div className='userpop-user-text'>
-                  <p><strong>{currentUser.username}</strong> {photo[0].content}</p>
+                  <p><strong>{user.username}</strong> {photo[0].content}</p>
                 </div>
               </div>
 
@@ -133,7 +133,7 @@ export default function UserPhotoPop(props) {
                 <>
                   <div className='userpop-comment d-flex flex-row align-items-center flex-nowrap'>
                     <div className='userpop-user-img-container userpop-user-left-margin-20px'>
-                      <img className='userpop-user-img' src='https://i.imgur.com/PnUuUtU.jpg'/>
+                      <img className='userpop-user-img' src={currentUser.user_self_img}/>
                     </div>
                     <div className='userpop-user-text flex-wrap'>
                       <p><strong>{action[1][0].username}</strong> {action[0].content}</p>
@@ -145,7 +145,6 @@ export default function UserPhotoPop(props) {
                         onClick={(e) => showCommentModal(e, action[0].id)}
                       />  
                     </div>
-                    {/* <button onClick={() => handleUserComment(action[0].id)}>Delete</button> */}
                   </div>
                 </>
               ))}
@@ -163,7 +162,7 @@ export default function UserPhotoPop(props) {
                         icon={faHeart}
                         size='2x'
                         style={{ color: `${likedPost ? "red" : "black"}` }}
-                        onClick={() => handleUserLike(likedPost, photo[0].id, photo[0].user_id, photo[0].name, 'Like')}
+                        onClick={() => handleUserLike(likedPost, photo[0].id, currentUser.id, photo[0].name, 'Like')}
                       />
                     </div>
                     
@@ -208,7 +207,7 @@ export default function UserPhotoPop(props) {
                       </Col>
                       <Col xs='auto'>
                         <Button
-                          onClick={() => handleUserComment(false, photo[0].id, photo[0].user_id, photo[0].name, 'Comment', userInput.comment)}
+                          onClick={() => handleUserComment(false, photo[0].id, currentUser.id, photo[0].name, 'Comment', userInput.comment)}
                           className='userpop-input-button'
                           variant='info'
                           disabled={userInput.comment === "" ? true : false}>

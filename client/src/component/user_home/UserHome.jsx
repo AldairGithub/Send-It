@@ -5,6 +5,9 @@ import './UserHome.css'
 import { Link } from 'react-router-dom'
 import { postActionFromCurrentUser } from '../../services/action'
 import { deleteActionFromCurrentUser } from '../../services/action'
+import { readAllUsers } from '../../services/user'
+import { allUserPhotos } from '../../services/user'
+import { allUserRelationships } from '../../services/user'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCog } from '@fortawesome/free-solid-svg-icons'
@@ -19,10 +22,8 @@ export default function UserHome(props) {
   const {
     currentUser,
     setCurrentUser,
-    userPhotos,
-    userFriends,
-    allUsers,
-    allUserPhotos,
+    // need to check for user profile on all users
+    allUsers
   } = props
 
   const [relationships, setRelationships] = useState({
@@ -33,6 +34,11 @@ export default function UserHome(props) {
   const [likedPost, setLikedPost] = useState(false)
 
   const [usersThatLikedPost, setUsersThatLikedPost] = useState()
+
+  const [userProfile, setUserProfile] = useState({
+    user: {},
+    photos: []
+  })
 
   // Modal display
   const [isOpen, setIsOpen] = useState({
@@ -70,8 +76,19 @@ export default function UserHome(props) {
   }
 
   useEffect(() => {
-    getUserFollows()
-  }, [])
+    getUserProfile(props.match.params.user)
+  }, [props.match.params.user])
+
+  const getUserProfile = async(name) => {
+    const getAllUsers = await readAllUsers()
+    const getUser = getAllUsers.filter(user => user.username === name)
+    const userPhotos = await allUserPhotos(getUser[0].id)
+    getUserFollows(getUser[0].id)
+    setUserProfile({
+      user: getUser[0],
+      photos: userPhotos
+    })
+  }
 
   const getActionNumber = (arr, str) => {
     let count = 0
@@ -83,10 +100,11 @@ export default function UserHome(props) {
     return count
   }
 
-  const getUserFollows = () => {
+  const getUserFollows = async(id) => {
     let numberOfFollowers = 0
     let numberOfFollowing = 0
-    userFriends.forEach(user => {
+    const friends = await allUserRelationships(id)
+    friends.forEach(user => {
       switch (user.status) {
         case 'Accepted':
           numberOfFollowers += 1
@@ -107,13 +125,13 @@ export default function UserHome(props) {
   }
 
   const userAction = (id , type) => {
-    let userActions = userPhotos[id][1].filter(action => action.type_of_action === type)
+    let userActions = userProfile.photos[id][1].filter(action => action.type_of_action === type)
     let usernameActions = userActions.map(str => [str, allUsers.filter(user => user.id === str.user_id)]) 
     return usernameActions
   }
 
   const handleLike = async(liked, entityId, userId, typeOfEntity, typeOfAction) => {
-    let userLikedPost = userPhotos[isOpen.modalId][1].filter(action => action.type_of_action === 'Like' && action.user_id === userId)
+    let userLikedPost = userProfile.photos[isOpen.modalId][1].filter(action => action.type_of_action === 'Like' && action.user_id === currentUser.id)
     if (liked) {
       let deleteLike = await deleteActionFromCurrentUser(userLikedPost[0].id)
       setLikedPost(false)
@@ -122,7 +140,7 @@ export default function UserHome(props) {
       setLikedPost(true)
     }
     // recalling all photos with updated likes
-    allUserPhotos()
+    getUserProfile(props.match.params.user)
   }
 
   // if no actionId, then its a new comment
@@ -132,12 +150,12 @@ export default function UserHome(props) {
     } else {
       let postComment = await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction, contentFromUser)
     }
-    allUserPhotos()
+    getUserProfile(props.match.params.user)
   }
 
   // change color of like status if user liked post
   const currentUserLikedPost = (id) => {
-    const userLiked = userPhotos[id][1].filter(action => action.type_of_action === 'Like' && action.user_id === currentUser.id)
+    const userLiked = userProfile.photos[id][1].filter(action => action.type_of_action === 'Like' && action.user_id === currentUser.id)
     if (userLiked.length === 0) {
       setLikedPost(false)
     } else {
@@ -169,11 +187,9 @@ export default function UserHome(props) {
 
           {/* user self image */}
           <div className='userhome-user-img-container'>
-            {/* change user img with {currentUser.user_self_img} */}
             <img
               className='userhome-user-img'
-              src='https://i.imgur.com/FFn7QzH.jpg'
-              // src={currentUser.user_self_img === null ? 'https://i.imgur.com/FFn7QzH.jpg' : `${currentUser.user_self_img}`}
+              src={userProfile.user.user_self_img === undefined ? 'https://i.imgur.com/FFn7QzH.jpg' : `${userProfile.user.user_self_img}`}
               onClick={(e) => showUserBioModal(e)}
             />
           </div>
@@ -182,8 +198,7 @@ export default function UserHome(props) {
           
           <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center flex-shrink-1'>
             <div className='p-2 username-title'>
-              {/* {currentUser.username} */}
-              adminnnnnnn
+                {userProfile.user.username}
             </div>
             <div className='p-2'>
               <Link to='/update_account'>
@@ -197,9 +212,10 @@ export default function UserHome(props) {
 
           <div className='d-flex userhome-container-bottomspace flex-row flex-grow-2 justify-content-start'>
             <div className='p-2'>
-              {userPhotos.length} Posts
+              {userProfile.photos.length} Posts
             </div>
-            <div className='p-2'>
+              <div className='p-2'>
+                {/* need to add relationships based on username */}
               {relationships.followers} followers
             </div>
             <div className='p-2'>
@@ -209,12 +225,10 @@ export default function UserHome(props) {
 
           <div className='d-flex userhome-container-bio userhome-container-bottomspace flex-column align-items-start'>
             <div className='p-2'>
-              {/* {currentUser.name} */}
-              ADMIN
+                {userProfile.user.name === null ? 'need to update name' : userProfile.user.name}
             </div>
             <div className='p-2'>
-              {/* {currentUser.bio} */}
-              WE ADD STUFF HERE FOR BIO
+              {userProfile.user.bio === null ? 'need to update user bio' : userProfile.user.bio}
             </div>
           </div>
 
@@ -228,7 +242,7 @@ export default function UserHome(props) {
         <hr />
 
         <div className='d-flex flex-wrap-reverse justify-content-center'>
-        {userPhotos.map((arr, index) => (
+        {userProfile.photos.map((arr, index) => (
           <>
             <div className='user-img-container' onClick={(e) => showModal(e, index)}>
               <img className='user-img flex-fill' src={arr[0].url} />
@@ -245,7 +259,8 @@ export default function UserHome(props) {
       {/* modal */}
       {isOpen.show ?
         <UserPhotoPop
-          photo={userPhotos[isOpen.modalId]}
+          photo={userProfile.photos[isOpen.modalId]}
+          user={userProfile.user}
           userComments={userAction(isOpen.modalId, 'Comment')}
           userLikes={userAction(isOpen.modalId, 'Like')}
           currentUser={currentUser}
