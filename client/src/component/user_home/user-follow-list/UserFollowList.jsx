@@ -24,6 +24,7 @@ export default function UserFollowList(props) {
                   </div>
                   <div className='d-flex flex-column'>
                     <div>
+                      {/* when user clicks on link, modal is closed */}
                       <Link onClick={() => {hide()}} to={`/account/${user[0].username}`}><strong>{user[0].username}</strong></Link>
                     </div>
                     <div>
