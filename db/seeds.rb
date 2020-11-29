@@ -13,25 +13,25 @@ User.destroy_all
 
 # users
 # 1
-@admin = User.create(username: 'admin', email: 'admin@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/FFn7QzH.jpg')
+@admin = User.create(username: 'admin', name:'admin', email: 'admin@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/FFn7QzH.jpg')
 # 2
-@aldair = User.create(username: 'aldair', email: 'aldair@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/qDvVHCv.jpg')
+@aldair = User.create(username: 'aldair', name:'aldair',email: 'aldair@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/qDvVHCv.jpg')
 # 3
-@chris = User.create(username: 'chris', email: 'chris@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/huSgzp2.jpg')
+@chris = User.create(username: 'Abattoir', name:'chris', email: 'chris@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/huSgzp2.jpg')
 # 4
-@vasu = User.create(username: 'vasu', email: 'vasu@email.com', password: 'aldair')
+@vasu = User.create(username: 'Luminous', name:'vasu', email: 'vasu@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/fooitwq.jpg')
 # 5
-@kelly = User.create(username: 'kelly', email: 'kelly@email.com', password: 'aldair')
+@kelly = User.create(username: 'Pyknometer', name:'kelly', email: 'kelly@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/6zgoENN.jpg')
 # 6
-@yomar = User.create(username: 'yomar', email: 'yomar@email.com', password: 'aldair')
+@yomar = User.create(username: 'Recumbent', name:'yomar', email: 'yomar@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/DUTBARU.jpg')
 # 7
-@moises = User.create(username: 'moises', email: 'moises@email.com', password: 'aldair')
+@moises = User.create(username: 'Bressummer', name:'moises', email: 'moises@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/oX6OY55.jpg')
 # 8
-@nate = User.create(username: 'nate', email: 'nate@email.com', password: 'aldair')
+@nate = User.create(username: 'Tarantas', name:'nate', email: 'nate@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/6EBcdvz.jpg')
 # 9
-@roffaden = User.create(username: 'roffaden', email: 'ro@email.com', password: 'aldair')
+@roffaden = User.create(username: 'Acrimony', name:'rof', email: 'ro@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/tFGwNHC.jpg')
 # 10
-@jordon = User.create(username: 'jordon', email: 'jordon@email.com', password: 'aldair')
+@jordon = User.create(username: 'Abderian', name:'jordon', email: 'jordon@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/XhE2N3q.jpg')
 puts "#{User.count} users created"
 
 # entities
@@ -86,12 +86,18 @@ puts "#{Tag.count} tags created"
 puts "#{Action.count} actions created"
 
 # user relationships
-@pending_one = UserRelationship.create!(user_one: @admin, user_two: @aldair, status: 'Pending', last_user_action: @admin)
-@pending_two = UserRelationship.create(user_one: @admin, user_two: @nate, status: 'Accepted', last_user_action: @nate)
-@accepted_one = UserRelationship.create(user_one: @admin, user_two: @chris, status: 'Accepted', last_user_action: @chris)
-@accepted_two = UserRelationship.create(user_one: @admin, user_two: @vasu, status: 'Accepted', last_user_action: @vasu)
-@accepted_three = UserRelationship.create(user_one: @admin, user_two: @kelly, status: 'Accepted', last_user_action: @kelly)
-@accepted_four = UserRelationship.create(user_one: @admin, user_two: @roffaden, status: 'Pending', last_user_action: @admin)
+@user_following_one = UserRelationship.create!(user_one: @admin, user_two: @aldair, status: 'Pending', last_user_action: @admin)
+@user_following_two = UserRelationship.create(user_one: @admin, user_two: @nate, status: 'Accepted', last_user_action: @nate)
+@user_following_three = UserRelationship.create(user_one: @admin, user_two: @chris, status: 'Accepted', last_user_action: @chris)
+@user_following_four = UserRelationship.create(user_one: @admin, user_two: @vasu, status: 'Accepted', last_user_action: @vasu)
+@user_following_five = UserRelationship.create(user_one: @admin, user_two: @roffaden, status: 'Pending', last_user_action: @admin)
+
+@user_follower_one = UserRelationship.create(user_one: @jordon, user_two: @admin, status: 'Pending', last_user_action: @jordon)
+@user_follower_two = UserRelationship.create(user_one: @yomar, user_two: @admin, status: 'Accepted', last_user_action: @admin)
+@user_follower_three = UserRelationship.create(user_one: @moises, user_two: @admin, status: 'Accepted', last_user_action: @admin)
+@user_follower_four = UserRelationship.create(user_one: @kelly, user_two: @admin, status: 'Pending', last_user_action: @kelly)
+
+
 @accepted_five = UserRelationship.create(user_one: @kelly, user_two: @jordon, status: 'Accepted', last_user_action: @jordon)
 @denied_one = UserRelationship.create(user_one: @kelly, user_two: @yomar, status: 'Denied', last_user_action: @yomar)
 @denied_two = UserRelationship.create(user_one: @roffaden, user_two: @moises, status: 'Denied', last_user_action: @moises)

@@ -1,0 +1,17 @@
+.userfollow-users-container {
+  margin-left: 10px;
+}
+.userfollow-user-container {
+  margin-bottom: 15px;
+}
+
+.userfollow-userbio-container {
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+}
+.userfollow-userbio-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}

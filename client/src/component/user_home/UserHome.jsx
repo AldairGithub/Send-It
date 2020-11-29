@@ -17,30 +17,32 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import Header from '../header/Header'
 import UserPhotoPop from './user_photo_pop/UserPhotoPop'
 import UserBioImg from '../user_home/user_bio_img/UserBioImg'
+import UserFollowList from '../user_home/user-follow-list/UserFollowList'
 
 export default function UserHome(props) {
   const {
     currentUser,
-    setCurrentUser,
+    setCurrentUser
     // need to check for user profile on all users
-    allUsers
   } = props
 
+  // display user info
+  const [userProfile, setUserProfile] = useState({
+    user: {},
+    photos: []
+  })
+  const [allUsers, setAllUsers] = useState()
+
   const [relationships, setRelationships] = useState({
-    followers: 0,
-    following: 0
+    followers: [],
+    following: []
   })
 
   const [likedPost, setLikedPost] = useState(false)
 
   const [usersThatLikedPost, setUsersThatLikedPost] = useState()
 
-  const [userProfile, setUserProfile] = useState({
-    user: {},
-    photos: []
-  })
-
-  // Modal display
+  // Post Modal display
   const [isOpen, setIsOpen] = useState({
     show: false,
     modalId: null,
@@ -60,7 +62,7 @@ export default function UserHome(props) {
     })
   }
 
-// user can change their bio img using modal
+// User Bio display
   const [userBio, setUserBio] = useState({
     show: false
   })
@@ -75,15 +77,37 @@ export default function UserHome(props) {
     })
   }
 
+  // User followers display
+  const [followModal, setFollowModal] = useState({
+    show: false,
+    list: null,
+    type: null
+  })
+  const showFollowModal = (e, array, set) => {
+    setFollowModal({
+      show: true,
+      list: array,
+      type: set
+    })
+  }
+  const hideFollowModal = (e) => {
+    setFollowModal({
+      show: false,
+      list: null,
+      type: null
+    })
+  }
+
   useEffect(() => {
     getUserProfile(props.match.params.user)
   }, [props.match.params.user])
 
   const getUserProfile = async(name) => {
     const getAllUsers = await readAllUsers()
+    setAllUsers(getAllUsers)
     const getUser = getAllUsers.filter(user => user.username === name)
     const userPhotos = await allUserPhotos(getUser[0].id)
-    getUserFollows(getUser[0].id)
+    getUserFollows(getUser[0].id, getAllUsers)
     setUserProfile({
       user: getUser[0],
       photos: userPhotos
@@ -100,23 +124,34 @@ export default function UserHome(props) {
     return count
   }
 
-  const getUserFollows = async(id) => {
-    let numberOfFollowers = 0
-    let numberOfFollowing = 0
+  const getUserFollows = async(id, users) => {
+
     const friends = await allUserRelationships(id)
-    friends.forEach(user => {
-      switch (user.status) {
-        case 'Accepted':
-          numberOfFollowers += 1
-          numberOfFollowing += 1
-          break;
-        case 'Pending':
-          numberOfFollowing += 1
-          break;
-        default:
-          break;
-      }
-    })
+    const numberOfFollowers = []
+    const numberOfFollowing = []
+
+    friends.forEach(relationship => 
+      users.forEach(user => {
+        if (user.id === id) {
+          return null
+        } else if (user.id === relationship.user_one_id && relationship.status === 'Pending') {
+          // followers
+          numberOfFollowers.push([user, relationship])
+        } else if (user.id === relationship.user_one_id && relationship.status === 'Accepted') {
+          // followers + following
+          numberOfFollowers.push([user, relationship])
+          numberOfFollowing.push([user, relationship])
+        } else if (user.id === relationship.user_two_id && relationship.status === 'Pending') {
+          // following
+          numberOfFollowing.push([user, relationship])
+        } else if (user.id === relationship.user_two_id && relationship.status === 'Accepted') {
+          // followers + following
+          numberOfFollowers.push([user, relationship])
+          numberOfFollowing.push([user, relationship])
+        }
+      })
+    )
+
     setRelationships({
       ...relationships,
       followers: numberOfFollowers,
@@ -212,20 +247,19 @@ export default function UserHome(props) {
 
           <div className='d-flex userhome-container-bottomspace flex-row flex-grow-2 justify-content-start'>
             <div className='p-2'>
-              {userProfile.photos.length} Posts
+              <strong>{userProfile.photos.length} Posts</strong>
             </div>
-              <div className='p-2'>
-                {/* need to add relationships based on username */}
-              {relationships.followers} followers
+              <div className='p-2' style={{ cursor: "pointer" }} onClick={(e) => showFollowModal(e, relationships.followers, 'Followers')}>
+              <strong>{relationships.followers.length} followers</strong>
             </div>
-            <div className='p-2'>
-              {relationships.following} following
+              <div className='p-2' style={{ cursor: "pointer" }} onClick={(e) =>  showFollowModal(e, relationships.following, 'Following')}>
+              <strong>{relationships.following.length} following</strong>
             </div>
           </div>
 
           <div className='d-flex userhome-container-bio userhome-container-bottomspace flex-column align-items-start'>
             <div className='p-2'>
-                {userProfile.user.name === null ? 'need to update name' : userProfile.user.name}
+                {userProfile.user.name === null ? 'need to update name and allow user to add spaces' : userProfile.user.name}
             </div>
             <div className='p-2'>
               {userProfile.user.bio === null ? 'need to update user bio' : userProfile.user.bio}
@@ -275,6 +309,13 @@ export default function UserHome(props) {
         <UserBioImg
           show={userBio.show}
           hide={hideUserBioModal}
+        /> : null}
+      {followModal.show ?
+        <UserFollowList
+          show={followModal.show}
+          hide={hideFollowModal}
+          users={followModal.list}
+          type={followModal.type}
         /> : null}
     </>
   )
