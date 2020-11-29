@@ -45,9 +45,11 @@ class UsersController < ApplicationController
   
   # GET /users/1/user_list
   # .where returns all objects, while find_by returns the first one
+  # where does not support an or argument inside of it
+  # Ruby on Rails Docs suggest that variables must not go inside arguments or users can request anything from the database
   def user_list
-    @user_list = UserRelationship.where(user_one_id: @user)
-
+    @user_list = UserRelationship.where("user_one_id = ? or user_two_id = ?", @user, @user)
+    # ? is replaced by the variable
     render json: @user_list
   end
 

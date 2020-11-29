@@ -133,7 +133,7 @@ export default function UserPhotoPop(props) {
                 <>
                   <div className='userpop-comment d-flex flex-row align-items-center flex-nowrap'>
                     <div className='userpop-user-img-container userpop-user-left-margin-20px'>
-                      <img className='userpop-user-img' src={currentUser.user_self_img}/>
+                      <img className='userpop-user-img' src={action[1][0].user_self_img ? action[1][0].user_self_img : 'https://i.imgur.com/FFn7QzH.jpg'}/>
                     </div>
                     <div className='userpop-user-text flex-wrap'>
                       <p><strong>{action[1][0].username}</strong> {action[0].content}</p>
