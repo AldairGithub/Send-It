@@ -40,8 +40,6 @@ export default function UserHome(props) {
 
   const [likedPost, setLikedPost] = useState(false)
 
-  const [usersThatLikedPost, setUsersThatLikedPost] = useState()
-
   // Post Modal display
   const [isOpen, setIsOpen] = useState({
     show: false,
@@ -151,7 +149,6 @@ export default function UserHome(props) {
         }
       })
     )
-
     setRelationships({
       ...relationships,
       followers: numberOfFollowers,
@@ -159,7 +156,7 @@ export default function UserHome(props) {
     })
   }
 
-  const userAction = (id , type) => {
+  const userAction = (id, type) => {
     let userActions = userProfile.photos[id][1].filter(action => action.type_of_action === type)
     let usernameActions = userActions.map(str => [str, allUsers.filter(user => user.id === str.user_id)]) 
     return usernameActions
@@ -195,18 +192,6 @@ export default function UserHome(props) {
       setLikedPost(false)
     } else {
       setLikedPost(true)
-    }
-  }
-
-  const whoLikedPost = (arr) => {
-    if (arr.length === 0) {
-    setUsersThatLikedPost('No one liked your post yet')
-    } else if (arr.length === 1) {
-    setUsersThatLikedPost(`Liked by ${arr[0][1][0].username}`)
-    } else if (arr.length === 2) {
-    setUsersThatLikedPost(`Liked by ${arr[0][1][0].username} and ${arr[1][1][0].username}`)
-    } else {
-    setUsersThatLikedPost(`Liked by ${arr[0][1][0].username} and ${arr.length - 1} others`)
     }
   }
   
@@ -278,7 +263,7 @@ export default function UserHome(props) {
         <div className='d-flex flex-wrap-reverse justify-content-center'>
         {userProfile.photos.map((arr, index) => (
           <>
-            <div className='user-img-container' onClick={(e) => showModal(e, index)}>
+            <div className='user-img-container' key={index} onClick={(e) => showModal(e, index)}>
               <img className='user-img flex-fill' src={arr[0].url} />
               <div className='user-img-text'>
                 <FontAwesomeIcon icon={faHeart} size='1x' />{getActionNumber(arr[1], 'Like')}
@@ -301,8 +286,6 @@ export default function UserHome(props) {
           show={isOpen.show} hide={hideModal}
           likedPost={likedPost}
           handleLike={handleLike}
-          whoLikedPost={whoLikedPost}
-          usersThatLikedPost={usersThatLikedPost}
           handleComment={handleComment}
         /> : null}
       {userBio.show ?
@@ -312,6 +295,7 @@ export default function UserHome(props) {
         /> : null}
       {followModal.show ?
         <UserFollowList
+          currentUser={currentUser}
           show={followModal.show}
           hide={hideFollowModal}
           users={followModal.list}

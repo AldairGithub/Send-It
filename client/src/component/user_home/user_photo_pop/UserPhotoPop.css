@@ -17,6 +17,14 @@
   margin-left: 15px;
 }
 
+.userpop-link-text {
+  color: black;
+  font-weight: bold;
+}
+.userpop-link-text:hover {
+  color:black;
+}
+
 .userpop-img {
   width: 100%;
   height: 100%;
