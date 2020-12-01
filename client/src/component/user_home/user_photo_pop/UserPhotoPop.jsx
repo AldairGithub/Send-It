@@ -7,9 +7,11 @@ import Col from 'react-bootstrap/Col'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
-import { faEllipsisH} from '@fortawesome/free-solid-svg-icons'
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom'
 
 import CommentButton from '../../user_home/user_photo_pop/comment_button/CommentButton'
+import MoreUserLikes from '../../user_home/user_photo_pop/more_user_likes/MoreUserLikes'
 
 import './UserPhotoPop.css'
 
@@ -23,9 +25,7 @@ export default function UserPhotoPop(props) {
     show, hide,
     likedPost,
     handleLike,
-    handleComment,
-    whoLikedPost,
-    usersThatLikedPost
+    handleComment
   } = props
 
   const [userInput, setUserInput] = useState({
@@ -53,6 +53,23 @@ export default function UserPhotoPop(props) {
     hideCommentModal(e)
   }
 
+  const [likesModal, setLikesModal] = useState({
+    show: false,
+    list: null
+  })
+  const showLikesModal = (e, arr) => {
+    setLikesModal({
+      show: true,
+      list: arr
+    })
+  }
+  const hideLikesModal = (e) => {
+    setLikesModal({
+      show: false,
+      list: null
+    })
+  }
+
   // On user click of the comment icon, input will be focused
   const userCommentInput = useRef(null)
 
@@ -62,7 +79,6 @@ export default function UserPhotoPop(props) {
 
   const handleUserLike = (liked, entityId, actionId, typeOfEntity, typeOfAction) => {
     handleLike(liked, entityId, actionId, typeOfEntity, typeOfAction)
-    whoLikedPost(userLikes)
   }
 
   const handleChange = (e) => {
@@ -78,6 +94,57 @@ export default function UserPhotoPop(props) {
     setUserInput({
       comment: ""
     })
+  }
+
+  const likedPostUsers = (arr) => {
+    if (arr.length === 0) {
+      return (
+        <>
+          <p>No one liked your post yet</p>
+        </>
+      )
+    } else if (arr.length === 1) {
+      return (
+        <>
+          <p>Liked by
+            <Link
+              onClick={() => { hide() }}
+              className='userpop-link-text'
+              to={`/account/${arr[0][1][0].username}`}> {arr[0][1][0].username}</Link>
+          </p>
+        </>
+      )
+    } else if (arr.length === 2) {
+      return (
+        <>
+          <p>Liked by
+            <Link
+              onClick={() => { hide() }}
+              className='userpop-link-text'
+              to={`/account/${arr[0][1][0].username}`}> {arr[0][1][0].username}</Link> and
+            <Link
+              onClick={() => { hide() }}
+              className='userpop-link-text'
+              to={`/account/${arr[1][1][0].username}`}> {arr[1][1][0].username}</Link>
+          </p>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <p>Liked by
+            <Link onClick={() => { hide() }}
+              className='userpop-link-text'
+              to={`/account/${arr[0][1][0].username}`}> {arr[0][1][0].username}
+            </Link> and <strong
+              style={{ cursor: "pointer" }}
+              onClick={(e) => showLikesModal(e, arr)}>
+              {arr.length - 1} others
+              </strong>
+          </p>
+        </>
+      )
+    }
   }
 
 
@@ -129,11 +196,11 @@ export default function UserPhotoPop(props) {
               </div>
 
               <div className='userpop-comment-container position-relative'>
-              {userComments.map(action => (
+              {userComments.map((action, index) => (
                 <>
-                  <div className='userpop-comment d-flex flex-row align-items-center flex-nowrap'>
+                  <div className='userpop-comment d-flex flex-row align-items-center flex-nowrap' key={index}>
                     <div className='userpop-user-img-container userpop-user-left-margin-20px'>
-                      <img className='userpop-user-img' src={action[1][0].user_self_img ? action[1][0].user_self_img : 'https://i.imgur.com/FFn7QzH.jpg'}/>
+                      <img className='userpop-user-img' alt={action[1].username} src={action[1][0].user_self_img ? action[1][0].user_self_img : 'https://i.imgur.com/FFn7QzH.jpg'}/>
                     </div>
                     <div className='userpop-user-text flex-wrap'>
                       <p><strong>{action[1][0].username}</strong> {action[0].content}</p>
@@ -177,12 +244,11 @@ export default function UserPhotoPop(props) {
                 
                 {/* Post likes and usernames, neeed to add links for each of their profile */}
                 <div className='userpop-user-container d-flex flex-row flex-nowrap'>
-                  {whoLikedPost(userLikes)}
                     <div className='userpop-user-img-container'>
                       <img className='userpop-user-img' src={userLikes.length === 0 || userLikes[0][1][0].user_self_img === null ? 'https://i.imgur.com/PnUuUtU.jpg' : `${userLikes[0][1][0].user_self_img}`}/>
                     </div>
                     <div className='userpop-user-text'>
-                      {usersThatLikedPost}
+                        {likedPostUsers(userLikes)}
                     </div>
                 </div>
             
@@ -231,6 +297,13 @@ export default function UserPhotoPop(props) {
           show={commentModalOpen.show}
           hide={hideCommentModal}
           deleteComment={(e) => handleCommentModal(e, commentModalOpen.commentId)}
+        /> : null}
+      {likesModal.show ? 
+        <MoreUserLikes
+          show={likesModal.show}
+          hide={hideLikesModal}
+          hideModal={hide}
+          list={likesModal.list}
         /> : null}
     </>
   )
