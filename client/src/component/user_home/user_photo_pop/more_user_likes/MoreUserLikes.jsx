@@ -22,25 +22,24 @@ export default function MoreUserLikes(props) {
             Likes
           </div>
           <hr />
-             <div className='d-flex flex-column justify-content-start'>
+            <div className='d-flex flex-column justify-content-start'>
               {list.map((user, index) => (
-                <>
-                  <div  key={index} className='d-flex flex-row userlikes-container'>
-                    <div className='userlikes-user-img-container'>
-                      <img className='userlikes-user-img' src={user[1][0].user_self_img}/>
-                    </div>
-                    <div className='d-flex flex-column'>
-                      <div>
-                        <Link onClick={(e) => handleCloseModal(e)} className='userlikes-link-text' to={`/account/${user[1][0].username}`}>{user[1][0].username}</Link>
+                  <>
+                    <div key={index} className='d-flex flex-row userlikes-container'>
+                      <div className='userlikes-user-img-container'>
+                        <img className='userlikes-user-img' src={user[1][0].user_self_img === null ? 'https://i.imgur.com/FFn7QzH.jpg' : user[1][0].user_self_img} />
                       </div>
-                      <div>
-                        {user[1][0].name}
+                      <div className='d-flex flex-column'>
+                        <div>
+                          <Link onClick={(e) => handleCloseModal(e)} className='userlikes-link-text' to={`/account/${user[1][0].username}`}>{user[1][0].username}</Link>
+                        </div>
+                        <div>
+                          {user[1][0].name}
+                        </div>
                       </div>
                     </div>
-                    
-                  </div>
-                </>
-              ))}
+                  </>
+                ))}
              </div>
         </Modal.Body>
       </Modal>
