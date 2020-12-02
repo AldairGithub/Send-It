@@ -218,16 +218,19 @@ export default function UserHome(props) {
           
           <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center flex-shrink-1'>
             <div className='p-2 username-title'>
-                {userProfile.user.username}
+              {userProfile.user.username}
             </div>
-            <div className='p-2'>
-              <Link to='/update_account'>
-                <FontAwesomeIcon className='userlock' icon={faUserCog} size='2x'/>
-              </Link>
-            </div>
-            <div className='p-2'>
-              <FontAwesomeIcon icon={faCog} size='2x'/>
-            </div>
+              {/* {userProfile.user.id === currentUser.id ?
+                <> */}
+                  <div className='p-2'>
+                    <Link to='/update_account'>
+                      <FontAwesomeIcon className='userlock' icon={faUserCog} size='2x'/>
+                    </Link>
+                  </div>
+                  <div className='p-2'>
+                    <FontAwesomeIcon icon={faCog} size='2x'/>
+                  </div>
+                {/* </> : null} */}
           </div>
 
           <div className='d-flex userhome-container-bottomspace flex-row flex-grow-2 justify-content-start'>
@@ -254,9 +257,6 @@ export default function UserHome(props) {
         </div>
 
         </div>
-        
-          
-        
         
         <hr />
 

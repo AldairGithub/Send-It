@@ -178,7 +178,7 @@ export default function UserPhotoPop(props) {
                   <img className='userpop-user-img' src={user.user_self_img}/>
                 </div>
                 <div className='userpop-user-text font-weight-bold'>
-                  <p>{user.username}</p>
+                  <p style={{cursor: "pointer"}} onClick={() => {hide()}}>{user.username}</p>
                 </div>
               </div>
 
@@ -191,7 +191,7 @@ export default function UserPhotoPop(props) {
                   <img className='userpop-user-img' src={user.user_self_img}/>
                 </div>
                 <div className='userpop-user-text'>
-                  <p><strong>{user.username}</strong> {photo[0].content}</p>
+                  <p><strong style={{cursor: "pointer"}} onClick={() => {hide()}}>{user.username}</strong> {photo[0].content}</p>
                 </div>
               </div>
 
@@ -203,7 +203,7 @@ export default function UserPhotoPop(props) {
                       <img className='userpop-user-img' alt={action[1].username} src={action[1][0].user_self_img ? action[1][0].user_self_img : 'https://i.imgur.com/FFn7QzH.jpg'}/>
                     </div>
                     <div className='userpop-user-text flex-wrap'>
-                      <p><strong>{action[1][0].username}</strong> {action[0].content}</p>
+                      <p><Link onClick={() => {hide()}} className='userpop-link-text' to={`/account/${action[1][0].username}`}>{action[1][0].username}</Link> {action[0].content}</p>
                     </div>
                     <div className='userpop-comment-delete-button position-absolute'>
                       <FontAwesomeIcon

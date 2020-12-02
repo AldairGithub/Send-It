@@ -9,6 +9,18 @@ import './UserFollowList.css'
 export default function UserFollowList(props) {
   const { show, hide, users, type, currentUser } = props
 
+  const responseToNoFollows = (typeOfList) => {
+    if (typeOfList === 'Followers') {
+      return (
+        <p>This user does not have any followers right now</p>
+      )
+    } else {
+      return (
+        <p>This user is not following anyone right now</p>
+      )
+    }
+  }
+
   const isUserFollowingCurrentUser = (user) => {
     if (user[0].id === currentUser.id || currentUser.id === undefined) {
       return null
@@ -58,7 +70,7 @@ export default function UserFollowList(props) {
           </div>
           <hr />
           <div className='userfollow-users-container d-flex flex-column'>
-            {users.map((user, index) => (
+            {users.length === 0 ? responseToNoFollows(type) : users.map((user, index) => (
               <>
                 <div className='userfollow-user-container d-flex flex-row flex-nowrap' key={index}>
                   <div className='userfollow-userbio-container'>
