@@ -15,7 +15,6 @@ Rails.application.routes.draw do
 
   # user friends
   get '/users/:id/user_list', to: 'users#user_list'
-  get '/users/:id/user_friends', to: 'users#user_friends'
 
   # user entities
   get '/entities/user/:id', to: 'entities#user_entities'

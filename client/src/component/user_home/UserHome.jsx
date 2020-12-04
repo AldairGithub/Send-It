@@ -8,6 +8,9 @@ import { deleteActionFromCurrentUser } from '../../services/action'
 import { readAllUsers } from '../../services/user'
 import { allUserPhotos } from '../../services/user'
 import { allUserRelationships } from '../../services/user'
+import { postNewUserRelationship } from '../../services/user_relationship'
+import { updateUserRelationship } from '../../services/user_relationship'
+import { deleteUserRelationship } from '../../services/user_relationship'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCog } from '@fortawesome/free-solid-svg-icons'
@@ -122,30 +125,50 @@ export default function UserHome(props) {
     return count
   }
 
+  // when current user followed an user, and user followed them back. If current user wants to unfollow the same user
+  // it deletes the user from the followers list instead of the following list from current user
   const getUserFollows = async(id, users) => {
 
     const friends = await allUserRelationships(id)
     const numberOfFollowers = []
     const numberOfFollowing = []
 
-    friends.forEach(relationship => 
+    friends.forEach(relationship =>
       users.forEach(user => {
         if (user.id === id) {
           return null
-        } else if (user.id === relationship.user_one_id && relationship.status === 'Pending') {
-          // followers
-          numberOfFollowers.push([user, relationship])
-        } else if (user.id === relationship.user_one_id && relationship.status === 'Accepted') {
-          // followers + following
-          numberOfFollowers.push([user, relationship])
-          numberOfFollowing.push([user, relationship])
-        } else if (user.id === relationship.user_two_id && relationship.status === 'Pending') {
-          // following
-          numberOfFollowing.push([user, relationship])
-        } else if (user.id === relationship.user_two_id && relationship.status === 'Accepted') {
-          // followers + following
-          numberOfFollowers.push([user, relationship])
-          numberOfFollowing.push([user, relationship])
+          // user followed current user
+        } else if (user.id === relationship.user_one_id) {
+          if (relationship.status === 'Pending') {
+            numberOfFollowers.push([user, relationship])
+          } else if (relationship.status === 'Accepted') {
+            numberOfFollowers.push([user, relationship])
+            numberOfFollowing.push([user, relationship])
+          } else if (relationship.status === 'Denied') {
+            if (relationship.last_user_action_id === user.id) {
+              // user follows CU, CU follows back, user unfollows CU, CU is still following user
+              numberOfFollowing.push([user, relationship])
+            } else {
+              // user follows CU, CU follows back, CU unfollows user, user is still following CU
+              numberOfFollowers.push([user, relationship])
+            }
+          } 
+          // current user followed user
+        } else if (user.id === relationship.user_two_id) {
+          if (relationship.status === 'Pending') {
+            numberOfFollowing.push([user, relationship])
+          } else if (relationship.status === 'Accepted') {
+            numberOfFollowers.push([user, relationship])
+            numberOfFollowing.push([user, relationship])
+          } else if (relationship.status === 'Denied') {
+            if (relationship.last_user_action_id === user.id) {
+              // CU follows user, user follows back, user unfollows CU, CU is still following user
+              numberOfFollowing.push([user, relationship])
+            } else {
+              // CU follows user, user follows back, CU unfollows user, user is still following CU
+              numberOfFollowers.push([user, relationship])
+            }
+          }
         }
       })
     )
@@ -156,7 +179,38 @@ export default function UserHome(props) {
     })
   }
 
+  const handleFollow = async (relationshipId, userOneId, userTwoId, newStatus, lastActionId) => {
+    if (relationshipId) {
+      if (newStatus === 'Pending' || newStatus === 'Denied') {
+        let userData = {
+          user_one_id: userOneId,
+          user_two_id: userTwoId,
+          status: newStatus,
+          last_user_action_id: lastActionId
+        }
+          let unfollowUser = await updateUserRelationship(relationshipId, userData)
+      } else if (newStatus === 'Accepted') {
+        let userData = {
+          user_one_id: userOneId,
+          user_two_id: userTwoId,
+          status: newStatus,
+          last_user_action_id: lastActionId
+        }
+        let followBack = await updateUserRelationship(relationshipId, userData)
+      } else {
+        let deleteFollow = await deleteUserRelationship(relationshipId)
+      }
+    } else {
+      let followUser = await postNewUserRelationship(userOneId, userTwoId, newStatus, lastActionId)
+    }
+    // when the current user follows/unfollows from another user list, the follows list gets updated to the currentUser!
+    getUserFollows(currentUser.id, allUsers)
+  }
+
   const userAction = (id, type) => {
+    if (userProfile.photos === undefined) {
+      return null
+    }
     let userActions = userProfile.photos[id][1].filter(action => action.type_of_action === type)
     let usernameActions = userActions.map(str => [str, allUsers.filter(user => user.id === str.user_id)]) 
     return usernameActions
@@ -300,6 +354,7 @@ export default function UserHome(props) {
           hide={hideFollowModal}
           users={followModal.list}
           type={followModal.type}
+          handleFollow={handleFollow}
         /> : null}
     </>
   )
