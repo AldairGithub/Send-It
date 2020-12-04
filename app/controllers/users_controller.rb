@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:update, :destroy, :update_password, :user_list, :user_friends]
-  before_action :authorize_request, except: [:create, :index, :user_list, :user_friends]
+  before_action :set_user, only: [:update, :destroy, :update_password, :user_list]
+  before_action :authorize_request, except: [:create, :index, :user_list]
 
   # GET /users
   def index
@@ -51,13 +51,6 @@ class UsersController < ApplicationController
     @user_list = UserRelationship.where("user_one_id = ? or user_two_id = ?", @user, @user)
     # ? is replaced by the variable
     render json: @user_list
-  end
-
-  # GET /users/1/user_friends
-  def user_friends
-    @user_friends = UserRelationship.where(user_one_id: @user, status: 'Accepted')
-
-    render json: @user_friends
   end
 
   private

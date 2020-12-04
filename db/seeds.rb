@@ -87,15 +87,16 @@ puts "#{Action.count} actions created"
 
 # user relationships
 @user_following_one = UserRelationship.create!(user_one: @admin, user_two: @aldair, status: 'Pending', last_user_action: @admin)
-@user_following_two = UserRelationship.create(user_one: @admin, user_two: @nate, status: 'Accepted', last_user_action: @nate)
-@user_following_three = UserRelationship.create(user_one: @admin, user_two: @chris, status: 'Accepted', last_user_action: @chris)
-@user_following_four = UserRelationship.create(user_one: @admin, user_two: @vasu, status: 'Accepted', last_user_action: @vasu)
-@user_following_five = UserRelationship.create(user_one: @admin, user_two: @roffaden, status: 'Pending', last_user_action: @admin)
+@user_following_two = UserRelationship.create(user_one: @admin, user_two: @nate, status: 'Pending', last_user_action: @admin)
+@user_following_three = UserRelationship.create(user_one: @admin, user_two: @vasu, status: 'Accepted', last_user_action: @vasu)
 
-@user_follower_one = UserRelationship.create(user_one: @jordon, user_two: @admin, status: 'Pending', last_user_action: @jordon)
-@user_follower_two = UserRelationship.create(user_one: @yomar, user_two: @admin, status: 'Accepted', last_user_action: @admin)
+@user_follower_two = UserRelationship.create(user_one: @yomar, user_two: @admin, status: 'Pending', last_user_action: @yomar)
 @user_follower_three = UserRelationship.create(user_one: @moises, user_two: @admin, status: 'Accepted', last_user_action: @admin)
-@user_follower_four = UserRelationship.create(user_one: @kelly, user_two: @admin, status: 'Pending', last_user_action: @kelly)
+
+@user_follower_denied_one = UserRelationship.create(user_one: @admin, user_two: @chris, status: 'Denied', last_user_action: @admin)
+@user_follower_denied_two = UserRelationship.create(user_one: @admin, user_two: @kelly, status: 'Denied', last_user_action: @kelly)
+@user_follower_denied_three = UserRelationship.create(user_one: @roffaden, user_two: @admin, status: 'Denied', last_user_action: @roffaden)
+@user_follower_denied_four = UserRelationship.create(user_one: @jordon, user_two: @admin, status: 'Denied', last_user_action: @admin)
 
 
 @accepted_five = UserRelationship.create(user_one: @kelly, user_two: @jordon, status: 'Accepted', last_user_action: @jordon)

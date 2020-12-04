@@ -46,7 +46,6 @@ class ActionsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def action_params
-      # params.require(:action).permit(:typeOfEntity, :typeOfAction, :content, :entity_id, :tag_id, :user_id)
       params.permit(:type_of_entity, :type_of_action, :entity_id, :user_id, :content)
     end
 end

@@ -38,10 +38,6 @@ class UserRelationshipsController < ApplicationController
     @user_relationship.destroy
   end
 
-  def send_request
-    @user = User.find(params[:id])
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user_relationship
