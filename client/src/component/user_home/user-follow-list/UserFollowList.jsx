@@ -1,13 +1,23 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
-import { Link } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 
 import './UserFollowList.css'
+import { faUserFriends } from '@fortawesome/free-solid-svg-icons'
 
 export default function UserFollowList(props) {
-  const { show, hide, users, type, currentUser, handleFollow } = props
+  const {
+    show, hide,
+    users,
+    type,
+    currentUser,
+    handleFollow,
+    allUserRelationships,
+    followModal,
+    setFollowModal
+  } = props
 
   const responseToNoFollows = (typeOfList) => {
     if (typeOfList === 'Followers') {
@@ -21,10 +31,46 @@ export default function UserFollowList(props) {
     }
   }
 
-  const isUserFollowingCurrentUser = (user) => {
-    if (user[0].id === currentUser.id || currentUser.id === undefined) {
+  useEffect(() => {
+    getCurrentUserFriends(currentUser.id)
+  }, [currentUser])
+
+  const getCurrentUserFriends = async (id) => {
+    const friends = await allUserRelationships(id)
+
+    const filterFriends = users.map(user => {
+      if (user[1].user_one_id !== currentUser.id && user[1].user_two_id !== currentUser.id) {
+        let newFilter = friends.filter(friend => friend.user_one_id === user[0].id || friend.user_two_id === user[0].id)
+        return [user[0], newFilter[0]]
+      } else {
+        return user
+      }
+    })
+    setFollowModal({
+      ...followModal,
+      list: filterFriends
+    })
+  }
+
+  const handleUsersCircle = (user) => {
+    if (user[0].id === currentUser.id) {
       return null
-    } else if (user[1].user_one_id === currentUser.id) {
+    } else if (user[1] === undefined) {
+      // undefined means current user and user dont have a relationship yet
+      return (
+        <>
+          <div className='ml-auto'>
+            <Button onClick={() => { handleFollow(false, currentUser.id, user[0].id, 'Pending', currentUser.id) }} variant='info'>Follow</Button>
+          </div>
+        </>
+      )
+    } else {
+      return isUserFollowingCurrentUser(user)
+    }
+  }
+
+  const isUserFollowingCurrentUser = (user) => {
+    if (user[1].user_one_id === currentUser.id) {
       if (user[1].status === 'Pending') {
         // current user followed user, but user hasnt followed back
         return (
@@ -94,7 +140,6 @@ export default function UserFollowList(props) {
           )
         }
       } else if (user[1].status === 'Accepted') {
-        console.log(user)
         return (
           <>
             <div className='ml-auto'>
@@ -104,15 +149,15 @@ export default function UserFollowList(props) {
         )
       }
     } else {
-      // user has no relation with any of the users on the list
       return (
         <>
           <div className='ml-auto'>
-            <Button onClick={() => {handleFollow(false, currentUser.id, user[0].id, 'Pending', currentUser.id)}} variant='info'>Follow</Button>
+            <Button onClick={() => { handleFollow(false, currentUser.id, user[0].id, 'Pending', currentUser.id) }} variant='info'>Follow</Button>
           </div>
         </>
       )
     }
+    handleUsersCircle(user)
   }
 
   return (
@@ -125,8 +170,8 @@ export default function UserFollowList(props) {
           <hr />
           <div className='userfollow-users-container d-flex flex-column'>
             {users.length === 0 ? responseToNoFollows(type) : users.map((user, index) => (
-              <>
-                <div className='userfollow-user-container d-flex flex-row flex-nowrap' key={index}>
+              <div key={index}>
+                <div className='userfollow-user-container d-flex flex-row flex-nowrap'>
                   <div className='userfollow-userbio-container'>
                     <img className='userfollow-userbio-img' src={user[0].user_self_img === null ? 'https://i.imgur.com/FFn7QzH.jpg' : user[0].user_self_img}/>
                   </div>
@@ -140,9 +185,9 @@ export default function UserFollowList(props) {
                     </div>
                   </div>
                   {/* cant use TERNARY OPERATOR ' ? : ' */}
-                  {isUserFollowingCurrentUser(user)}
+                  {handleUsersCircle(user)}
                 </div>
-              </>
+              </div>
             ))}
           </div>
         </Modal.Body>

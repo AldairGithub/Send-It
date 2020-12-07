@@ -101,9 +101,9 @@ export default function UserHome(props) {
 
   useEffect(() => {
     getUserProfile(props.match.params.user)
-  }, [props.match.params.user])
+  }, [props.match.params.user, currentUser])
 
-  const getUserProfile = async(name) => {
+  const getUserProfile = async (name) => {
     const getAllUsers = await readAllUsers()
     setAllUsers(getAllUsers)
     const getUser = getAllUsers.filter(user => user.username === name)
@@ -132,6 +132,16 @@ export default function UserHome(props) {
     const friends = await allUserRelationships(id)
     const numberOfFollowers = []
     const numberOfFollowing = []
+  
+    // checking if can switch relationships between other users with current user, as to prevent other users relationships from rendering
+    // const filterFriends = users.map(user => {
+      // if (user[1].user_one_id !== currentUser.id && user[1].user_two_id !== currentUser.id) {
+      //   let newFilter = friends.filter(friend => friend.user_one_id === user[0].id || friend.user_two_id === user[0].id)
+      //   return [user[0], newFilter[0]]
+      // } else {
+      //   return user
+      // }
+    // })
 
     friends.forEach(relationship =>
       users.forEach(user => {
@@ -179,7 +189,7 @@ export default function UserHome(props) {
     })
   }
 
-  const handleFollow = async (relationshipId, userOneId, userTwoId, newStatus, lastActionId) => {
+  const handleFollow = async (relationshipId, userOneId, userTwoId, newStatus, lastActionId, userOnlineId) => {
     if (relationshipId) {
       if (newStatus === 'Pending' || newStatus === 'Denied') {
         let userData = {
@@ -203,8 +213,8 @@ export default function UserHome(props) {
     } else {
       let followUser = await postNewUserRelationship(userOneId, userTwoId, newStatus, lastActionId)
     }
-    // when the current user follows/unfollows from another user list, the follows list gets updated to the currentUser!
-    getUserFollows(currentUser.id, allUsers)
+    // updates list in DOM
+    getUserFollows(userProfile.user.id, allUsers)
   }
 
   const userAction = (id, type) => {
@@ -353,8 +363,11 @@ export default function UserHome(props) {
           show={followModal.show}
           hide={hideFollowModal}
           users={followModal.list}
+          followModal={followModal}
+          setFollowModal={setFollowModal}
           type={followModal.type}
           handleFollow={handleFollow}
+          allUserRelationships={allUserRelationships}
         /> : null}
     </>
   )
