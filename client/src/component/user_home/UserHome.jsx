@@ -17,6 +17,9 @@ import { faUserCog } from '@fortawesome/free-solid-svg-icons'
 import { faCog } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
+
+import Button from 'react-bootstrap/Button'
+
 import Header from '../header/Header'
 import UserPhotoPop from './user_photo_pop/UserPhotoPop'
 import UserBioImg from '../user_home/user_bio_img/UserBioImg'
@@ -127,21 +130,11 @@ export default function UserHome(props) {
 
   // when current user followed an user, and user followed them back. If current user wants to unfollow the same user
   // it deletes the user from the followers list instead of the following list from current user
-  const getUserFollows = async(id, users) => {
+  const getUserFollows = async (id, users) => {
 
     const friends = await allUserRelationships(id)
     const numberOfFollowers = []
     const numberOfFollowing = []
-  
-    // checking if can switch relationships between other users with current user, as to prevent other users relationships from rendering
-    // const filterFriends = users.map(user => {
-      // if (user[1].user_one_id !== currentUser.id && user[1].user_two_id !== currentUser.id) {
-      //   let newFilter = friends.filter(friend => friend.user_one_id === user[0].id || friend.user_two_id === user[0].id)
-      //   return [user[0], newFilter[0]]
-      // } else {
-      //   return user
-      // }
-    // })
 
     friends.forEach(relationship =>
       users.forEach(user => {
@@ -189,7 +182,99 @@ export default function UserHome(props) {
     })
   }
 
-  const handleFollow = async (relationshipId, userOneId, userTwoId, newStatus, lastActionId, userOnlineId) => {
+
+  const isUserFollowingCurrentUser = (user, data) => {
+    if (user[1].user_one_id === currentUser.id) {
+      if (user[1].status === 'Pending') {
+        // current user followed user, but user hasnt followed back
+        return (
+          <>
+            <div className='ml-auto'>
+              <Button onClick={() => { handleFollow(user[1].id, null, null, false, null, data) }} variant='light'>Following</Button>
+            </div>
+          </>
+        )
+      } else if (user[1].status === 'Denied') {
+        if (user[1].last_user_action_id === currentUser.id) {
+          // cu followed user, user followed back, cu unfollowed user, user still follows cu
+          return (
+            <>
+              <div className='ml-auto'>
+                <Button onClick={() => { handleFollow(user[1].id, user[1].user_one_id, user[1].user_two_id, 'Accepted', currentUser.id, data) }} variant='info'>Follow</Button>
+              </div>
+            </>
+          )
+        } else {
+          // cu followed user, user followed back, user unfollowed cu, cu still follows user
+          return (
+            <>
+              <div className='ml-auto'>
+                <Button onClick={() => { handleFollow(user[1].id, null, null, false, null, data) }} variant='danger'>Delete</Button>
+              </div>
+            </>
+          )
+        }
+      } else if (user[1].status === 'Accepted') {
+        return (
+          <>
+            <div className='ml-auto'>
+              <Button onClick={() => { handleFollow(user[1].id, user[1].user_one_id, user[1].user_two_id, 'Denied', currentUser.id, data) }} variant='light'>Following</Button>
+            </div>
+          </>
+        )
+      }
+
+    } else if (user[1].user_two_id === currentUser.id) {
+      if (user[1].status === 'Pending') {
+        return (
+          <>
+            <div className='ml-auto'>
+              <Button onClick={() => { handleFollow(user[1].id, user[1].user_one_id, user[1].user_two_id, 'Accepted', currentUser.id, data) }} variant='info'>Follow</Button>
+            </div>
+          </>
+        )
+      } else if (user[1].status === 'Denied') {
+        if (user[1].last_user_action_id === currentUser.id) {
+          // user followed cu, cu followed back, cu unfollowed user, user still follows cu
+          return (
+            <>
+              <div className='ml-auto'>
+                <Button onClick={() => { handleFollow(user[1].id, user[1].user_one_id, user[1].user_two_id, 'Accepted', currentUser.id, data) }} variant='info'>Follow</Button>
+              </div>
+            </>
+          )
+        } else {
+          // user followed cu, cu followed back, user unfollowed cu, cu still follows user
+          return (
+            <>
+              <div className='ml-auto'>
+                <Button onClick={() => { handleFollow(user[1].id, null, null, false, null, data) }} variant='danger'>Delete</Button>
+              </div>
+            </>
+          )
+        }
+      } else if (user[1].status === 'Accepted') {
+        return (
+          <>
+            <div className='ml-auto'>
+              <Button onClick={() => { handleFollow(user[1].id, user[1].user_one_id, user[1].user_two_id, 'Denied', currentUser.id, data) }} variant='light'>Following</Button>
+            </div>
+          </>
+        )
+      }
+    } else {
+      return (
+        <>
+          <div className='ml-auto'>
+            <Button onClick={() => { handleFollow(false, currentUser.id, user[0].id, 'Pending', currentUser.id, data) }} variant='info'>Follow</Button>
+          </div>
+        </>
+      )
+    }
+  }
+// updateCurrentUserFriends will update current user home correctly, however when the current user follows/unfollows
+// another user from another user page, it renders the user list with the info of the user the current user clicked on twice
+  const handleFollow = async (relationshipId, userOneId, userTwoId, newStatus, lastActionId, data) => {
     if (relationshipId) {
       if (newStatus === 'Pending' || newStatus === 'Denied') {
         let userData = {
@@ -198,7 +283,14 @@ export default function UserHome(props) {
           status: newStatus,
           last_user_action_id: lastActionId
         }
-          let unfollowUser = await updateUserRelationship(relationshipId, userData)
+        let unfollowUser = await updateUserRelationship(relationshipId, userData)
+
+        // updates the current user relationships
+        updateCurrentUserFriends(userProfile.user.id, data)
+
+        // console.log('button was clicked for user: unfollowUser')
+
+
       } else if (newStatus === 'Accepted') {
         let userData = {
           user_one_id: userOneId,
@@ -207,14 +299,135 @@ export default function UserHome(props) {
           last_user_action_id: lastActionId
         }
         let followBack = await updateUserRelationship(relationshipId, userData)
+
+        updateCurrentUserFriends(userProfile.user.id, data)
+
+        // console.log('button was clicked for user: followBack')
+
+
       } else {
         let deleteFollow = await deleteUserRelationship(relationshipId)
+
+        updateCurrentUserFriends(userProfile.user.id, data)
+
+        // console.log('button was clicked for user: deleteFollow')
+
       }
     } else {
       let followUser = await postNewUserRelationship(userOneId, userTwoId, newStatus, lastActionId)
+
+      updateCurrentUserFriends(userProfile.user.id, data)
+
+      // console.log('button was clicked for user: followUser')
+
     }
     // updates list in DOM
     getUserFollows(userProfile.user.id, allUsers)
+
+    // this is the data of the user relationship as it is not updated after the button was pressed
+    // any user relationship at this point is not updated
+    // after the buttons are pressed, if calling for current user relationships, data is updated
+
+    // by running function that calls for user following list, then returning the buttons at the same time
+  }
+
+  const updateCurrentUserFriends = async (id, data) => {
+    // const friends = await allUserRelationships(currentUser.id)
+
+    const friends = await allUserRelationships(id)
+    const numberOfFollowers = []
+    const numberOfFollowing = []
+
+    // only works in the current user home
+
+    friends.forEach(relationship =>
+      allUsers.forEach(user => {
+        if (user.id === id) {
+          return null
+          // user followed current user
+        } else if (user.id === relationship.user_one_id) {
+          if (relationship.status === 'Pending') {
+            numberOfFollowers.push([user, relationship])
+          } else if (relationship.status === 'Accepted') {
+            numberOfFollowers.push([user, relationship])
+            numberOfFollowing.push([user, relationship])
+          } else if (relationship.status === 'Denied') {
+            if (relationship.last_user_action_id === user.id) {
+              // user follows CU, CU follows back, user unfollows CU, CU is still following user
+              numberOfFollowing.push([user, relationship])
+            } else {
+              // user follows CU, CU follows back, CU unfollows user, user is still following CU
+              numberOfFollowers.push([user, relationship])
+            }
+          } 
+          // current user followed user
+        } else if (user.id === relationship.user_two_id) {
+          if (relationship.status === 'Pending') {
+            numberOfFollowing.push([user, relationship])
+          } else if (relationship.status === 'Accepted') {
+            numberOfFollowers.push([user, relationship])
+            numberOfFollowing.push([user, relationship])
+          } else if (relationship.status === 'Denied') {
+            if (relationship.last_user_action_id === user.id) {
+              // CU follows user, user follows back, user unfollows CU, CU is still following user
+              numberOfFollowing.push([user, relationship])
+            } else {
+              // CU follows user, user follows back, CU unfollows user, user is still following CU
+              numberOfFollowers.push([user, relationship])
+            }
+          }
+        }
+      })
+    )
+
+// check if buttons were checked at current user homepage, else it updates from the user page instead
+    if (id === currentUser.id) {
+      if (data.type === 'Followers') {
+        setFollowModal({
+          ...followModal,
+          list: numberOfFollowers
+        })
+      } else {
+        setFollowModal({
+          ...followModal,
+          list: numberOfFollowing
+        })
+      }
+
+    } else {
+        setRelationships({
+          ...relationships,
+          followers: numberOfFollowers,
+          following: numberOfFollowing
+        })
+      getCurrentUserFriends(currentUser.id, data)
+    }
+
+  }
+
+  const getCurrentUserFriends = async (id, data) => {
+
+    if (data.type === 'Followers') {
+      data.users = relationships.followers
+    } else {
+      data.users = relationships.following
+    }
+
+    const friends = await allUserRelationships(id)
+
+    const filterFriends = data.users.map(user => {
+      if (user[1].user_one_id !== currentUser.id && user[1].user_two_id !== currentUser.id) {
+        let newFilter = friends.filter(friend => friend.user_one_id === user[0].id || friend.user_two_id === user[0].id)
+        return [user[0], newFilter[0]]
+      } else {
+        return user
+      }
+    })
+
+    setFollowModal({
+      ...followModal,
+      list: filterFriends
+    })
   }
 
   const userAction = (id, type) => {
@@ -368,6 +581,9 @@ export default function UserHome(props) {
           type={followModal.type}
           handleFollow={handleFollow}
           allUserRelationships={allUserRelationships}
+          isUserFollowingCurrentUser={isUserFollowingCurrentUser}
+          getUserFollows={getUserFollows}
+          getCurrentUserFriends={getCurrentUserFriends}
         /> : null}
     </>
   )
