@@ -24,6 +24,7 @@ import Header from '../header/Header'
 import UserPhotoPop from './user_photo_pop/UserPhotoPop'
 import UserBioImg from '../user_home/user_bio_img/UserBioImg'
 import UserFollowList from '../user_home/user-follow-list/UserFollowList'
+import UserFollowButton from '../user_home/user_follow_button/UserFollowButton'
 
 export default function UserHome(props) {
   const {
@@ -37,6 +38,11 @@ export default function UserHome(props) {
     user: {},
     photos: []
   })
+  const [currentUserPage, setCurrentUserPage] = useState({
+    onPage: false,
+    otherUser: null
+  })
+
   const [allUsers, setAllUsers] = useState()
 
   const [relationships, setRelationships] = useState({
@@ -103,10 +109,10 @@ export default function UserHome(props) {
   }
 
   useEffect(() => {
-    getUserProfile(props.match.params.user)
+    getUserProfile(props.match.params.user, currentUser)
   }, [props.match.params.user, currentUser])
 
-  const getUserProfile = async (name) => {
+  const getUserProfile = async (name, homePageOwner) => {
     const getAllUsers = await readAllUsers()
     setAllUsers(getAllUsers)
     const getUser = getAllUsers.filter(user => user.username === name)
@@ -116,6 +122,49 @@ export default function UserHome(props) {
       user: getUser[0],
       photos: userPhotos
     })
+    handleIfOnCurrentUserPage(getUser[0])
+  }
+
+  const handleIfOnCurrentUserPage = async(user) => {
+    // due to react lifestyle cycle, currentUser will always be null on the first render
+    if (currentUser === null) {
+      return null
+    } else if (currentUser) {
+      if (user.id === currentUser.id) {
+        setCurrentUserPage({
+          ...currentUserPage,
+          onPage: true,
+          otherUser: null
+        })
+      } else {
+        const friends = await allUserRelationships(currentUser.id)
+        const findFriend = friends.filter(relationship => relationship.user_one_id === user.id || relationship.user_two_id === user.id)
+        setCurrentUserPage({
+          ...currentUserPage,
+          onPage: false,
+          otherUser: [user, findFriend[0]]
+        })
+      }
+    }
+  }
+
+  const handleSettingsOrFollowFeature = (arg) => {
+    if (arg) {
+      return (
+        <>
+          <div className='p-2'>
+            <Link to='/update_account'>
+              <FontAwesomeIcon className='userlock' icon={faUserCog} size='2x'/>
+            </Link>
+          </div>
+          <div className='p-2'>
+            <FontAwesomeIcon icon={faCog} size='2x'/>
+          </div>
+        </>
+      )
+    } else {
+      return <UserFollowButton relationship={currentUserPage.otherUser} currentUser={currentUser} handleFollow={handleFollow}/>
+    }
   }
 
   const getActionNumber = (arr, str) => {
@@ -284,12 +333,7 @@ export default function UserHome(props) {
           last_user_action_id: lastActionId
         }
         let unfollowUser = await updateUserRelationship(relationshipId, userData)
-
-        // updates the current user relationships
-        updateCurrentUserFriends(userProfile.user.id, data)
-
-        // console.log('button was clicked for user: unfollowUser')
-
+        // updateCurrentUserFriends(userProfile.user.id, data)
 
       } else if (newStatus === 'Accepted') {
         let userData = {
@@ -299,46 +343,37 @@ export default function UserHome(props) {
           last_user_action_id: lastActionId
         }
         let followBack = await updateUserRelationship(relationshipId, userData)
-
-        updateCurrentUserFriends(userProfile.user.id, data)
-
-        // console.log('button was clicked for user: followBack')
+        // updateCurrentUserFriends(userProfile.user.id, data)
 
 
       } else {
         let deleteFollow = await deleteUserRelationship(relationshipId)
-
-        updateCurrentUserFriends(userProfile.user.id, data)
-
-        // console.log('button was clicked for user: deleteFollow')
+        // updateCurrentUserFriends(userProfile.user.id, data)
 
       }
     } else {
       let followUser = await postNewUserRelationship(userOneId, userTwoId, newStatus, lastActionId)
-
-      updateCurrentUserFriends(userProfile.user.id, data)
-
-      // console.log('button was clicked for user: followUser')
+      // updateCurrentUserFriends(userProfile.user.id, data)
 
     }
     // updates list in DOM
-    getUserFollows(userProfile.user.id, allUsers)
+    if (data === undefined) {
+      getUserFollows(userProfile.user.id, allUsers)
+      handleIfOnCurrentUserPage(userProfile.user)
+    } else {
+      updateCurrentUserFriends(userProfile.user.id, data)
+      getUserFollows(userProfile.user.id, allUsers)
+    }
 
-    // this is the data of the user relationship as it is not updated after the button was pressed
-    // any user relationship at this point is not updated
-    // after the buttons are pressed, if calling for current user relationships, data is updated
+    // for follow button per user page, maybe check if data exists, if so run updateCurrentUserFriends, else run something else
 
-    // by running function that calls for user following list, then returning the buttons at the same time
   }
 
   const updateCurrentUserFriends = async (id, data) => {
-    // const friends = await allUserRelationships(currentUser.id)
 
     const friends = await allUserRelationships(id)
     const numberOfFollowers = []
     const numberOfFollowing = []
-
-    // only works in the current user home
 
     friends.forEach(relationship =>
       allUsers.forEach(user => {
@@ -381,6 +416,7 @@ export default function UserHome(props) {
     )
 
 // check if buttons were checked at current user homepage, else it updates from the user page instead
+// we want to update the DOM, since the call is made in the follow list, changing the list of users it is using is better 
     if (id === currentUser.id) {
       if (data.type === 'Followers') {
         setFollowModal({
@@ -393,13 +429,13 @@ export default function UserHome(props) {
           list: numberOfFollowing
         })
       }
-
     } else {
         setRelationships({
           ...relationships,
           followers: numberOfFollowers,
           following: numberOfFollowing
         })
+      // updates DOM when current user is in a different user page
       getCurrentUserFriends(currentUser.id, data)
     }
 
@@ -407,6 +443,7 @@ export default function UserHome(props) {
 
   const getCurrentUserFriends = async (id, data) => {
 
+    // changes the users received based on where the call was made from, whether followers or following list
     if (data.type === 'Followers') {
       data.users = relationships.followers
     } else {
@@ -431,7 +468,8 @@ export default function UserHome(props) {
   }
 
   const userAction = (id, type) => {
-    if (userProfile.photos === undefined) {
+    // user has no photos available
+    if (userProfile.photos[id] === undefined) {
       return null
     }
     let userActions = userProfile.photos[id][1].filter(action => action.type_of_action === type)
@@ -439,7 +477,8 @@ export default function UserHome(props) {
     return usernameActions
   }
 
-  const handleLike = async(liked, entityId, userId, typeOfEntity, typeOfAction) => {
+  const handleLike = async (liked, entityId, userId, typeOfEntity, typeOfAction) => {
+    // finds the photo that was liked based on what modal is open currently
     let userLikedPost = userProfile.photos[isOpen.modalId][1].filter(action => action.type_of_action === 'Like' && action.user_id === currentUser.id)
     if (liked) {
       let deleteLike = await deleteActionFromCurrentUser(userLikedPost[0].id)
@@ -496,18 +535,17 @@ export default function UserHome(props) {
           <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center flex-shrink-1'>
             <div className='p-2 username-title'>
               {userProfile.user.username}
-            </div>
-              {/* {userProfile.user.id === currentUser.id ?
-                <> */}
-                  <div className='p-2'>
+              </div>
+              {/* need to check if we are in the current user profile or a different user, then return either settings or follow feature */}
+                  {/* <div className='p-2'>
                     <Link to='/update_account'>
                       <FontAwesomeIcon className='userlock' icon={faUserCog} size='2x'/>
                     </Link>
                   </div>
                   <div className='p-2'>
                     <FontAwesomeIcon icon={faCog} size='2x'/>
-                  </div>
-                {/* </> : null} */}
+                  </div> */}
+              {handleSettingsOrFollowFeature(currentUserPage.onPage)}
           </div>
 
           <div className='d-flex userhome-container-bottomspace flex-row flex-grow-2 justify-content-start'>
@@ -576,11 +614,8 @@ export default function UserHome(props) {
           show={followModal.show}
           hide={hideFollowModal}
           users={followModal.list}
-          followModal={followModal}
-          setFollowModal={setFollowModal}
           type={followModal.type}
           handleFollow={handleFollow}
-          allUserRelationships={allUserRelationships}
           isUserFollowingCurrentUser={isUserFollowingCurrentUser}
           getUserFollows={getUserFollows}
           getCurrentUserFriends={getCurrentUserFriends}
