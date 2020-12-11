@@ -45,6 +45,7 @@ export default function UpdateUser(props) {
         return user.id === parseInt(currentUser.id) ? updatedUser : user
       })
     )
+    // on submit, user page doesnt list the users that are following/ settings button isnt displaying!
     setCurrentUser(userData)
     history.push('/home')
   }
