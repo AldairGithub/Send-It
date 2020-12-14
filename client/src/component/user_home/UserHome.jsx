@@ -29,7 +29,8 @@ import UserFollowButton from '../user_home/user_follow_button/UserFollowButton'
 export default function UserHome(props) {
   const {
     currentUser,
-    setCurrentUser
+    setCurrentUser,
+    history
     // need to check for user profile on all users
   } = props
 
@@ -109,10 +110,10 @@ export default function UserHome(props) {
   }
 
   useEffect(() => {
-    getUserProfile(props.match.params.user, currentUser)
+    getUserProfile(props.match.params.user)
   }, [props.match.params.user, currentUser])
 
-  const getUserProfile = async (name, homePageOwner) => {
+  const getUserProfile = async (name) => {
     const getAllUsers = await readAllUsers()
     setAllUsers(getAllUsers)
     const getUser = getAllUsers.filter(user => user.username === name)
@@ -602,6 +603,8 @@ export default function UserHome(props) {
           likedPost={likedPost}
           handleLike={handleLike}
           handleComment={handleComment}
+          history={history}
+          onRequestClose={() => hideModal}
         /> : null}
       {userBio.show ?
         <UserBioImg
