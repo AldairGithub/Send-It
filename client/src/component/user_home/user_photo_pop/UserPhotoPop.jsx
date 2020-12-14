@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { useHistory } from 'react-router-dom'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -69,6 +70,22 @@ export default function UserPhotoPop(props) {
       list: null
     })
   }
+
+  // solves issue with modal not closing on browser back or forward button pressed by user
+  const [locationKeys, setLocationKeys] = useState([])
+  const history = useHistory()
+
+  useEffect(() => {
+    return history.listen(location => {
+      if (history.action === 'PUSH') {
+        setLocationKeys(([_, ...keys]) => keys)
+        {hide()}
+      } else {
+        setLocationKeys((keys) => [location.key, ...keys])
+        {hide()}
+      }
+    })
+  }, [locationKeys, ])
 
   // On user click of the comment icon, input will be focused
   const userCommentInput = useRef(null)
