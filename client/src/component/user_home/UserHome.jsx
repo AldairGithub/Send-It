@@ -56,7 +56,12 @@ export default function UserHome(props) {
   // Post Modal display
   const [isOpen, setIsOpen] = useState({
     show: false,
-    modalId: null,
+    modalId: null
+  })
+
+  const [userAction, setUserAction] = useState({
+    userLikes: null,
+    userComments: null
   })
   const showModal = (e, index) => {
     setIsOpen({
@@ -64,12 +69,18 @@ export default function UserHome(props) {
       modalId: index
     })
     // check if current user liked the post
+    // checks for user likes and comments from post
     currentUserLikedPost(index)
+    handleUserActions(index)
   }
   const hideModal = (e) => {
     setIsOpen({
       show: false,
       modalId: null
+    })
+    setUserAction({
+      userLikes: null,
+      userComments: null
     })
   }
 
@@ -334,7 +345,6 @@ export default function UserHome(props) {
           last_user_action_id: lastActionId
         }
         let unfollowUser = await updateUserRelationship(relationshipId, userData)
-        // updateCurrentUserFriends(userProfile.user.id, data)
 
       } else if (newStatus === 'Accepted') {
         let userData = {
@@ -344,30 +354,32 @@ export default function UserHome(props) {
           last_user_action_id: lastActionId
         }
         let followBack = await updateUserRelationship(relationshipId, userData)
-        // updateCurrentUserFriends(userProfile.user.id, data)
-
 
       } else {
         let deleteFollow = await deleteUserRelationship(relationshipId)
-        // updateCurrentUserFriends(userProfile.user.id, data)
 
       }
     } else {
       let followUser = await postNewUserRelationship(userOneId, userTwoId, newStatus, lastActionId)
-      // updateCurrentUserFriends(userProfile.user.id, data)
 
     }
     // updates list in DOM
+    // data is gathered from the user follow list, if it is absent then handleFollow is not called from the userFollowList Modal
     if (data === undefined) {
-      getUserFollows(userProfile.user.id, allUsers)
-      handleIfOnCurrentUserPage(userProfile.user)
+      // in case handleFollow is called from the moreLikes modal
+      if (isOpen.show) {
+        handleUserActions(isOpen.modalId)
+        getUserFollows(userProfile.user.id, allUsers)
+        // else it comes from the userhome page directly
+      } else {
+        getUserFollows(userProfile.user.id, allUsers)
+        handleIfOnCurrentUserPage(userProfile.user)
+      }
+      // at the end, it comes from the followList modal
     } else {
       updateCurrentUserFriends(userProfile.user.id, data)
       getUserFollows(userProfile.user.id, allUsers)
     }
-
-    // for follow button per user page, maybe check if data exists, if so run updateCurrentUserFriends, else run something else
-
   }
 
   const updateCurrentUserFriends = async (id, data) => {
@@ -467,15 +479,51 @@ export default function UserHome(props) {
       list: filterFriends
     })
   }
-
-  const userAction = (id, type) => {
+// doesnt return data with user action/user data/user relationship
+  // just use it for comments for now
+  const userActions = (id, type) => {
     // user has no photos available
     if (userProfile.photos[id] === undefined) {
       return null
     }
-    let userActions = userProfile.photos[id][1].filter(action => action.type_of_action === type)
-    let usernameActions = userActions.map(str => [str, allUsers.filter(user => user.id === str.user_id)]) 
+  
+    let actions = userProfile.photos[id][1].filter(action => action.type_of_action === type)
+    let usernameActions = actions.map(str => [str, allUsers.filter(user => user.id === str.user_id)])
+  
     return usernameActions
+  }
+
+  // check to see if updating state will send data to the photo modal
+  const handleUserActions = async (id) => {
+
+    if (userProfile.photos[id] === undefined) {
+      return null
+    }
+
+    const friends = await allUserRelationships(currentUser.id)
+    // to update DOM need to call user photos, cannot use photos from state or it updates from the time the page was rendered
+    const userPhotos = await allUserPhotos(userProfile.user.id)
+
+    let likes = userPhotos[id][1].filter(action => action.type_of_action === 'Like')
+    let comments = userPhotos[id][1].filter(action => action.type_of_action === 'Comment')
+    let likesUsernameAndRelationship = likes.map(str =>
+      [
+        str,
+        allUsers.filter(user => user.id === str.user_id)[0],
+        friends.filter(relationship => relationship.user_one_id === str.user_id || relationship.user_two_id === str.user_id)[0]
+      ])
+      let commentsUsernameAndRelationship = comments.map(str =>
+        [
+          str,
+          allUsers.filter(user => user.id === str.user_id)[0],
+          friends.filter(relationship => relationship.user_one_id === str.user_id || relationship.user_two_id === str.user_id)[0]
+        ])
+    
+    setUserAction({
+      ...userAction,
+      userLikes: likesUsernameAndRelationship,
+      userComments: commentsUsernameAndRelationship
+   })
   }
 
   const handleLike = async (liked, entityId, userId, typeOfEntity, typeOfAction) => {
@@ -484,12 +532,16 @@ export default function UserHome(props) {
     if (liked) {
       let deleteLike = await deleteActionFromCurrentUser(userLikedPost[0].id)
       setLikedPost(false)
+
     } else {
       let postLike = await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction)
       setLikedPost(true)
+
     }
     // recalling all photos with updated likes
     getUserProfile(props.match.params.user)
+    // because handleUserActions updates the photos directly into the state, we call it directly
+    handleUserActions(isOpen.modalId)
   }
 
   // if no actionId, then its a new comment
@@ -538,14 +590,6 @@ export default function UserHome(props) {
               {userProfile.user.username}
               </div>
               {/* need to check if we are in the current user profile or a different user, then return either settings or follow feature */}
-                  {/* <div className='p-2'>
-                    <Link to='/update_account'>
-                      <FontAwesomeIcon className='userlock' icon={faUserCog} size='2x'/>
-                    </Link>
-                  </div>
-                  <div className='p-2'>
-                    <FontAwesomeIcon icon={faCog} size='2x'/>
-                  </div> */}
               {handleSettingsOrFollowFeature(currentUserPage.onPage)}
           </div>
 
@@ -596,15 +640,16 @@ export default function UserHome(props) {
         <UserPhotoPop
           photo={userProfile.photos[isOpen.modalId]}
           user={userProfile.user}
-          userComments={userAction(isOpen.modalId, 'Comment')}
-          userLikes={userAction(isOpen.modalId, 'Like')}
+          userComments={userActions(isOpen.modalId, 'Comment')}
+          userLikes={userAction.userLikes}
           currentUser={currentUser}
           show={isOpen.show} hide={hideModal}
           likedPost={likedPost}
           handleLike={handleLike}
           handleComment={handleComment}
           history={history}
-          onRequestClose={() => hideModal}
+          // for the likes modal
+          handleFollow={handleFollow}
         /> : null}
       {userBio.show ?
         <UserBioImg

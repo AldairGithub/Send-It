@@ -26,7 +26,8 @@ export default function UserPhotoPop(props) {
     show, hide,
     likedPost,
     handleLike,
-    handleComment
+    handleComment,
+    handleFollow
   } = props
 
   const [userInput, setUserInput] = useState({
@@ -55,19 +56,16 @@ export default function UserPhotoPop(props) {
   }
 
   const [likesModal, setLikesModal] = useState({
-    show: false,
-    list: null
+    show: false
   })
-  const showLikesModal = (e, arr) => {
+  const showLikesModal = (e) => {
     setLikesModal({
       show: true,
-      list: arr
     })
   }
   const hideLikesModal = (e) => {
     setLikesModal({
       show: false,
-      list: null
     })
   }
 
@@ -76,6 +74,7 @@ export default function UserPhotoPop(props) {
   const history = useHistory()
 
   useEffect(() => {
+
     return history.listen(location => {
       if (history.action === 'PUSH') {
         setLocationKeys(([_, ...keys]) => keys)
@@ -113,36 +112,51 @@ export default function UserPhotoPop(props) {
     })
   }
 
-  const likedPostUsers = (arr) => {
-    if (arr.length === 0) {
+  const getUserLikes = () => {
+    if (userLikes === null) {
+      return null 
+    } else if (userLikes.length === 0 || userLikes[0][1].user_self_img === null) {
+      return 'https://i.imgur.com/PnUuUtU.jpg'
+    } else {
+      return userLikes[0][1].user_self_img
+    }
+  }
+
+  const likedPostUsers = () => {
+    if (userLikes === null) {
+      return null
+    } else if (userLikes.length === 0) {
       return (
         <>
           <p>No one liked your post yet</p>
         </>
       )
-    } else if (arr.length === 1) {
+    } else if (userLikes.length === 1) {
       return (
         <>
           <p>Liked by
             <Link
               onClick={() => { hide() }}
               className='userpop-link-text'
-              to={`/account/${arr[0][1][0].username}`}> {arr[0][1][0].username}</Link>
+              to={`/account/${userLikes[0][1].username}`}
+            > {userLikes[0][1].username}</Link>
           </p>
         </>
       )
-    } else if (arr.length === 2) {
+    } else if (userLikes.length === 2) {
       return (
         <>
           <p>Liked by
             <Link
               onClick={() => { hide() }}
               className='userpop-link-text'
-              to={`/account/${arr[0][1][0].username}`}> {arr[0][1][0].username}</Link> and
+              to={`/account/${userLikes[0][1].username}`}
+            > {userLikes[0][1].username}</Link> and
             <Link
               onClick={() => { hide() }}
               className='userpop-link-text'
-              to={`/account/${arr[1][1][0].username}`}> {arr[1][1][0].username}</Link>
+              to={`/account/${userLikes[1][1].username}`}
+            > {userLikes[1][1].username}</Link>
           </p>
         </>
       )
@@ -150,14 +164,15 @@ export default function UserPhotoPop(props) {
       return (
         <>
           <p>Liked by
-            <Link onClick={() => { hide() }}
+            <Link
+              onClick={() => { hide() }}
               className='userpop-link-text'
-              to={`/account/${arr[0][1][0].username}`}> {arr[0][1][0].username}
-            </Link> and <strong
+              to={`/account/${userLikes[0][1].username}`}
+            > {userLikes[0][1].username}</Link> and
+            <strong
               style={{ cursor: "pointer" }}
-              onClick={(e) => showLikesModal(e, arr)}>
-              {arr.length - 1} others
-              </strong>
+              onClick={(e) => showLikesModal(e)}
+            > {userLikes.length - 1} others</strong>
           </p>
         </>
       )
@@ -213,25 +228,25 @@ export default function UserPhotoPop(props) {
               </div>
 
               <div className='userpop-comment-container position-relative'>
-              {userComments.map((action, index) => (
-                <>
-                  <div className='userpop-comment d-flex flex-row align-items-center flex-nowrap' key={index}>
-                    <div className='userpop-user-img-container userpop-user-left-margin-20px'>
-                      <img className='userpop-user-img' alt={action[1].username} src={action[1][0].user_self_img ? action[1][0].user_self_img : 'https://i.imgur.com/FFn7QzH.jpg'}/>
+                {userComments.map((action, index) => (
+                  <>
+                    <div className='userpop-comment d-flex flex-row align-items-center flex-nowrap' key={index}>
+                      <div className='userpop-user-img-container userpop-user-left-margin-20px'>
+                        <img className='userpop-user-img' alt={action[1].username} src={action[1][0].user_self_img ? action[1][0].user_self_img : 'https://i.imgur.com/FFn7QzH.jpg'}/>
+                      </div>
+                      <div className='userpop-user-text flex-wrap'>
+                        <p><Link onClick={() => {hide()}} className='userpop-link-text' to={`/account/${action[1][0].username}`}>{action[1][0].username}</Link> {action[0].content}</p>
+                      </div>
+                      <div className='userpop-comment-delete-button position-absolute'>
+                        <FontAwesomeIcon
+                          icon={faEllipsisH}
+                          size='2x'
+                          onClick={(e) => showCommentModal(e, action[0].id)}
+                        />  
+                      </div>
                     </div>
-                    <div className='userpop-user-text flex-wrap'>
-                      <p><Link onClick={() => {hide()}} className='userpop-link-text' to={`/account/${action[1][0].username}`}>{action[1][0].username}</Link> {action[0].content}</p>
-                    </div>
-                    <div className='userpop-comment-delete-button position-absolute'>
-                      <FontAwesomeIcon
-                        icon={faEllipsisH}
-                        size='2x'
-                        onClick={(e) => showCommentModal(e, action[0].id)}
-                      />  
-                    </div>
-                  </div>
-                </>
-              ))}
+                  </>
+                ))}
               </div>
               
               
@@ -261,11 +276,12 @@ export default function UserPhotoPop(props) {
                 
                 {/* Post likes and usernames, neeed to add links for each of their profile */}
                 <div className='userpop-user-container d-flex flex-row flex-nowrap'>
-                    <div className='userpop-user-img-container'>
-                      <img className='userpop-user-img' src={userLikes.length === 0 || userLikes[0][1][0].user_self_img === null ? 'https://i.imgur.com/PnUuUtU.jpg' : `${userLikes[0][1][0].user_self_img}`}/>
+                      <div className='userpop-user-img-container'>
+                        <img className='userpop-user-img' src={getUserLikes()} />
+                      {/* <img className='userpop-user-img' src={userLikes.length === 0 || userLikes[0][1][0].user_self_img === null ? 'https://i.imgur.com/PnUuUtU.jpg' : `${userLikes[0][1][0].user_self_img}`}/> */}
                     </div>
                     <div className='userpop-user-text'>
-                        {likedPostUsers(userLikes)}
+                        {likedPostUsers()}
                     </div>
                 </div>
             
@@ -315,12 +331,15 @@ export default function UserPhotoPop(props) {
           hide={hideCommentModal}
           deleteComment={(e) => handleCommentModal(e, commentModalOpen.commentId)}
         /> : null}
-      {likesModal.show ? 
+      {/* because on useEffect the modal is closed on browser back/forward button, it also closes this modal as well */}
+      {likesModal.show ?
         <MoreUserLikes
+          currentUser={currentUser}
           show={likesModal.show}
           hide={hideLikesModal}
           hideModal={hide}
-          list={likesModal.list}
+          list={userLikes}
+          handleFollow={handleFollow}
         /> : null}
     </>
   )
