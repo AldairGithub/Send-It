@@ -20,8 +20,6 @@ export default function Main(props) {
 
   const [allUserPhotos, setAllUserPhotos] = useState()
 
-  const [userFriends, setUserFriends] = useState([])
-
   useEffect(() => {
     getUsers()
   }, [])
@@ -87,7 +85,6 @@ export default function Main(props) {
           {...props}
           currentUser={currentUser}
           setCurrentUser={setCurrentUser}
-          userFriends={userFriends}
         />
       )} />
 
