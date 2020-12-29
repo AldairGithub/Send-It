@@ -101,7 +101,7 @@ export default function UserPhotoPop(props) {
     const { name, value } = e.target
     setUserInput({
       ...userInput,
-      [name]: value,
+      [name]: value
     })
   }
 
@@ -276,9 +276,8 @@ export default function UserPhotoPop(props) {
                 
                 {/* Post likes and usernames, neeed to add links for each of their profile */}
                 <div className='userpop-user-container d-flex flex-row flex-nowrap'>
-                      <div className='userpop-user-img-container'>
-                        <img className='userpop-user-img' src={getUserLikes()} />
-                      {/* <img className='userpop-user-img' src={userLikes.length === 0 || userLikes[0][1][0].user_self_img === null ? 'https://i.imgur.com/PnUuUtU.jpg' : `${userLikes[0][1][0].user_self_img}`}/> */}
+                    <div className='userpop-user-img-container'>
+                      <img className='userpop-user-img' src={getUserLikes()} />
                     </div>
                     <div className='userpop-user-text'>
                         {likedPostUsers()}

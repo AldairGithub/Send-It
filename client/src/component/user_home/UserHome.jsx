@@ -531,12 +531,10 @@ export default function UserHome(props) {
     let userLikedPost = userProfile.photos[isOpen.modalId][1].filter(action => action.type_of_action === 'Like' && action.user_id === currentUser.id)
     if (liked) {
       let deleteLike = await deleteActionFromCurrentUser(userLikedPost[0].id)
-      setLikedPost(false)
-
+      setLikedPost(false)   
     } else {
       let postLike = await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction)
       setLikedPost(true)
-
     }
     // recalling all photos with updated likes
     getUserProfile(props.match.params.user)
