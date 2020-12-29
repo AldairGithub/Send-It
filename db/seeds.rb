@@ -50,6 +50,18 @@ puts "#{User.count} users created"
 @photo_eight = Entity.create(name: 'Photo', content: 'Garden crown got rusty', url: 'https://i.imgur.com/p6YMG2O.jpg', user: @aldair)
 @photo_nine = Entity.create(name: 'Photo', content: 'learning to play', url: 'https://i.imgur.com/qilptGI.jpg', user: @aldair)
 
+@photo_ten = Entity.create(name: 'Photo', content: 'scenting', url: 'https://i.imgur.com/Mb7ug5U.jpg', user: @nate)
+
+@photo_eleven = Entity.create(name: 'Photo', content: 'learning to ride a bike', url: 'https://i.imgur.com/JPUWJlM.jpg', user: @moises)
+
+@photo_twelve = Entity.create(name: 'Photo', content: 'found an old lock!', url: 'https://i.imgur.com/Yqm11xo.jpg', user: @chris)
+
+@photo_thirteen = Entity.create(name: 'Photo', content: 'learned how to cook', url: 'https://i.imgur.com/gqM4s5R.jpg', user: @roffaden)
+
+@photo_fourteen = Entity.create(name: 'Photo', content: 'My first plant!', url: 'https://i.imgur.com/F73OZZL.jpg', user: @vasu)
+
+@photo_fifteen = Entity.create(name: 'Photo', content: 'My next destination', url: 'https://i.imgur.com/4i0WgHD.jpg', user: @kelly)
+
 @article_one = Entity.create(name: 'Article', content: 'This is my first article! Loving this database so far for sureeeee', user: @kelly)
 puts "#{Entity.count} entities created"
 

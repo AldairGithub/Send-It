@@ -32,7 +32,9 @@ export default function UpdateUser(props) {
       username: currentUser.username,
       email: currentUser.email,
       name: currentUser.name,
-      bio: currentUser.bio
+      bio: currentUser.bio,
+      // need to make room for userId or on homepage it wont render settings button
+      id: currentUser.id
     })
   }
 
@@ -47,7 +49,7 @@ export default function UpdateUser(props) {
     )
     // on submit, user page doesnt list the users that are following/ settings button isnt displaying!
     setCurrentUser(userData)
-    history.push('/home')
+    history.push(`/home`)
   }
 
   const handleChange = (e) => {
