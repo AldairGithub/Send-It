@@ -60,12 +60,12 @@ export default function UserPhotoPop(props) {
   })
   const showLikesModal = (e) => {
     setLikesModal({
-      show: true,
+      show: true
     })
   }
   const hideLikesModal = (e) => {
     setLikesModal({
-      show: false,
+      show: false
     })
   }
 

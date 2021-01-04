@@ -1,0 +1,57 @@
+.modal-90w {
+  min-width: 70%;
+  position: relative;
+}
+.home-img-container {
+  width: 1500px;
+  height: 500px;
+}
+.home-img {
+  width: 100%;
+  height: 100%;
+}
+.home-info-container {
+  min-width: 45%;
+  height: 100%;
+  margin-left: 15px;
+}
+.home-user-img-container {
+  /* max-width fixed bio img shrinking on text being too long */
+  max-width: 30px;
+  height: 30px;
+  margin-bottom: 10px;
+}
+.home-user-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.home-user-text {
+  padding: 5px;
+  margin-left: 5px;
+}
+.home-link-text {
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+.home-link-text:hover {
+  color:black
+}
+.home-features-container {
+  position: absolute;
+  bottom: 0;
+}
+.home-input-container {
+  max-width: 100%;
+  margin-left: 5px;
+  margin-top: 25px;
+}
+.home-input {
+  width: 300px;
+  margin-top: 20px;
+}
+.home-input-button {
+  margin-left: 55px;
+}

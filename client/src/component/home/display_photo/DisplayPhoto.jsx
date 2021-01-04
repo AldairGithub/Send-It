@@ -7,7 +7,7 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 
-import { allUserPhotos } from '../../../services/user'
+import { allUserPhotos, allUserRelationships } from '../../../services/user'
 import { postActionFromCurrentUser } from '../../../services/action'
 import { deleteActionFromCurrentUser } from '../../../services/action'
 
@@ -15,21 +15,41 @@ import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 
+import HomePhotoPop from '../home_photo_pop/HomePhotoPop'
+
 import './DisplayPhoto.css'
 
 export default function DisplayPhoto(props) {
-  const { user, handleAction, actions, entity, currentUser } = props
+  const { user, handleAction, actions, entity, currentUser, allUsers } = props
 
-  const [actionId, setActionId] = useState(null)
-  const [liked, setLiked] = useState(false)
+  const [liked, setLiked] = useState(null)
 
   const [userInput, setUserInput] = useState({
     comment: ""
   })
 
+  const [openPhotoModal, setOpenPhotoModal] = useState({
+    show: false
+  })
+  const showPhotoModal = (e) => {
+    setOpenPhotoModal({
+      show: true
+    })
+  }
+  const hidePhotoModal = (e) => {
+    setOpenPhotoModal({
+      show: false
+    })
+  }
+
+  const [userAction, setUserAction] = useState({
+    likes: [],
+    comments: []
+  })
 
   useEffect(() => {
     checkForLike(actions)
+    getUsernameFromAction()
   }, [])
 
   // check if current user has liked or commented on post
@@ -37,8 +57,7 @@ export default function DisplayPhoto(props) {
     arr.forEach(action => {
       if (action.type_of_action === 'Like') {
         if (action.user_id === currentUser.id) {
-          setActionId(action.id)
-          setLiked(true)
+          setLiked(action.id)
         }
       }
     })
@@ -50,8 +69,7 @@ export default function DisplayPhoto(props) {
     // component, we can keep state updated whenever the user likes something 
     if (action !== null) {
       const deleteLike = await deleteActionFromCurrentUser(action)
-      setActionId(null)
-      setLiked(false)
+      setLiked(null)
     } else {
       const postLike = await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction)
       // actions array is empty when the like is called
@@ -59,11 +77,18 @@ export default function DisplayPhoto(props) {
       const newPhotos = await allUserPhotos(user.id)
       const result = newPhotos.filter(entity => entity[0].id === entityId)
       // cannot find actionId because it is undefined! Thats why it is not deleting the likes
-      setActionId(result[0][1][0].id)
-      setLiked(true)
+      // need to filter through actions to get the correct id of the like, it was deleting other users likes otherwise
+      const actionId = result[0][1].filter(action => {
+        if (action.type_of_action === 'Like' && action.user_id === currentUser.id) {
+          setLiked(action.id)
+        }
+      })
     }
     // updates feed whenever a like is pressed
     handleAction()
+    getUsernameFromAction()
+    // need updated props.actions in order to update likes/comments, bc handleAction() updates them getUsernameFromAction does not 
+    // have them in time for update
     // using this function will always make the like button red, need to find workaround when user disliked photo
     // checkForLike(actions)
   }
@@ -100,12 +125,20 @@ export default function DisplayPhoto(props) {
     })
   }
 
-  const handleUserComment = async(entityId, userId, typeOfEntity, typeOfAction, userComment) => {
-    const comment = await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction, userComment)
+  const handleUserComment = async (commentExists, entityId, userId, typeOfEntity, typeOfAction, userComment) => {
+    if (commentExists) {
+      const deleteComment = await deleteActionFromCurrentUser(commentExists)
+    } else {
+      const comment = await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction, userComment)
+    }
     setUserInput({
       comment: ""
     })
+    // updates props.actions
     handleAction()
+    // updates state with new comment, which is used in the modal
+    getUsernameFromAction()
+
   }
   
   // allows rails created_at to be formatted into a date
@@ -114,6 +147,34 @@ export default function DisplayPhoto(props) {
     month: "long",
     day: "2-digit"
   })
+
+  const getUsernameFromAction = async () => {
+    const friends = await allUserRelationships(currentUser.id)
+    // in order to update state without rerendering the whole page, we just need the actions
+    const allUserActions = await allUserPhotos(user.id)
+
+    const currentPhoto = allUserActions.filter(action => action[0].id === entity.id)
+    const newActions = currentPhoto[0][1]
+
+    const likes = newActions.filter(action => action.type_of_action === 'Like')
+    const comments = newActions.filter(action => action.type_of_action === 'Comment')
+
+    const likesAndUsernames = likes.map(like => [
+      like,
+      allUsers.filter(user => user.id === like.user_id)[0],
+      friends.filter(friend => friend.user_one_id === like.user_id || friend.user_two_id === like.user_id)[0]
+    ])
+    const commentsAndUsernames = comments.map(comment => [
+      comment,
+      allUsers.filter(user => user.id === comment.user_id)[0],
+      friends.filter(friend => friend.user_one_id === comment.user_id || friend.user_two_id === comment.user_id)[0]
+    ])
+    setUserAction({
+      ...userAction,
+      likes: likesAndUsernames,
+      comments: commentsAndUsernames
+    })
+  }
 
   return (
     <>
@@ -131,7 +192,7 @@ export default function DisplayPhoto(props) {
           </div>
         </div>
         <div className='display-img-container'>
-          <img className='display-img' src={ entity.url } alt={ entity.content }/>
+          <img className='display-img' src={ entity.url } alt={ entity.content } onDoubleClick={(e) => userLikedPost(liked, entity.id, currentUser.id, entity.name, 'Like')}/>
         </div>
         {/* like & comment icon/
             likes number/
@@ -143,9 +204,9 @@ export default function DisplayPhoto(props) {
           <div className='d-flex flex-row display-icon'>
             <FontAwesomeIcon
               icon={faHeart}
-              style={{ color: `${liked ? 'red' : 'black'}` }}
+              style={{ color: `${liked !== null ? 'red' : 'black'}` }}
               size='2x'
-              onClick={(e) => userLikedPost(actionId, entity.id, currentUser.id, entity.name, 'Like')}
+              onClick={(e) => userLikedPost(liked, entity.id, currentUser.id, entity.name, 'Like')}
             />
             <div className='display-icon-right-space'></div>
             <FontAwesomeIcon icon={ faComment } size='2x' />
@@ -156,7 +217,7 @@ export default function DisplayPhoto(props) {
           <div className='d-flex flex-row' style={{ marginLeft: '15px'}}>
             <Link to={ `/account/${user.username}` } style={{color: 'black'}}><strong>{user.username}</strong></Link><p style={{marginLeft: '10px'}}>{ entity.content }</p>
           </div>
-          <div style={{ marginLeft: '15px', color: 'gray'}}>
+          <div style={{ marginLeft: '15px', color: 'gray', cursor: 'pointer'}} onClick={(e) => showPhotoModal(e)}>
             {formatter.format(Date.parse(entity.created_at))}
           </div>
           <div>
@@ -176,7 +237,7 @@ export default function DisplayPhoto(props) {
                 </Col>
                 <Col xs='auto'>
                   <Button
-                    onClick={() => handleUserComment(entity.id, currentUser.id, entity.name, 'Comment', userInput.comment)}
+                    onClick={() => handleUserComment(false, entity.id, currentUser.id, entity.name, 'Comment', userInput.comment)}
                     className='display-comment-button'
                     variant='link'
                     disabled={userInput.comment === "" ? true : false}
@@ -189,7 +250,22 @@ export default function DisplayPhoto(props) {
           </div>
         </div>
       </div>
-
+      {openPhotoModal.show ?
+        <HomePhotoPop
+          currentUser={currentUser}
+          show={openPhotoModal.show}
+          hide={hidePhotoModal}
+          entity={entity}
+          actions={actions}
+          user={user}
+          comments={userAction.comments}
+          likes={userAction.likes}
+          // updates user likes per state
+          liked={liked}
+          handleLike={userLikedPost}
+          handleComment={handleUserComment}
+        />
+        : null}
     </>
   )
 }

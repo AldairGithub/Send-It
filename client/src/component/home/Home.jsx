@@ -54,7 +54,6 @@ export default function Home(props) {
     // Promise.all returns the array into one promise 
     // We add await in front of Promise.all so only once all info has been obtained will it return
     const result = await Promise.all(usersData.map(async (user) => returnPhoto(user)))
-    
     setFeed({
       available: true,
       photos: result
@@ -82,7 +81,14 @@ export default function Home(props) {
             {feed.available ? feed.photos.map((user, id) => (
               user[1].map((str, index) => (
                 <>
-                  <DisplayPhoto currentUser={currentUser} user={user[0][1]} entity={user[1][index][0]} actions={user[1][index][1]}  handleAction={handleAction}/>
+                  <DisplayPhoto
+                    currentUser={currentUser}
+                    user={user[0][1]}
+                    entity={user[1][index][0]}
+                    actions={user[1][index][1]}
+                    allUsers={allUsers}
+                    handleAction={handleAction}
+                  />
                 </>
               ))
             )) : null}
