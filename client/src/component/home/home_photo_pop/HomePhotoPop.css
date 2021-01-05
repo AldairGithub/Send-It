@@ -55,3 +55,11 @@
 .home-input-button {
   margin-left: 55px;
 }
+.home-comment-delete-button {
+  margin-right: 15px;
+  right: 0;
+  color: transparent;
+}
+.home-comment-delete-button:hover {
+  color: gray;
+}

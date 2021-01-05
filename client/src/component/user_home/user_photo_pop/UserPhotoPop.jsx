@@ -36,18 +36,21 @@ export default function UserPhotoPop(props) {
 
   const [commentModalOpen, setCommentModalOpen] = useState({
     show: false,
-    commentId: null
+    commentId: null,
+    commentUserId: null
   })
-  const showCommentModal = (e, index) => {
+  const showCommentModal = (e, index, userId) => {
     setCommentModalOpen({
       show: true,
-      commentId: index
+      commentId: index,
+      commentUserId: userId
     })
   }
   const hideCommentModal = (e) => {
     setCommentModalOpen({
       show: false,
-      commentId: null
+      commentId: null,
+      commentUserId: null
     })
   }
   const handleCommentModal = (e, index) => {
@@ -241,7 +244,7 @@ export default function UserPhotoPop(props) {
                         <FontAwesomeIcon
                           icon={faEllipsisH}
                           size='2x'
-                          onClick={(e) => showCommentModal(e, action[0].id)}
+                          onClick={(e) => showCommentModal(e, action[0].id, action[1][0].id)}
                         />  
                       </div>
                     </div>
@@ -326,6 +329,8 @@ export default function UserPhotoPop(props) {
       </Modal>
       {commentModalOpen.show  ?
         <CommentButton
+          currentUser={currentUser}
+          commentUserId={commentModalOpen.commentUserId}
           show={commentModalOpen.show}
           hide={hideCommentModal}
           deleteComment={(e) => handleCommentModal(e, commentModalOpen.commentId)}

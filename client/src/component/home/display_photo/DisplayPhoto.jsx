@@ -10,6 +10,9 @@ import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { allUserPhotos, allUserRelationships } from '../../../services/user'
 import { postActionFromCurrentUser } from '../../../services/action'
 import { deleteActionFromCurrentUser } from '../../../services/action'
+import { postNewUserRelationship } from '../../../services/user_relationship'
+import { updateUserRelationship } from '../../../services/user_relationship'
+import { deleteUserRelationship } from '../../../services/user_relationship'
 
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
@@ -176,6 +179,36 @@ export default function DisplayPhoto(props) {
     })
   }
 
+  const handleFollow = async (relationshipId, userOneId, userTwoId, newStatus, lastActionId, data) => {
+    if (relationshipId) {
+      if (newStatus === 'Pending' || newStatus === 'Denied') {
+        let userData = {
+          user_one_id: userOneId,
+          user_two_id: userTwoId,
+          status: newStatus,
+          last_user_action_id: lastActionId
+        }
+        let unfollowUser = await updateUserRelationship(relationshipId, userData)
+
+      } else if (newStatus === 'Accepted') {
+        let userData = {
+          user_one_id: userOneId,
+          user_two_id: userTwoId,
+          status: newStatus,
+          last_user_action_id: lastActionId
+        }
+        let followBack = await updateUserRelationship(relationshipId, userData)
+
+      } else {
+        let deleteFollow = await deleteUserRelationship(relationshipId)
+      }
+    } else {
+      let followUser = await postNewUserRelationship(userOneId, userTwoId, newStatus, lastActionId)
+    }
+    // clicked on following the user literally deletes user likes
+    getUsernameFromAction()
+  }
+
   return (
     <>
       {/* display container */}
@@ -264,6 +297,7 @@ export default function DisplayPhoto(props) {
           liked={liked}
           handleLike={userLikedPost}
           handleComment={handleUserComment}
+          handleFollow={handleFollow}
         />
         : null}
     </>
