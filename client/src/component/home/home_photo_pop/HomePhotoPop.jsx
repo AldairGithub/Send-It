@@ -14,9 +14,23 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import CommentButton from '../../user_home/user_photo_pop/comment_button/CommentButton'
+import MoreUserLikes from '../../user_home/user_photo_pop/more_user_likes/MoreUserLikes'
 
 export default function HomePhotoPop(props) {
-  const { currentUser, show, hide, entity, user, actions, comments, likes, liked, handleLike, handleComment } = props
+  const {
+    currentUser,
+    show,
+    hide,
+    entity,
+    user,
+    actions,
+    comments,
+    likes,
+    liked,
+    handleLike,
+    handleComment,
+    handleFollow
+  } = props
 
   const [userInput, setUserInput] = useState({
     comment: ""
@@ -24,23 +38,40 @@ export default function HomePhotoPop(props) {
 
   const [commentModalOpen, setCommentModalOpen] = useState({
     show: false,
-    commentId: null
+    commentId: null,
+    commentUserId: null
   })
-  const showCommentModal = (e, index) => {
+  const showCommentModal = (e, index, userId) => {
     setCommentModalOpen({
       show: true,
-      commentId: index
+      commentId: index,
+      commentUserId: userId
     })
   }
   const hideCommentModal = (e) => {
     setCommentModalOpen({
       show: false,
-      commentId: null
+      commentId: null,
+      commentUserId: null
+    })
+  }
+
+  const [likesModalOpen, setLikesModalOpen] = useState({
+    show: false
+  })
+  const showLikesModal = () => {
+    setLikesModalOpen({
+      show: true
+    })
+  } 
+  const hideLikesModal = () => {
+    setLikesModalOpen({
+      show: false
     })
   }
   
   useEffect(() => {
-    
+
   })
 
   const userCommentInput = useRef(null)
@@ -70,6 +101,94 @@ export default function HomePhotoPop(props) {
   const handleCommentModal = (e, index) => {
     handleUserComment(index)
     hideCommentModal(e)
+  }
+
+  const doesPostHaveLikes = () => {
+    if (likes === null) {
+      return null
+    } else if (likes.length === 0) {
+      return (
+        <>
+          <div>
+            {likedByUsers([])}
+          </div>
+        </>
+      )
+    } else if (likes.filter(like => like[2] !== undefined)) {
+      const result = likes.filter(like => like[2] !== undefined)
+      if (result[0][1].user_self_img === null) {
+        return (
+          <>
+            <div className='home-user-img-container'>
+              <FontAwesomeIcon
+                icon={faUser}
+                size='2x'
+              />
+            </div>
+            <div className='home-user-text'>
+              {likedByUsers(result)}
+            </div>
+          </>
+        )
+      } else {
+        return (
+          <>
+            <div className='home-user-img-container'>
+              <img className='home-user-img' src={ result [0][1].user_self_img}/>
+            </div>
+            <div className='home-user-text'>
+              {likedByUsers(result)}
+            </div>
+          </>
+        )
+      }
+    }
+  }
+
+  const likedByUsers = (arr) => {
+    if (arr === null || likes === null) {
+      return null
+    } else if (arr.length === 0 || likes.length === 0) {
+      return (
+        <> 
+          <p style={{color: 'gray'}}>No one liked this post yet</p>
+        </>
+      )
+    } else if (arr.length === 1) {
+      return (
+        <>
+          <p>Liked by 
+            <Link
+              to={`/account/${arr[0][1].username}`}
+              className='home-link-text'
+            > {arr[0][1].username}</Link>
+            {likes.length > 1 ?
+            <>
+                <strong onClick={ (e)=> showLikesModal(e)} style={{ cursor: 'pointer' }}> and {likes.length - 1} other{likes.length - 1 === 1 ? "" : "s"}</strong>
+            </> : null}
+          </p>
+        </>
+      )
+    } else if (arr.length >= 2) {
+      return (
+        <>
+          <p>Liked by
+           <Link
+              to={`/account/${arr[0][1].username}`}
+              className='home-link-text'
+            > {arr[0][1].username}</Link>{likes.length > 2 ? "," : " and"}
+            <Link
+              to={`/account/${arr[1][1].username}`}
+              className='home-link-text'
+            > {arr[1][1].username}</Link>
+            {likes.length > 2 ?
+              <>
+                <strong onClick={ (e)=> showLikesModal(e)} style={{cursor: 'pointer'}}> and { likes.length - 1} others</strong>
+              </> : null}
+          </p>
+        </>
+      )
+    }
   }
   
   return (
@@ -129,11 +248,11 @@ export default function HomePhotoPop(props) {
                         {/* because the link is a different address, no need to hide modal on user click */}
                         <p><Link className='home-link-text' to={`/account/${comment[1].username}`}>{comment[1].username}</Link> { comment[0].content }</p>
                       </div>
-                      <div>
+                      <div className='home-comment-delete-button position-absolute'>
                         <FontAwesomeIcon
                           icon={faEllipsisH}
                           size='2x'
-                          onClick={(e) => showCommentModal(e, comment[0].id)}
+                          onClick={(e) => showCommentModal(e, comment[0].id, comment[1].id)}
                         />
                       </div>
                     </div>
@@ -165,8 +284,8 @@ export default function HomePhotoPop(props) {
                     </div>
 
                     {/* user likes goes here along with the more likes modal */}
-                    <div>
-
+                    <div className='d-flex flex-row justify-content-start'>
+                      {doesPostHaveLikes()}
                     </div>
 
 
@@ -212,10 +331,22 @@ export default function HomePhotoPop(props) {
       </Modal>
       {commentModalOpen.show ? 
         <CommentButton
+          currentUser={currentUser}
+          commentUserId={commentModalOpen.commentUserId}
           show={commentModalOpen.show}
           hide={hideCommentModal}
           deleteComment={(e) => handleCommentModal(e, commentModalOpen.commentId)}
-        /> : null  }
+        /> : null}
+      {likesModalOpen.show ? 
+        <MoreUserLikes
+          currentUser={currentUser}
+          show={likesModalOpen.show}
+          hide={hideLikesModal}
+          hideModal={hide}
+          list={likes}
+          handleFollow={handleFollow}
+        />
+      : null}
     </>
   )
 }
