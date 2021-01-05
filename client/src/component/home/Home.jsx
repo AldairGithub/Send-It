@@ -8,6 +8,8 @@ import { allUserPhotos } from '../../services/user'
 import { allUserRelationships } from '../../services/user'
 import { followingList } from '../utils/functions'
 import { combineRelationshipToUserData } from '../utils/functions'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 
 import Header from '../header/Header'
 import DisplayPhoto from '../home/display_photo/DisplayPhoto'
@@ -73,11 +75,30 @@ export default function Home(props) {
             setCurrentUser={setCurrentUser}
           />
           <div className='container d-flex justify-content-end'>
-            <div>
-              <Link to={`/account/${currentUser.username}`}><h4>{currentUser.username}</h4></Link>
+            <div className='homepage-container position-fixed d-flex flex-row flex-nowrap'>
+              {currentUser.user_self_img === null ?
+                <>
+                  <div className='homepage-user-self-img-container'>
+                    <FontAwesomeIcon
+                      icon={faUserCircle}
+                      size='2x'
+                    />
+                  </div>
+                </>
+                : 
+                <>
+                  <div className='homepage-user-self-img-container'>
+                    <img className='homepage-user-self-img' src={ currentUser.user_self_img}/>
+                  </div>
+                </>
+              }
+              <div>
+                <Link className='homepage-link-text' to={`/account/${currentUser.username}`}><h4>{currentUser.username}</h4></Link>
+                <p style={{color: 'gray'}}>{ currentUser.name }</p>
+              </div>
             </div>
           </div>
-          <div className='d-flex flex-column align-items-center'>
+          <div style={{ marginTop: '25px'}}className='d-flex flex-column align-items-center'>
             {feed.available ? feed.photos.map((user, id) => (
               user[1].map((str, index) => (
                 <>
