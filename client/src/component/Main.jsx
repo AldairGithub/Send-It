@@ -87,7 +87,6 @@ export default function Main(props) {
           setCurrentUser={setCurrentUser}
         />
       )} />
-
     </main>
   )
 }
