@@ -25,6 +25,7 @@ import UserPhotoPop from './user_photo_pop/UserPhotoPop'
 import UserBioImg from '../user_home/user_bio_img/UserBioImg'
 import UserFollowList from '../user_home/user-follow-list/UserFollowList'
 import UserFollowButton from '../user_home/user_follow_button/UserFollowButton'
+import NotLoggedIn from '../not_logged_in/NotLoggedIn'
 
 export default function UserHome(props) {
   const {
@@ -70,8 +71,10 @@ export default function UserHome(props) {
     })
     // check if current user liked the post
     // checks for user likes and comments from post
-    currentUserLikedPost(index)
-    handleUserActions(index)
+    if (index) {
+      currentUserLikedPost(index)
+      handleUserActions(index)
+    } 
   }
   const hideModal = (e) => {
     setIsOpen({
@@ -117,6 +120,20 @@ export default function UserHome(props) {
       show: false,
       list: null,
       type: null
+    })
+  }
+
+  const [userLoggedIn, setUserLoggedIn] = useState({
+    show: false
+  })
+  const showUserLoggedIn = (e) => {
+    setUserLoggedIn({
+      show: true
+    })
+  }
+  const hideUserLoggedIn = (e) => {
+    setUserLoggedIn({
+      show: false
     })
   }
 
@@ -595,10 +612,10 @@ export default function UserHome(props) {
             <div className='p-2'>
               <strong>{userProfile.photos.length} Posts</strong>
             </div>
-              <div className='p-2' style={{ cursor: "pointer" }} onClick={(e) => showFollowModal(e, relationships.followers, 'Followers')}>
+              <div className='p-2' style={{ cursor: "pointer" }} onClick={(e) => currentUser !== null ? showFollowModal(e, relationships.followers, 'Followers') : showUserLoggedIn(e)}>
               <strong>{relationships.followers.length} followers</strong>
             </div>
-              <div className='p-2' style={{ cursor: "pointer" }} onClick={(e) =>  showFollowModal(e, relationships.following, 'Following')}>
+              <div className='p-2' style={{ cursor: "pointer" }} onClick={(e) => currentUser !== null ? showFollowModal(e, relationships.following, 'Following') : showUserLoggedIn(e)}>
               <strong>{relationships.following.length} following</strong>
             </div>
           </div>
@@ -621,7 +638,7 @@ export default function UserHome(props) {
         <div className='d-flex flex-wrap-reverse justify-content-center'>
         {userProfile.photos.map((arr, index) => (
           <>
-            <div className='user-img-container' key={index} onClick={(e) => showModal(e, index)}>
+            <div className='user-img-container' key={index} onClick={(e) => currentUser !== null ? showModal(e, index) : showUserLoggedIn(e)}>
               <img className='user-img flex-fill' src={arr[0].url} />
               <div className='user-img-text'>
                 <FontAwesomeIcon icon={faHeart} size='1x' />{getActionNumber(arr[1], 'Like')}
@@ -648,7 +665,8 @@ export default function UserHome(props) {
           history={history}
           // for the likes modal
           handleFollow={handleFollow}
-        /> : null}
+        /> 
+        : null}
       {userBio.show ?
         <UserBioImg
           show={userBio.show}
@@ -666,6 +684,9 @@ export default function UserHome(props) {
           getUserFollows={getUserFollows}
           getCurrentUserFriends={getCurrentUserFriends}
         /> : null}
+      {userLoggedIn.show ? 
+        <NotLoggedIn show={userLoggedIn.show} hide={ hideUserLoggedIn }/>
+      : null}
     </>
   )
 }

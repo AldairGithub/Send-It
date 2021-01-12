@@ -117,12 +117,100 @@ export default function Home(props) {
         </>
       ) : (
           <>
-            <div className='container d-flex flex-column justify-content-end'>
-              <h4>New to Send It? <Link to='register'>Sign up</Link></h4>
-              <h4>Already an user? <Link to='/'>Log in</Link></h4>
+            <Header currentUser={ null }/>
+            <div className='container-sm d-flex flex-column align-items-center'>
+              <h5 style={{marginTop: '15px'}}>You need to be logged in to use Send It</h5>
+              <p style={{ marginTop: '25px'}}>New to Send It? <Link to='register'>Sign up</Link></p>
+              <p style={{ marginBottom: '25px'}}>Already an user? <Link to='/'>Log in</Link></p>
             </div>
         </>
       )}
     </div>
   )
 }
+
+// Links to images
+// 
+// racing, speedometer, sailing, wine, family gatherings, city views, sports, table settings, laughing 
+// 
+// https://i.imgur.com/y3AWTp0.jpg?1
+// Porsche WEC
+// https://unsplash.com/photos/6AtkTnXqeiI
+// Photo by Philip Veater
+// 
+// https://i.imgur.com/eK85Eul.jpg
+// Dirt bike racing
+// https://unsplash.com/photos/-GE-xOGTt3w
+// Photo by Harley-Davidson
+// 
+// https://i.imgur.com/zFnJN48.jpg
+// Red racecar with speed effect
+// https://unsplash.com/photos/yelIlsascr0
+// Photo by Severin Demchuk
+// 
+// https://i.imgur.com/MRO1YDK.jpg
+// Speedometer
+// https://unsplash.com/photos/NN8sIzRvk-k
+// Photo by Luís Sousa
+// 
+// https://i.imgur.com/qAaqtJP.jpg
+// Subaru STI speedometer
+// https://unsplash.com/photos/10x5iT14PLQ
+// Photo by Anton Jansson
+// 
+// https://i.imgur.com/Ttjuph8.jpg
+// sailing on clear water
+// https://unsplash.com/photos/KiS25n89ph4
+// Photo by Franz Schmitt
+// 
+// https://i.imgur.com/bBawAgq.jpg
+// Family gathering view
+// https://unsplash.com/photos/Hp6zYM9orZ4
+// Photo by Inés Castellano
+// 
+// https://i.imgur.com/yoL9hDh.jpg
+// Family dinner with wine serving
+// https://unsplash.com/photos/RygIdTavhkQ
+// Photo by Dave Lastovskiy
+// 
+// https://i.imgur.com/oduW6uk.jpg
+// Speedboat dashboard
+// https://unsplash.com/photos/jt8S_JhVn5A
+// Photo by Simon Goetz
+// 
+// https://i.imgur.com/79gNmEr.jpg
+// Plane view of mountains
+// https://unsplash.com/photos/nud0w51mC00
+// Photo by naomi tamar
+// 
+// https://i.imgur.com/BTRe0y8.jpg
+// View of plane
+// https://unsplash.com/photos/iUVqTyyRQGc
+// Photo by Red Dot
+// 
+// https://i.imgur.com/zSfkjl1.jpg
+// Highway speed
+// https://unsplash.com/photos/8As6hrLM4Ec
+// Photo by Scott Hewitt
+// 
+// https://i.imgur.com/JivmUBi.jpg
+// Archer overlooks target
+// https://unsplash.com/photos/jY9mXvA15W0
+// Photo by Annie Spratt
+// 
+// https://i.imgur.com/xKnpvOL.jpg
+// Cliff diving
+// https://unsplash.com/photos/PebwygRbPCo
+// Photo by Thijs Stoop
+// 
+// https://i.imgur.com/oxfLidC.jpg
+// HM store in Times Square
+// https://unsplash.com/photos/srNRVuOR_ZM
+// Photo by Zane Lee
+// 
+// https://i.imgur.com/juhY3QN.jpg
+// Flatiron Square
+// https://unsplash.com/photos/jRco0idtT0c
+// Photo by Lerone Pieters
+// 
+// 
