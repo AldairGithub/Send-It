@@ -71,10 +71,8 @@ export default function UserHome(props) {
     })
     // check if current user liked the post
     // checks for user likes and comments from post
-    if (index) {
-      currentUserLikedPost(index)
-      handleUserActions(index)
-    } 
+    currentUserLikedPost(index)
+    handleUserActions(index)
   }
   const hideModal = (e) => {
     setIsOpen({
