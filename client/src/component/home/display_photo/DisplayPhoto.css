@@ -49,3 +49,18 @@
   text-decoration: none;
   color: rgb(28, 105, 254);
 }
+
+@media ( max-width: 375px ) {
+  .display-container {
+    width: 100%;
+    height: 50%;
+  }
+  .display-user-container {
+    margin-left: 0px;
+  }
+  .display-img {
+    width: 100%;
+    height: 50%;
+  }
+
+}

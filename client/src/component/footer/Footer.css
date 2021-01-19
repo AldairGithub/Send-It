@@ -1,0 +1,9 @@
+.on-phone {
+  display: none
+}
+
+@media (max-width: 375px) {
+  .on-phone{
+    display: flex;
+  }
+}

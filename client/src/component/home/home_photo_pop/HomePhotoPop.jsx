@@ -200,7 +200,7 @@ export default function HomePhotoPop(props) {
         dialogClassName='modal-90w'
       >
         <Modal.Body>
-          <div className='d-flex flex-row justify-content-start'>
+          <div className='homephoto-container'>
 
             <div className='home-img-container'>
               <img className='home-img' src={entity.url} alt={ entity.content }/>
@@ -229,7 +229,7 @@ export default function HomePhotoPop(props) {
                 </div>
               </div>
 
-              <div>
+              <div className='homephoto-comment-container'>
                 {comments.map((comment, index) => (
                   <>
                     <div className='d-flex flex-row align-items-center flex-nowrap' key={index}>

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 
 export default function NotLoggedIn(props) {
   const { show, hide } = props
+  
   return (
     <>
       <Modal show={show} onHide={hide} centered>

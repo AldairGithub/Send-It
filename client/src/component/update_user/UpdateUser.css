@@ -20,3 +20,9 @@ hr {
   padding-bottom: 5%;
 }
 
+@media (max-width: 375px) {
+  .container-md {
+    width: 80%;
+  }
+}
+
