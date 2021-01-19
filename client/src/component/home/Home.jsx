@@ -13,6 +13,7 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 
 import Header from '../header/Header'
 import DisplayPhoto from '../home/display_photo/DisplayPhoto'
+import Footer from '../footer/Footer'
 
 export default function Home(props) {
   const { currentUser, setCurrentUser, allUsers, setUserPhotos, setAllUserPhotos } = props
@@ -74,14 +75,14 @@ export default function Home(props) {
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
           />
-          <div className='container d-flex justify-content-end'>
-            <div className='homepage-container position-fixed d-flex flex-row flex-nowrap'>
-              {currentUser.user_self_img === null ?
+          <div className='container d-flex homepage-media'>
+            <div className='homepage-container'>
+              {currentUser.user_self_img === undefined || currentUser.user_self_img === null ?
                 <>
                   <div className='homepage-user-self-img-container'>
                     <FontAwesomeIcon
                       icon={faUserCircle}
-                      size='2x'
+                      size='3x'
                     />
                   </div>
                 </>
@@ -124,7 +125,8 @@ export default function Home(props) {
               <p style={{ marginBottom: '25px'}}>Already an user? <Link to='/'>Log in</Link></p>
             </div>
         </>
-      )}
+        )}
+      <Footer currentUser={currentUser} />
     </div>
   )
 }

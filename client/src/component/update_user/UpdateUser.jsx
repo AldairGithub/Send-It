@@ -4,16 +4,31 @@ import './UpdateUser.css'
 
 import Header from '../header/Header'
 
-import { Link } from 'react-router-dom'
 import { updateUser } from '../../services/user'
 import { useHistory } from 'react-router-dom'
+
+import NotLoggedIn from '../not_logged_in/NotLoggedIn'
+import Footer from '../footer/Footer'
 
 export default function UpdateUser(props) {
   const history = useHistory()
 
   const { allUsers, setAllUsers, currentUser, setCurrentUser } = props
   // because react updates everytime and this needs the id it is best to declare it automatically
-  // const currentUserId = 1
+
+  const [userLoggedIn, setUserLoggedIn] = useState({
+    show: currentUser === null ? true : false
+  })
+  const showUserLoggedIn = (e) => {
+    setUserLoggedIn({
+      show: true
+    })
+  }
+  const hideUserLoggedIn = (e) => {
+    setUserLoggedIn({
+      show: false
+    })
+  }
 
   const [userData, setUserData] = useState({
     username: "",
@@ -28,17 +43,19 @@ export default function UpdateUser(props) {
   }, [allUsers])
 
   const defaultUserData = () => {
-    setUserData({
-      username: currentUser.username,
-      email: currentUser.email,
-      name: currentUser.name,
-      bio: currentUser.bio,
-      // need to make room for userId or on homepage it wont render settings button
-      id: currentUser.id
-    })
+    if (currentUser !== null) {
+      setUserData({
+        username: currentUser.username,
+        email: currentUser.email,
+        name: currentUser.name,
+        bio: currentUser.bio,
+        // need to make room for userId or on homepage it wont render settings button
+        id: currentUser.id
+      })
+    }
   }
 
-
+// on submitting, user_self_img is not rendered in home page
   const handleSubmit = async (e) => {
     e.preventDefault()
     const updatedUser = await updateUser(currentUser.id, userData)
@@ -67,7 +84,7 @@ export default function UpdateUser(props) {
         setCurrentUser={setCurrentUser}
       />
       <div className='container-md rounded'>
-        <form className='form' onSubmit={handleSubmit}>
+        <form className='form' onSubmit={currentUser === null ? null : handleSubmit}>
 
           <div className='form-group row'>
 
@@ -137,6 +154,8 @@ export default function UpdateUser(props) {
         <button className='btn btn-md btn-info btn-block'>Submit</button>
         </form>
       </div>
+      <Footer currentUser={currentUser}/>
+      {userLoggedIn.show ? <NotLoggedIn show={userLoggedIn.show} hide={ hideUserLoggedIn }/> : null}
     </>
   )
 }

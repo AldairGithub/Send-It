@@ -39,12 +39,12 @@ puts "#{User.count} users created"
 @post_two = Entity.create(name: 'Post', content: 'Check out admin\'s first post', user: @vasu)
 @post_three = Entity.create(name: 'Post', content: 'Third times the charm', user: @aldair)
 
-@photo_one = Entity.create(name: 'Photo', content: 'First Photo' , url: 'https://i.imgur.com/Tu1cfB0.jpg', user: @admin)
-@photo_two = Entity.create(name: 'Photo', content: 'Second Photo', url: 'https://i.imgur.com/zAP8jQt.jpg', user: @admin)
-@photo_three = Entity.create(name: 'Photo', content: 'Third Photo', url: 'https://i.imgur.com/hV2Ohdf.jpg', user: @admin)
-@photo_four = Entity.create(name: 'Photo', content: 'Fourth Photo', url: 'https://i.imgur.com/KSlSLjG.jpg', user: @admin)
-@photo_five = Entity.create(name: 'Photo', content: 'Fifth Photo', url: 'https://i.imgur.com/kqQpLzy.jpg', user: @admin)
-@photo_six = Entity.create(name: 'Photo', content: 'Sixth Photo', url: 'https://i.imgur.com/70YkoE0.jpg', user: @admin)
+@photo_one = Entity.create(name: 'Photo', content: 'Look at that car!' , url: 'https://i.imgur.com/y3AWTp0.jpg?1', user: @admin)
+@photo_two = Entity.create(name: 'Photo', content: 'SO FAST!', url: 'https://i.imgur.com/zFnJN48.jpg', user: @admin)
+@photo_three = Entity.create(name: 'Photo', content: "Friend's car", url: 'https://i.imgur.com/qAaqtJP.jpg', user: @admin)
+@photo_four = Entity.create(name: 'Photo', content: 'Roadtrip', url: 'https://i.imgur.com/zSfkjl1.jpg', user: @admin)
+@photo_five = Entity.create(name: 'Photo', content: 'Family time', url: 'https://i.imgur.com/bBawAgq.jpg', user: @admin)
+@photo_six = Entity.create(name: 'Photo', content: 'Flatiron, NY', url: 'https://i.imgur.com/juhY3QN.jpg', user: @admin)
 
 @photo_seven = Entity.create(name: 'Photo', content: 'Roadtrip to the desert', url: 'https://i.imgur.com/7ltXTAq.jpg', user: @aldair)
 @photo_eight = Entity.create(name: 'Photo', content: 'Garden crown got rusty', url: 'https://i.imgur.com/p6YMG2O.jpg', user: @aldair)

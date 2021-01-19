@@ -17,6 +17,7 @@ import { faUserCog } from '@fortawesome/free-solid-svg-icons'
 import { faCog } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 
 import Button from 'react-bootstrap/Button'
 
@@ -26,6 +27,7 @@ import UserBioImg from '../user_home/user_bio_img/UserBioImg'
 import UserFollowList from '../user_home/user-follow-list/UserFollowList'
 import UserFollowButton from '../user_home/user_follow_button/UserFollowButton'
 import NotLoggedIn from '../not_logged_in/NotLoggedIn'
+import Footer from '../footer/Footer'
 
 export default function UserHome(props) {
   const {
@@ -589,11 +591,24 @@ export default function UserHome(props) {
 
           {/* user self image */}
           <div className='userhome-user-img-container'>
-            <img
-              className='userhome-user-img'
-              src={userProfile.user.user_self_img === undefined ? 'https://i.imgur.com/FFn7QzH.jpg' : `${userProfile.user.user_self_img}`}
-              onClick={(e) => showUserBioModal(e)}
-            />
+            {userProfile.user.user_self_img === undefined || userProfile.user.user_self_img === null ? 
+              <>
+                <FontAwesomeIcon
+                  icon={faUserCircle}
+                  size='10x'
+                  color='gray'
+                  onClick={(e) => currentUser !== null ? showUserBioModal(e) : showUserLoggedIn(e)}
+                />
+              </>
+              :
+              <>
+                <img
+                  className='userhome-user-img'
+                  src={`${userProfile.user.user_self_img}`}
+                  onClick={(e) => currentUser !== null ? showUserBioModal(e) : showUserLoggedIn(e)}
+                />
+              </>
+            }
           </div>
 
           <div className='d-flex position-relative userhome-container-info flex-shrink-0 flex-column align-items-stretch'>
@@ -620,10 +635,10 @@ export default function UserHome(props) {
 
           <div className='d-flex userhome-container-bio userhome-container-bottomspace flex-column align-items-start'>
             <div className='p-2'>
-                {userProfile.user.name === null ? 'need to update name and allow user to add spaces' : userProfile.user.name}
+                {userProfile.user.name === null ? '' : userProfile.user.name}
             </div>
             <div className='p-2'>
-              {userProfile.user.bio === null ? 'need to update user bio' : userProfile.user.bio}
+              {userProfile.user.bio === null ? '' : userProfile.user.bio}
             </div>
           </div>
 
@@ -633,7 +648,7 @@ export default function UserHome(props) {
         
         <hr />
 
-        <div className='d-flex flex-wrap-reverse justify-content-center'>
+        <div className='userhome-photos-container'>
         {userProfile.photos.map((arr, index) => (
           <>
             <div className='user-img-container' key={index} onClick={(e) => currentUser !== null ? showModal(e, index) : showUserLoggedIn(e)}>
@@ -648,6 +663,7 @@ export default function UserHome(props) {
         ))}
         </div>
       </div>
+        <Footer currentUser={ currentUser }/>
       {/* modal */}
       {isOpen.show ?
         <UserPhotoPop

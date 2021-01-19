@@ -40,3 +40,10 @@
   color: #0099CC;
   text-decoration: none;
 }
+
+@media (max-width: 375px) {
+  .container-sm {
+    margin: 25% auto;
+    width: 80%;
+  }
+}
