@@ -25,4 +25,10 @@ hr {
     width: 80%;
   }
 }
+@media (max-width: 768px) {
+  .container-md {
+    margin-top: 150px;
+    width: 100%;
+  }
+}
 

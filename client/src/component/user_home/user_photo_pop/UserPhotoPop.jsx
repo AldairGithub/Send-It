@@ -194,7 +194,7 @@ export default function UserPhotoPop(props) {
       >
         <Modal.Body>
 
-          <div className='d-flex flex-row justify-content-start'>
+          <div className='userphoto-container'>
             {/* image */}
             <div className='userpop-img-container'>
               <img

@@ -47,3 +47,9 @@
     width: 80%;
   }
 }
+@media (max-width: 768px) {
+  .container-sm {
+    margin: 25% auto;
+    width: 70%;
+  }
+}

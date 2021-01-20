@@ -20,13 +20,13 @@ export default function Footer(props) {
           {currentUser !== null ?
             <>
               <Link className='nav-item nav-link' to='/home'><FontAwesomeIcon icon={faHouseUser} size='2x'/></Link>
-                <div style={{marginRight: '50px'}}></div>
+                <div style={{marginRight: '100px'}}></div>
               <Link className='nav-item nav-link' to={`/account/${currentUser.username}`}><FontAwesomeIcon icon={ faUser } size='2x'/></Link>
             </>
             :
             <>
               <Link className='nav-item nav-link' to='/register'><FontAwesomeIcon icon={faUserPlus} size='2x'/></Link>
-                <div style={{ marginRight: '50px' }}></div>
+                <div style={{ marginRight: '100px' }}></div>
               <Link className='nav-item nav-link' to='/'><FontAwesomeIcon icon={ faSignInAlt } size='2x'/></Link>
             </>
           }
