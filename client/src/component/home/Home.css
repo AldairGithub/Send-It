@@ -33,3 +33,9 @@
     justify-self: center;
   }
 }
+
+@media (max-width: 768px) {
+  .homepage-container{
+    position: initial
+  }
+}
