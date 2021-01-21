@@ -104,7 +104,7 @@
     height: 100%;
   }
   .userpop-img-container img{
-    max-height: 200px;
+    max-height: 150px;
   }
   .userpop-features-container{
     position: static;
@@ -141,7 +141,8 @@
     height: 100%;
   }
   .userpop-img-container img{
-    max-height: 350px;
+    max-height: 200px;
+    
   }
   .userpop-features-container{
     position: static;
