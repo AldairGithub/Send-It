@@ -19,16 +19,17 @@ hr {
   margin: 0 auto;
   padding-bottom: 5%;
 }
-
-@media (max-width: 375px) {
-  .container-md {
-    width: 80%;
-  }
-}
 @media (max-width: 768px) {
   .container-md {
     margin-top: 150px;
     width: 100%;
   }
 }
+@media (max-width: 375px) {
+  .container-md {
+    margin-top: 35px;
+    width: 80%;
+  }
+}
+
 

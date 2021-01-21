@@ -1,5 +1,7 @@
 .userfollow-users-container {
   margin-left: 10px;
+  max-height: 400px;
+  overflow: scroll;
 }
 .userfollow-user-container {
   margin-bottom: 15px;
