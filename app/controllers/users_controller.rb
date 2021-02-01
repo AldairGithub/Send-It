@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:update, :destroy, :update_password, :user_list]
-  before_action :authorize_request, except: [:create, :index, :user_list]
+  before_action :authorize_request, except: [:create, :index, :user_list, :delete_avatar_from_cloud]
 
   # GET /users
   def index
@@ -41,6 +41,17 @@ class UsersController < ApplicationController
   # DELETE /users/1
   def destroy
     @user.destroy
+  end
+
+  def delete_avatar_from_cloud
+    @url = params[:user][:user_self_img]
+    first = @url.index('send-it')
+    last = @url.index(@url.split(//).last(5).join)
+    @delete_this_url = @url[first..last]
+
+    result = Cloudinary::Api.delete_resources([@delete_this_url])
+
+    render json: result
   end
   
   # GET /users/1/user_list

@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
   # user friends
   get '/users/:id/user_list', to: 'users#user_list'
+  
+  post '/users/:id/delete_avatar_from_cloud', to: 'users#delete_avatar_from_cloud'
 
   # user entities
   get '/entities/user/:id', to: 'entities#user_entities'

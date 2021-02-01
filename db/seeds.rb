@@ -13,7 +13,9 @@ User.destroy_all
 
 # users
 # 1
-@admin = User.create(username: 'admin', name:'admin', email: 'admin@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/FFn7QzH.jpg')
+image = Cloudinary::Uploader.unsigned_upload('test_photos/naomi-tamar-nud0w51mC00-unsplash.jpg', 'send-it')
+
+@admin = User.create(username: 'admin', name:'admin', email: 'admin@email.com', password: 'aldair', user_self_img: image["url"])
 # 2
 @aldair = User.create(username: 'aldair', name:'aldair',email: 'aldair@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/qDvVHCv.jpg')
 # 3
