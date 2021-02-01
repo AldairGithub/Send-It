@@ -681,10 +681,12 @@ export default function UserHome(props) {
           handleFollow={handleFollow}
         /> 
         : null}
-      {userBio.show ?
+      {userBio.show && userProfile.user.id === currentUser.id ?
         <UserBioImg
+          currentUser={currentUser}
           show={userBio.show}
           hide={hideUserBioModal}
+          getUserProfile={getUserProfile}
         /> : null}
       {followModal.show ?
         <UserFollowList

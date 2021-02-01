@@ -20,6 +20,10 @@ export const allUserRelationships = async (id) => {
   return response.data
 }
 
+export const deleteAvatarFromCloud = async (id, userData) => {
+  const response = await api.post(`/users/${id}/delete_avatar_from_cloud`, userData)
+  return response.data
+}
 // PATCH would let the user change their password, but we want to add credentials for user security
 // export const updatePassword = async (id, newPassword) => {
 //   const response = await api.patch(`/users/${id}/update_password`, { user: newPassword })
