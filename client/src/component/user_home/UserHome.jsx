@@ -18,6 +18,7 @@ import { faCog } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import Button from 'react-bootstrap/Button'
 
@@ -28,6 +29,7 @@ import UserFollowList from '../user_home/user-follow-list/UserFollowList'
 import UserFollowButton from '../user_home/user_follow_button/UserFollowButton'
 import NotLoggedIn from '../not_logged_in/NotLoggedIn'
 import Footer from '../footer/Footer'
+import PostEntity from '../post_entity/PostEntity'
 
 export default function UserHome(props) {
   const {
@@ -137,10 +139,25 @@ export default function UserHome(props) {
     })
   }
 
+  const [entityModal, setEntityModal] = useState({
+    show: false
+  })
+  const showEntityModal = (e) => {
+    setEntityModal({
+      show: true
+    })
+  }
+  const hideEntityModal = (e) => {
+    setEntityModal({
+      show: false
+    })
+  }
+
   useEffect(() => {
     getUserProfile(props.match.params.user)
   }, [props.match.params.user, currentUser])
 
+  // updates DOM with their posts
   const getUserProfile = async (name) => {
     const getAllUsers = await readAllUsers()
     setAllUsers(getAllUsers)
@@ -177,6 +194,7 @@ export default function UserHome(props) {
     }
   }
 
+  // Checks if the current user is in their page (renders user settings/add post), else it checks user relationship to current user
   const handleSettingsOrFollowFeature = (arg) => {
     if (arg) {
       return (
@@ -188,6 +206,9 @@ export default function UserHome(props) {
           </div>
           <div className='p-2'>
             <FontAwesomeIcon icon={faCog} size='2x'/>
+          </div>
+          <div className='p-2'>
+            <FontAwesomeIcon icon={faPlus} size='2x' onClick={ (e)=> showEntityModal(e)}/>
           </div>
         </>
       )
@@ -260,7 +281,7 @@ export default function UserHome(props) {
     })
   }
 
-
+// Renders DOM buttom on relationship to current user
   const isUserFollowingCurrentUser = (user, data) => {
     if (user[1].user_one_id === currentUser.id) {
       if (user[1].status === 'Pending') {
@@ -350,6 +371,7 @@ export default function UserHome(props) {
       )
     }
   }
+
 // updateCurrentUserFriends will update current user home correctly, however when the current user follows/unfollows
 // another user from another user page, it renders the user list with the info of the user the current user clicked on twice
   const handleFollow = async (relationshipId, userOneId, userTwoId, newStatus, lastActionId, data) => {
@@ -399,6 +421,7 @@ export default function UserHome(props) {
     }
   }
 
+  // creates array of users/relationship to current user(CU)
   const updateCurrentUserFriends = async (id, data) => {
 
     const friends = await allUserRelationships(id)
@@ -471,6 +494,7 @@ export default function UserHome(props) {
 
   }
 
+  // updates current user followers/following list
   const getCurrentUserFriends = async (id, data) => {
 
     // changes the users received based on where the call was made from, whether followers or following list
@@ -496,7 +520,7 @@ export default function UserHome(props) {
       list: filterFriends
     })
   }
-// doesnt return data with user action/user data/user relationship
+
   // just use it for comments for now
   const userActions = (id, type) => {
     // user has no photos available
@@ -510,7 +534,8 @@ export default function UserHome(props) {
     return usernameActions
   }
 
-  // check to see if updating state will send data to the photo modal
+  // updating state will send data to the photo modal
+  // creates array with likes/who liked post/relationship to current user post
   const handleUserActions = async (id) => {
 
     if (userProfile.photos[id] === undefined) {
@@ -543,6 +568,7 @@ export default function UserHome(props) {
    })
   }
 
+  // Updates likes per post in database
   const handleLike = async (liked, entityId, userId, typeOfEntity, typeOfAction) => {
     // finds the photo that was liked based on what modal is open currently
     let userLikedPost = userProfile.photos[isOpen.modalId][1].filter(action => action.type_of_action === 'Like' && action.user_id === currentUser.id)
@@ -559,7 +585,7 @@ export default function UserHome(props) {
     handleUserActions(isOpen.modalId)
   }
 
-  // if no actionId, then its a new comment
+  // if no actionId, then its a new comment, posts and deletes comments from database
   const handleComment = async (actionId, entityId, userId, typeOfEntity, typeOfAction, contentFromUser) => {
     if (actionId) {
       let deleteUserComment = await deleteActionFromCurrentUser(actionId)
@@ -700,6 +726,14 @@ export default function UserHome(props) {
           getUserFollows={getUserFollows}
           getCurrentUserFriends={getCurrentUserFriends}
         /> : null}
+      {entityModal.show ?
+        <PostEntity
+          show={entityModal.show}
+          hide={hideEntityModal}
+          currentUser={currentUser}
+          getUserProfile={getUserProfile}
+          postLength={userProfile.photos.length}
+      /> : null}
       {userLoggedIn.show ? 
         <NotLoggedIn show={userLoggedIn.show} hide={ hideUserLoggedIn }/>
       : null}
