@@ -9,3 +9,7 @@ export const postEntity = async (contentText, imgUrl, userId) => {
   })
   return response.data
 }
+export const deleteEntity = async (entityId) => {
+  const response = await api.delete(`/entities/${entityId}`)
+  return response
+}

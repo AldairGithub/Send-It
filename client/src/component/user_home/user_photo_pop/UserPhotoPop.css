@@ -48,6 +48,10 @@
   right: 0;
   color: transparent;
 }
+.userpop-post-delete-button {
+  right: 0;
+  margin-right: 15px;
+}
 
 .userpop-comment:hover .userpop-comment-delete-button {
   color: gray;

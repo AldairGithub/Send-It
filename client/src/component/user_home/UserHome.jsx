@@ -705,6 +705,8 @@ export default function UserHome(props) {
           history={history}
           // for the likes modal
           handleFollow={handleFollow}
+          // used to reload page after deleting post
+          getUserProfile={getUserProfile}
         /> 
         : null}
       {userBio.show && userProfile.user.id === currentUser.id ?

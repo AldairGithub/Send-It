@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom'
 
 import CommentButton from '../../user_home/user_photo_pop/comment_button/CommentButton'
 import MoreUserLikes from '../../user_home/user_photo_pop/more_user_likes/MoreUserLikes'
+import DeletePost from '../../user_home/user_photo_pop/delete_post/DeletePost'
 
 import './UserPhotoPop.css'
 
@@ -27,7 +28,8 @@ export default function UserPhotoPop(props) {
     likedPost,
     handleLike,
     handleComment,
-    handleFollow
+    handleFollow,
+    getUserProfile
   } = props
 
   const [userInput, setUserInput] = useState({
@@ -71,6 +73,20 @@ export default function UserPhotoPop(props) {
       show: false
     })
   }
+  
+  const [deletePostModal, setDeletePostModal] = useState({
+    show: false
+  })
+  const showDeletePostModal = (e) => {
+    setDeletePostModal({
+      show: true
+    })
+  }
+  const hideDeletePostModal = (e) => {
+    setDeletePostModal({
+      show: false
+    })
+  } 
 
   // solves issue with modal not closing on browser back or forward button pressed by user
   const [locationKeys, setLocationKeys] = useState([])
@@ -215,6 +231,13 @@ export default function UserPhotoPop(props) {
                 <div className='userpop-user-text font-weight-bold'>
                   <p style={{cursor: "pointer"}} onClick={() => {hide()}}>{user.username}</p>
                 </div>
+                <div className='userpop-post-delete-button position-absolute'>
+                  <FontAwesomeIcon
+                    icon={faEllipsisH}
+                    size='1x'
+                    onClick={(e) => showDeletePostModal(e)}
+                  />
+                </div>
               </div>
 
               {/* divider */}
@@ -243,7 +266,7 @@ export default function UserPhotoPop(props) {
                       <div className='userpop-comment-delete-button position-absolute'>
                         <FontAwesomeIcon
                           icon={faEllipsisH}
-                          size='2x'
+                          size='1x'
                           onClick={(e) => showCommentModal(e, action[0].id, action[1][0].id)}
                         />  
                       </div>
@@ -344,6 +367,16 @@ export default function UserPhotoPop(props) {
           hideModal={hide}
           list={userLikes}
           handleFollow={handleFollow}
+        /> : null}
+      {deletePostModal.show ? 
+        <DeletePost
+          show={deletePostModal.show}
+          hide={hideDeletePostModal}
+          hidePost={hide}
+          user={user}
+          currentUser={currentUser}
+          postId={photo[0].id}
+          getUserProfile={getUserProfile}
         /> : null}
     </>
   )
