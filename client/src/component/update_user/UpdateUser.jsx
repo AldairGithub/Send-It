@@ -50,7 +50,8 @@ export default function UpdateUser(props) {
         name: currentUser.name,
         bio: currentUser.bio,
         // need to make room for userId or on homepage it wont render settings button
-        id: currentUser.id
+        id: currentUser.id,
+        user_self_img: currentUser.user_self_img
       })
     }
   }
