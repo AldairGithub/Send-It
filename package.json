@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/AldairGithub/Send-It/issues"
   },
-  "homepage": "https://github.com/AldairGithub/Send-It#readme"
+  "homepage": "https://github.com/AldairGithub/Send-It#readme",
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
 }
