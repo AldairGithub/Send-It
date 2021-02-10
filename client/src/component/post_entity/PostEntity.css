@@ -1,0 +1,13 @@
+.post-entity-modal {
+  margin-bottom: 45px;
+}
+.post-entity-title {
+  padding: 10px 0;
+}
+.post-entity-button {
+  width: 100%;
+}
+.post-entity-message {
+  position: absolute;
+  bottom: 1;
+}

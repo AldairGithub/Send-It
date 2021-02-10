@@ -1,0 +1,41 @@
+.homepage-container {
+  margin-top: 15px;
+  display: flex;
+  position: fixed;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+.homepage-user-self-img-container {
+  width: 56px;
+  height: 56px;
+  margin-right: 15px;
+}
+.homepage-user-self-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.homepage-link-text {
+  color: black;
+}
+.homepage-link-text:hover {
+  color: black;
+  text-decoration: none;
+}
+
+@media (max-width: 375px) {
+  .homepage-media {
+    justify-content: start;
+  }
+  .homepage-container {   
+    display: flex; 
+    position: initial;
+    justify-self: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .homepage-container{
+    position: initial
+  }
+}

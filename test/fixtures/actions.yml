@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  typeOfEntity: MyString
+  typeOfAction: MyString
+  content: MyString
+  entity: one
+  tag: one
+  user: one
+
+two:
+  typeOfEntity: MyString
+  typeOfAction: MyString
+  content: MyString
+  entity: two
+  tag: two
+  user: two

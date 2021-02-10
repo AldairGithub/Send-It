@@ -1,0 +1,13 @@
+.userbio-modal {
+  margin-bottom: 45px;
+}
+.userbio-title {
+  padding: 10px 0px;
+}
+.userbio-button {
+  width: 100%;
+}
+.userbio-error-message {
+  position: absolute;
+  bottom: 1;
+}

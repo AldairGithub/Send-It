@@ -1,0 +1,55 @@
+.container-sm {
+  text-align: center;
+  width: 30%;
+  height: 100%;
+  margin: 6% auto;
+  background-color: #F5F5F5;
+  border: 1px #BDBDBD solid;
+  border-radius: 5px;
+}
+.title {
+  padding: 10%;
+}
+.form {
+  margin: auto;
+  width: 80%;
+}
+.form-control {
+  margin-bottom: 5px;
+}
+.btn {
+  margin-top: 15px;
+}
+.forgot-password-container {
+  margin: 9%;
+}
+.forgot-password-link {
+  color: #666699;
+}
+.forgot-password-link:hover{
+  color: #666699;
+  text-decoration: none;
+}
+.sign-up-text {
+  padding: 4%;
+}
+.sign-link {
+  color: #0099CC;
+}
+.sign-link:hover {
+  color: #0099CC;
+  text-decoration: none;
+}
+
+@media (max-width: 375px) {
+  .container-sm {
+    margin: 25% auto;
+    width: 80%;
+  }
+}
+@media (max-width: 768px) {
+  .container-sm {
+    margin: 25% auto;
+    width: 70%;
+  }
+}
