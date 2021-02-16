@@ -44,8 +44,9 @@ class EntitiesController < ApplicationController
     @user = User.find(params[:id])
 
     # using map allowed us to select the entity id that we can call again on a different array using the action table
-    @user_entities = Entity.where(user_id: @user, name: 'Photo').map {
-      |entity| [entity, Action.where(entity_id: entity.id)]
+    # need to add as_json to every variable as it returns Active Record relation instead of json, which is how we are working on our front
+    @user_entities = Entity.where(user_id: @user, name: 'Photo').map{|entity| 
+      [[entity.as_json][0], [Action.where(entity_id: entity.id).as_json][0]]
     }
 
     render json: @user_entities
