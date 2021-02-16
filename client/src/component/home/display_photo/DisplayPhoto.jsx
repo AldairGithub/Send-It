@@ -96,11 +96,11 @@ export default function DisplayPhoto(props) {
     // checkForLike(actions)
   }
 
-  const getUserLikes = () => {
+  const getUserLikes = (arr) => {
     let count = 0
-    if (actions !== null) {
-      actions.forEach(action => {
-        if (action.type_of_action === 'Like') {
+    if (arr !== null) {
+      arr.forEach(str => {
+        if (str.type_of_action === 'Like') {
           count += 1
         }
       })
@@ -245,12 +245,13 @@ export default function DisplayPhoto(props) {
             <FontAwesomeIcon icon={ faComment } size='2x' />
           </div>
           <div className='display-username-container'>
-            { getUserLikes() }
+            { getUserLikes(actions) }
           </div>
           <div className='d-flex flex-row' style={{ marginLeft: '15px'}}>
             <Link to={ `/account/${user.username}` } style={{color: 'black'}}><strong>{user.username}</strong></Link><p style={{marginLeft: '10px'}}>{ entity.content }</p>
           </div>
-          <div style={{ marginLeft: '15px', color: 'gray', cursor: 'pointer'}} onClick={(e) => showPhotoModal(e)}>
+          <div style={{ marginLeft: '15px', color: 'gray', cursor: 'pointer' }} onClick={(e) => showPhotoModal(e)}>
+            {/* FIX ON NEW RUBY VERSION */}
             {formatter.format(Date.parse(entity.created_at))}
           </div>
           <div>
