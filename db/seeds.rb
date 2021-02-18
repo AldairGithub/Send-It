@@ -15,23 +15,23 @@ User.destroy_all
 # 1
 image = Cloudinary::Uploader.unsigned_upload('test_photos/naomi-tamar-nud0w51mC00-unsplash.jpg', 'send-it')
 
-@admin = User.create(username: 'admin', name:'admin', email: 'admin@email.com', password: 'aldair', user_self_img: image["url"])
+@admin = User.create(username: 'admin', name:'admin', email: 'admin@email.com', password: 'aldair', user_self_img: image["url"], bio: "All images come from unsplash.com")
 # 2
 @aldair = User.create(username: 'aldair', name:'Aldair',email: 'aldair@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/qDvVHCv.jpg')
 # 3
-@chris = User.create(username: 'IdontCareYaBoi', name:'chris', email: 'chris@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/huSgzp2.jpg')
+@chris = User.create(username: 'IdontCareYaBoi', name:'chris', email: 'chris@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/2RESNzV.jpg', bio: 'Photo by Сергей Орловский on https://unsplash.com/photos/1OfPse1qVLM')
 # 4
-@vasu = User.create(username: 'Vasectummie', name:'vasu', email: 'vasu@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/fooitwq.jpg')
+@vasu = User.create(username: 'Vasectummie', name:'vasu', email: 'vasu@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/CtQSVZo.jpg', bio: 'Photo by LOGAN WEAVER on https://unsplash.com/photos/Apejl7P4-vk')
 # 5
-@kelly = User.create(username: 'KittenLove', name:'kelly', email: 'kelly@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/6zgoENN.jpg')
+@kelly = User.create(username: 'KittenLove', name:'kelly', email: 'kelly@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/PPZWjTg.jpg', bio: 'Photo by Tran Mau Tri Tam on https://unsplash.com/photos/FbhNdD1ow2g')
 # 6
-@yomar = User.create(username: 'IloveChris', name:'yomar', email: 'yomar@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/DUTBARU.jpg')
+@yomar = User.create(username: 'IloveChris', name:'yomar', email: 'yomar@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/CHMIxWH.jpg', bio: 'Photo by Raoul Droog on https://unsplash.com/photos/yMSecCHsIBc')
 # 7
-@moises = User.create(username: 'SixPack', name:'moises', email: 'moises@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/oX6OY55.jpg')
+@moises = User.create(username: 'SixPack', name:'moises', email: 'moises@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/0smEQKu.jpg', bio:'Photo by Katerina Jerabkova on https://unsplash.com/photos/nV7WA07ikI4')
 # 8
-@nate = User.create(username: 'SkaterBoy', name:'nate', email: 'nate@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/6EBcdvz.jpg')
+@nate = User.create(username: 'SkaterBoy', name:'nate', email: 'nate@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/INfUlXp.jpg', bio: 'Photo by Stefan Lehner on https://unsplash.com/photos/qJnmO3qi9ek')
 # 9
-@roffaden = User.create(username: 'MuscleBoy', name:'rof', email: 'ro@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/tFGwNHC.jpg')
+@roffaden = User.create(username: 'MuscleBoy', name:'rof', email: 'ro@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/b0dNe1l.jpg', bio: 'Photo by Nathan Dumlao on https://unsplash.com/photos/pzLbV-NFT40')
 # 10
 @jordon = User.create(username: 'NumberOneDraftPick', name:'jordon', email: 'jordon@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/XhE2N3q.jpg')
 # 11
