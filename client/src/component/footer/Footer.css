@@ -1,10 +1,17 @@
 .on-phone {
-  display: none
+  display: none;
+}
+.footer-bottom-space {
+  display: none;
 }
 
 @media (max-width: 375px) {
   .on-phone{
     display: flex;
+  }
+  .footer-bottom-space{
+    display: block;
+    padding: 10%;
   }
 }
 @media (max-width: 768px) {
