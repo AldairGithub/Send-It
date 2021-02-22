@@ -33,6 +33,8 @@
 .userpop-img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
+  background-color: black;
 }
 .userpop-container {
   min-width: 100%;
@@ -58,8 +60,10 @@
 }
 .userpop-user-img-container {
   /* max-width fixed bio img shrinking on text being too long */
+  /* min-width adds another layer to the img shrinking on text being too long */
   max-width: 30px;
-  height: 30px;
+  min-width: 30px;
+  max-height: 30px;
   margin-bottom: 10px;
 }
 
