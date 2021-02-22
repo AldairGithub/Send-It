@@ -245,7 +245,7 @@ export default function UserPhotoPop(props) {
 
               {/* username and content of photo */}
               <div className='d-flex flex-row flex-nowrap'>
-                <div className='userpop-user-img-container userpop-user-left-margin-20px'>
+                <div className='userpop-user-img-container'>
                   <img className='userpop-user-img' src={user.user_self_img}/>
                 </div>
                 <div className='userpop-user-text'>
@@ -257,7 +257,7 @@ export default function UserPhotoPop(props) {
                 {userComments.map((action, index) => (
                   <>
                     <div className='userpop-comment d-flex flex-row align-items-center flex-nowrap' key={index}>
-                      <div className='userpop-user-img-container userpop-user-left-margin-20px'>
+                      <div className='userpop-user-img-container'>
                         <img className='userpop-user-img' alt={action[1].username} src={action[1][0].user_self_img ? action[1][0].user_self_img : 'https://i.imgur.com/FFn7QzH.jpg'}/>
                       </div>
                       <div className='userpop-user-text flex-wrap'>
