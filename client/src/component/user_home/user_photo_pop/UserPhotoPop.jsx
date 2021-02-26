@@ -6,9 +6,10 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faHeart, faUser } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
+import { faUserTimes } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 
 import CommentButton from '../../user_home/user_photo_pop/comment_button/CommentButton'
@@ -135,9 +136,17 @@ export default function UserPhotoPop(props) {
     if (userLikes === null) {
       return null 
     } else if (userLikes.length === 0 || userLikes[0][1].user_self_img === null) {
-      return 'https://i.imgur.com/PnUuUtU.jpg'
+      return (
+        <>
+          <FontAwesomeIcon icon={ faUserTimes } size='1x'/>
+        </>
+      )
     } else {
-      return userLikes[0][1].user_self_img
+      return (
+        <>
+          <img className='userpop-user-img' src={ userLikes[0][1].user_self_img }/>
+        </>
+      )
     }
   }
 
@@ -147,7 +156,7 @@ export default function UserPhotoPop(props) {
     } else if (userLikes.length === 0) {
       return (
         <>
-          <p>No one liked your post yet</p>
+          <p style={{color: 'gray'}}>No one liked your post yet</p>
         </>
       )
     } else if (userLikes.length === 1) {
@@ -302,8 +311,9 @@ export default function UserPhotoPop(props) {
                 
                 {/* Post likes and usernames, neeed to add links for each of their profile */}
                 <div className='userpop-user-container d-flex flex-row flex-nowrap'>
-                    <div className='userpop-user-img-container'>
-                      <img className='userpop-user-img' src={getUserLikes()} />
+                      <div className='userpop-user-img-container'>
+                        { getUserLikes() }
+                      {/* <img className='userpop-user-img' src={getUserLikes()} /> */}
                     </div>
                     <div className='userpop-user-text'>
                         {likedPostUsers()}
