@@ -637,17 +637,17 @@ export default function UserHome(props) {
             }
           </div>
 
-          <div className='d-flex position-relative userhome-container-info flex-shrink-0 flex-column align-items-stretch'>
+          <div className='d-flex position-relative userhome-container-info flex-column align-items-stretch'>
           
-          <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center flex-shrink-1'>
+          <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center'>
             <div className='p-2 username-title'>
               {userProfile.user.username}
-              </div>
-              {/* need to check if we are in the current user profile or a different user, then return either settings or follow feature */}
-              {handleSettingsOrFollowFeature(currentUserPage.onPage)}
+            </div>
+            {/* need to check if we are in the current user profile or a different user, then return either settings or follow feature */}
+            {handleSettingsOrFollowFeature(currentUserPage.onPage)}
           </div>
 
-          <div className='d-flex userhome-container-bottomspace flex-row flex-grow-2 justify-content-start'>
+          <div className='d-flex userhome-container-bottomspace flex-row'>
             <div className='p-2'>
               <strong>{userProfile.photos.length} Posts</strong>
             </div>

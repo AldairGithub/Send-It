@@ -247,11 +247,10 @@ export default function DisplayPhoto(props) {
           <div className='display-username-container'>
             { getUserLikes(actions) }
           </div>
-          <div className='d-flex flex-row' style={{ marginLeft: '15px'}}>
-            <Link to={ `/account/${user.username}` } style={{color: 'black'}}><strong>{user.username}</strong></Link><p style={{marginLeft: '10px'}}>{ entity.content }</p>
+          <div className='d-flex flex-row flex-wrap' style={{ marginLeft: '15px'}}>
+            <Link to={`/account/${user.username}`} style={{ color: 'black' }}><strong>{user.username}</strong></Link><p style={{marginLeft: '10px'}}>{ entity.content }</p>
           </div>
           <div style={{ marginLeft: '15px', color: 'gray', cursor: 'pointer' }} onClick={(e) => showPhotoModal(e)}>
-            {/* FIX ON NEW RUBY VERSION */}
             {formatter.format(Date.parse(entity.created_at))}
           </div>
           <div>

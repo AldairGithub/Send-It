@@ -13,11 +13,11 @@ User.destroy_all
 
 # users
 # 1
-image = Cloudinary::Uploader.unsigned_upload('test_photos/naomi-tamar-nud0w51mC00-unsplash.jpg', 'send-it')
+image = Cloudinary::Uploader.unsigned_upload('test_photos/IMG_1610.jpeg', 'send-it')
 
 @admin = User.create(username: 'admin', name:'admin', email: 'admin@email.com', password: 'aldair', user_self_img: image["url"], bio: "All images come from unsplash.com")
 # 2
-@aldair = User.create(username: 'aldair', name:'Aldair',email: 'aldair@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/qDvVHCv.jpg')
+@aldair = User.create(username: 'aldair', name:'Aldair',email: 'aldair@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/GVOQm5c.jpg', bio: 'Photo by Erik Mclean on https://unsplash.com/photos/ZRns2R5azu0')
 # 3
 @chris = User.create(username: 'IdontCareYaBoi', name:'chris', email: 'chris@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/2RESNzV.jpg', bio: 'Photo by Сергей Орловский on https://unsplash.com/photos/1OfPse1qVLM')
 # 4
@@ -33,9 +33,9 @@ image = Cloudinary::Uploader.unsigned_upload('test_photos/naomi-tamar-nud0w51mC0
 # 9
 @roffaden = User.create(username: 'MuscleBoy', name:'rof', email: 'ro@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/b0dNe1l.jpg', bio: 'Photo by Nathan Dumlao on https://unsplash.com/photos/pzLbV-NFT40')
 # 10
-@jordon = User.create(username: 'NumberOneDraftPick', name:'jordon', email: 'jordon@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/XhE2N3q.jpg')
+@jordon = User.create(username: 'NumberOneDraftPick', name:'jordon', email: 'jordon@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/jSAyvdC.jpg', bio: 'Photo by Courtney Schroedel on https://unsplash.com/photos/v1SS8Wiz-uI')
 # 11
-@clive = User.create(username: 'RaceToTheFinish', name: 'clive', email: 'clive@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/Rf1n8LP.jpg')
+@clive = User.create(username: 'RaceToTheFinish', name: 'clive', email: 'clive@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/OI6pd1i.jpg', bio: 'Photo by Photo by SwapnIl Dwivedi on https://unsplash.com/photos/Xcmfp0gBukI')
 puts "#{User.count} users created"
 
 # entities

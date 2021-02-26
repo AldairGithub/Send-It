@@ -15,7 +15,8 @@ export default function Footer(props) {
   
   return (
     <>
-      <nav className='on-phone navbar fixed-bottom navbar-expand-lg navbar-light bg-light justify-content-center'>
+      <div className='footer-bottom-space'></div>
+      <nav className='on-phone navbar fixed-bottom navbar-light bg-light justify-content-center'>
         <div className='navbar-nav d-flex flex-row'>
           {currentUser !== null ?
             <>
