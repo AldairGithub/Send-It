@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHeart, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 import { faUserTimes } from '@fortawesome/free-solid-svg-icons'
@@ -98,12 +98,14 @@ export default function UserPhotoPop(props) {
     return history.listen(location => {
       if (history.action === 'PUSH') {
         setLocationKeys(([_, ...keys]) => keys)
-        {hide()}
+        // nested blocks {hide()} is redundant and does nothing
+        hide()
       } else {
         setLocationKeys((keys) => [location.key, ...keys])
-        {hide()}
+        hide()
       }
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locationKeys, ])
 
   // On user click of the comment icon, input will be focused
@@ -144,7 +146,7 @@ export default function UserPhotoPop(props) {
     } else {
       return (
         <>
-          <img className='userpop-user-img' src={ userLikes[0][1].user_self_img }/>
+          <img alt={ `liked by ${userLikes[0][1].username}` }className='userpop-user-img' src={ userLikes[0][1].user_self_img }/>
         </>
       )
     }
@@ -235,7 +237,7 @@ export default function UserPhotoPop(props) {
               {/* top of column/user img and username */}
               <div className='userpop-user-container d-flex flex-row flex-nowrap'>
                 <div className='userpop-user-img-container userpop-user-left-margin-20px'>
-                  <img className='userpop-user-img' src={user.user_self_img}/>
+                  <img alt={ `user avatar of ${user.username}` }className='userpop-user-img' src={user.user_self_img}/>
                 </div>
                 <div className='userpop-user-text font-weight-bold'>
                   <p style={{cursor: "pointer"}} onClick={() => {hide()}}>{user.username}</p>
@@ -255,7 +257,7 @@ export default function UserPhotoPop(props) {
               {/* username and content of photo */}
               <div className='d-flex flex-row flex-nowrap'>
                 <div className='userpop-user-img-container'>
-                  <img className='userpop-user-img' src={user.user_self_img}/>
+                  <img alt={ `user avatar of ${user.username}` }className='userpop-user-img' src={user.user_self_img}/>
                 </div>
                 <div className='userpop-user-text'>
                   <p><strong style={{cursor: "pointer"}} onClick={() => {hide()}}>{user.username}</strong> {photo[0].content}</p>

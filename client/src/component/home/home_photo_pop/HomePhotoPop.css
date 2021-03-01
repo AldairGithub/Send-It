@@ -5,7 +5,7 @@
 .homephoto-container {
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
 }
 .home-img-container {
   width: 1500px;

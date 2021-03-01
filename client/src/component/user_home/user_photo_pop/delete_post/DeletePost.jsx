@@ -8,9 +8,8 @@ export default function DeletePost(props) {
   const { show, hide, user, currentUser, hidePost, postId, getUserProfile } = props
 
   const handleDelete = async (id) => {
-    const deletePostWithId = await deleteEntity(id)
+    await deleteEntity(id)
     getUserProfile(currentUser.username)
-
   }
   
   const handleClick = (e, id) => {

@@ -27,6 +27,6 @@ export const followingList = (relationship, id) => {
 export const combineRelationshipToUserData = (relationships, id, allUsers) => {
   return relationships.map(relationship => [
     relationship,
-    allUsers.filter(user => user.id === relationship.user_one_id && user.id !== id || user.id === relationship.user_two_id && user.id !== id)[0]
+    allUsers.filter(user => (user.id === relationship.user_one_id && user.id !== id) || (user.id === relationship.user_two_id && user.id !== id))[0]
   ])
 }

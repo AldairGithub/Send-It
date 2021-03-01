@@ -23,7 +23,6 @@ export default function HomePhotoPop(props) {
     hide,
     entity,
     user,
-    actions,
     comments,
     likes,
     liked,
@@ -134,7 +133,7 @@ export default function HomePhotoPop(props) {
         return (
           <>
             <div className='home-user-img-container'>
-              <img className='home-user-img' src={ result [0][1].user_self_img}/>
+              <img alt={ `user avatar of ${result[0][1].username}` }className='home-user-img' src={ result[0][1].user_self_img}/>
             </div>
             <div className='home-user-text'>
               {likedByUsers(result)}
@@ -164,7 +163,7 @@ export default function HomePhotoPop(props) {
             > {arr[0][1].username}</Link>
             {likes.length > 1 ?
             <>
-                <strong onClick={ (e)=> showLikesModal(e)} style={{ cursor: 'pointer' }}> and {likes.length - 1} other{likes.length - 1 === 1 ? "" : "s"}</strong>
+              <strong onClick={ (e)=> showLikesModal(e)} style={{ cursor: 'pointer' }}> and {likes.length - 1} other{likes.length - 1 === 1 ? "" : "s"}</strong>
             </> : null}
           </p>
         </>
@@ -210,7 +209,7 @@ export default function HomePhotoPop(props) {
               <div className='d-flex flex-row flex-nowrap'>
 
                 <div className='home-user-img-container'>
-                  <img className='home-user-img' src={ user.user_self_img }/>
+                  <img alt={ `user avatar of ${user.username}` } className='home-user-img' src={ user.user_self_img }/>
                 </div>
                 <div className='home-user-text'>
                   <p style={{cursor: 'pointer', fontWeight: 'bold'}}>{ user.username }</p>
@@ -222,7 +221,7 @@ export default function HomePhotoPop(props) {
 
               <div className='d-flex flex-row flex-nowrap'>
                 <div className='home-user-img-container'>
-                  <img className='home-user-img' src={ user.user_self_img }/>
+                  <img alt={ `user avatar of ${user.username}` } className='home-user-img' src={ user.user_self_img }/>
                 </div>
                 <div className='home-user-text'>
                   <p><strong style={{cursor: 'pointer'}}>{user.username}</strong> { entity.content }</p>
@@ -241,7 +240,7 @@ export default function HomePhotoPop(props) {
                         </>
                         : 
                         <div className='home-user-img-container'>
-                          <img className='home-user-img' src={ comment[1].user_self_img }/>
+                          <img alt={ `comment made by ${comment[1].username}` } className='home-user-img' src={ comment[1].user_self_img }/>
                         </div>
                       }
                       <div className='home-user-text flex-wrap'>
