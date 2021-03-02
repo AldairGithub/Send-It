@@ -34,8 +34,8 @@ export default function UserBioImg(props) {
     form.append("upload_preset", "send-it")
 
     const updateUserImg = async (id, old_url, new_url) => {
-      await deleteAvatarFromCloud(id, { user_self_img: old_url })
       await updateUser(id, { user_self_img: new_url })
+      await deleteAvatarFromCloud(id, { user_self_img: old_url })
     }
 
     // we cant send the string directly to the api call (user controller can only take user parameters), so we are sending the complete url

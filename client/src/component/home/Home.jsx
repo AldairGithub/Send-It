@@ -108,6 +108,13 @@ export default function Home(props) {
                 </>
               ))
             )) : null}
+            {feed.photos.length === 0 &&
+              <>
+                <div style={{ marginTop: '5%'}}></div>
+                <hr />
+                <p style={{ color: 'gray'}}>User is not following anyone right now</p>
+              </>
+            }
           </div>
         </>
       ) : (
