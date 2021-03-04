@@ -149,22 +149,22 @@ export default function HomePhotoPop(props) {
       return null
     } else if (arr.length === 0 || likes.length === 0) {
       return (
-        <> 
-          <p style={{color: 'gray'}}>No one liked this post yet</p>
+        <>
+          <p style={{ color: 'gray' }}>No one liked this post yet</p>
         </>
       )
     } else if (arr.length === 1) {
       return (
         <>
-          <p>Liked by 
+          <p>Liked by
             <Link
               to={`/account/${arr[0][1].username}`}
               className='home-link-text'
             > {arr[0][1].username}</Link>
             {likes.length > 1 ?
-            <>
-              <strong onClick={ (e)=> showLikesModal(e)} style={{ cursor: 'pointer' }}> and {likes.length - 1} other{likes.length - 1 === 1 ? "" : "s"}</strong>
-            </> : null}
+              <>
+                <strong onClick={(e) => showLikesModal(e)} style={{ cursor: 'pointer' }}> and {likes.length - 1} other{likes.length - 1 === 1 ? "" : "s"}</strong>
+              </> : null}
           </p>
         </>
       )
@@ -182,7 +182,7 @@ export default function HomePhotoPop(props) {
             > {arr[1][1].username}</Link>
             {likes.length > 2 ?
               <>
-                <strong onClick={ (e)=> showLikesModal(e)} style={{cursor: 'pointer'}}> and { likes.length - 1} others</strong>
+                <strong onClick={(e) => showLikesModal(e)} style={{ cursor: 'pointer' }}> and {likes.length - 2} others</strong>
               </> : null}
           </p>
         </>

@@ -79,6 +79,10 @@
 .userhome-container-bio {
   line-height: 16px;
 }
+.no-photos-yet {
+  text-align: center;
+  color: gray;
+}
 
 @media (max-width: 375px) {
   .userhome-user-img-container {

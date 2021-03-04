@@ -9,7 +9,7 @@ import { deleteAvatarFromCloud } from '../../../services/user'
 import './UserBioImg.css'
 
 export default function UserBioImg(props) {
-  const { show, hide, currentUser, getUserProfile } = props
+  const { show, hide, currentUser, getUserProfile, setCurrentUser } = props
 
   const [userData, setUserData] = useState({
     image: ""
@@ -35,6 +35,10 @@ export default function UserBioImg(props) {
 
     const updateUserImg = async (id, old_url, new_url) => {
       await updateUser(id, { user_self_img: new_url })
+      setCurrentUser({
+        ...currentUser,
+        user_self_img: new_url
+      })
       await deleteAvatarFromCloud(id, { user_self_img: old_url })
     }
 

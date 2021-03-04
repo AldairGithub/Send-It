@@ -625,7 +625,7 @@ export default function UserHome(props) {
               <>
                 <FontAwesomeIcon
                   icon={faUserCircle}
-                  size='10x'
+                  size={ window.innerWidth === 375 ? '3x' : '10x' }
                   color='gray'
                   onClick={(e) => currentUser !== null ? showUserBioModal(e) : showUserLoggedIn(e)}
                 />
@@ -666,10 +666,10 @@ export default function UserHome(props) {
 
           <div className='d-flex userhome-container-bio userhome-container-bottomspace flex-column align-items-start'>
             <div className='p-2'>
-                {userProfile.user.name === null ? '' : userProfile.user.name}
+                {userProfile.user.name === null ? 'User has not updated their name yet' : userProfile.user.name}
             </div>
             <div className='p-2'>
-              {userProfile.user.bio === null ? '' : userProfile.user.bio}
+              {userProfile.user.bio === null ? 'User has not updated their bio yet' : userProfile.user.bio}
             </div>
           </div>
 
@@ -717,6 +717,7 @@ export default function UserHome(props) {
       {userBio.show && userProfile.user.id === currentUser.id ?
         <UserBioImg
           currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
           show={userBio.show}
           hide={hideUserBioModal}
           getUserProfile={getUserProfile}
@@ -740,7 +741,11 @@ export default function UserHome(props) {
           currentUser={currentUser}
           getUserProfile={getUserProfile}
           postLength={userProfile.photos.length}
-      /> : null}
+        /> : null}
+      {userProfile.photos.length === 0 && 
+        <>
+          <p className='no-photos-yet'>User has not posted anything yet</p>
+        </>}
       {userLoggedIn.show ? 
         <NotLoggedIn show={userLoggedIn.show} hide={ hideUserLoggedIn }/>
       : null}

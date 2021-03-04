@@ -75,6 +75,7 @@ export default function Home(props) {
                   <div className='homepage-user-self-img-container'>
                     <FontAwesomeIcon
                       icon={faUserCircle}
+                      color='gray'
                       size='3x'
                     />
                   </div>
