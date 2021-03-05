@@ -6,7 +6,65 @@
   flex-direction: row;
   flex-wrap: nowrap;
 }
+.dropdown-top {
+  top: 50px;
+  left: 35%;
+  position : absolute;
+  z-index: 2;
+  box-shadow: 0 0 5px 1px rgba(0,0,0,.0975);
+}
+.dropdown-menu-container {
+  background: white;
+  border-radius: 6px;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+}
+.dropdown-menu-list {
+  max-height: 362px;
+  width: 375px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 12px 0 0 0;
+}
+.search-container {
+  padding: 8px 16px;
+}
+.search-img-container {
+  height: 44px;
+  width: 44px;
+}
+.search-img-avatar {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+.search-text-container {
+  margin-left: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 12px;
+}
+.search-text-username {
+  color: black;
+  font-weight: 600;
+  font-size: 16px;
+}
+.search-text-name {
+  color: gray;
+  font-weight: 400;
+  font-size: 14px;
+}
+@media (max-width: 768px) {
+  .dropdown-top {
+    left: 25%;
+  }
+}
 
 @media (max-width: 375px) {
-
+  .search-bar-on-phone {
+    display: none;
+  }
 }

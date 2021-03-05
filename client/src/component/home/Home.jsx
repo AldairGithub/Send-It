@@ -67,6 +67,7 @@ export default function Home(props) {
           <Header
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
+            allUsers={allUsers}
           />
           <div className='container d-flex homepage-media'>
             <div className='homepage-container'>

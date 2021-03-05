@@ -614,6 +614,7 @@ export default function UserHome(props) {
       <Header
         currentUser={currentUser}
         setCurrentUser={setCurrentUser}
+        allUsers={allUsers}
       />
       <div className='userhome-container-topspace container'>
 
