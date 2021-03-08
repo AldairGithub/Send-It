@@ -129,6 +129,7 @@ export default function Home(props) {
             </div>
         </>
         )}
+      <div style={{height: '50px'}}></div>
       <Footer currentUser={currentUser} />
     </div>
   )

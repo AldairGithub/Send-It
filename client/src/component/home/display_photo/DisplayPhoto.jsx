@@ -120,6 +120,29 @@ export default function DisplayPhoto(props) {
       }
     }
   }
+  const getUserComments = (arr) => {
+    let count = 0
+    if (arr !== null) {
+      arr.forEach(str => {
+        if (str.type_of_action === 'Comment') {
+          count += 1
+        } 
+      })
+      if (count === 0) {
+        return (
+          <>
+            <p style={{color: 'gray'}} onClick={(e) => showPhotoModal(e)}> No one has commented on this post yet</p>
+          </>
+        )
+      } else {
+        return (
+          <>
+            <p style={{ color: 'gray'}} onClick={(e) => showPhotoModal(e)}>View all comments</p>
+          </>
+        )
+      }
+    }
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -260,6 +283,9 @@ export default function DisplayPhoto(props) {
           </div>
           <div className='d-flex flex-row flex-wrap' style={{ marginLeft: '15px'}}>
             <Link to={`/account/${user.username}`} style={{ color: 'black' }}><strong>{user.username}</strong></Link><p style={{marginLeft: '10px'}}>{ entity.content }</p>
+          </div>
+          <div className='display-username-container'>
+            { getUserComments(actions) }
           </div>
           <div style={{ marginLeft: '15px', color: 'gray', cursor: 'pointer' }} onClick={(e) => showPhotoModal(e)}>
             {formatter.format(Date.parse(entity.created_at))}

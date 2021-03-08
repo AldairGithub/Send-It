@@ -247,10 +247,10 @@ export default function HomePhotoPop(props) {
                         {/* because the link is a different address, no need to hide modal on user click */}
                         <p><Link className='home-link-text' to={`/account/${comment[1].username}`}>{comment[1].username}</Link> { comment[0].content }</p>
                       </div>
-                      <div className='home-comment-delete-button position-absolute'>
+                      <div className='home-comment-delete-button'>
                         <FontAwesomeIcon
                           icon={faEllipsisH}
-                          size='2x'
+                          size='1x'
                           onClick={(e) => showCommentModal(e, comment[0].id, comment[1].id)}
                         />
                       </div>
