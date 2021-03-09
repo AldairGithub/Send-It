@@ -131,13 +131,13 @@ export default function DisplayPhoto(props) {
       if (count === 0) {
         return (
           <>
-            <p style={{color: 'gray'}} onClick={(e) => showPhotoModal(e)}> No one has commented on this post yet</p>
+            <p style={{color: 'gray', cursor: 'pointer'}} onClick={(e) => showPhotoModal(e)}> No one has commented on this post yet</p>
           </>
         )
       } else {
         return (
           <>
-            <p style={{ color: 'gray'}} onClick={(e) => showPhotoModal(e)}>View all comments</p>
+            <p style={{ color: 'gray', cursor: 'pointer'}} onClick={(e) => showPhotoModal(e)}>View all comments</p>
           </>
         )
       }

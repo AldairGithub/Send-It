@@ -618,39 +618,38 @@ export default function UserHome(props) {
       />
       <div className='userhome-container-topspace container'>
 
-        <div className='d-flex position-relative flex-row justify-content-center align-items-stretch'>
+        <div className='d-flex position-relative flex-column justify-content-center align-items-center'>
 
-          {/* user self image */}
-          <div className='userhome-user-img-container'>
-            {userProfile.user.user_self_img === undefined || userProfile.user.user_self_img === null ? 
-              <>
-                <FontAwesomeIcon
-                  icon={faUserCircle}
-                  size={ window.innerWidth === 375 ? '3x' : '10x' }
-                  color='gray'
-                  onClick={(e) => currentUser !== null ? showUserBioModal(e) : showUserLoggedIn(e)}
-                />
-              </>
-              :
-              <>
-                <img
-                  alt={ `user avatar of ${userProfile.user.username}`}
-                  className='userhome-user-img'
-                  src={`${userProfile.user.user_self_img}`}
-                  onClick={(e) => currentUser !== null ? showUserBioModal(e) : showUserLoggedIn(e)}
-                />
-              </>
-            }
-          </div>
-
-          <div className='d-flex position-relative userhome-container-info flex-column align-items-stretch'>
+          <div className='d-flex position-relative flex-column align-items-stretch'>
           
-          <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center'>
-            <div className='p-2 username-title'>
-              {userProfile.user.username}
-            </div>
-            {/* need to check if we are in the current user profile or a different user, then return either settings or follow feature */}
-            {handleSettingsOrFollowFeature(currentUserPage.onPage)}
+            <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center'>
+              <div className='userhome-user-img-container'>
+                {/* user self image */}
+                {userProfile.user.user_self_img === undefined || userProfile.user.user_self_img === null ? 
+                <>
+                  <FontAwesomeIcon
+                    icon={faUserCircle}
+                    size={ window.innerWidth === 375 ? '3x' : '10x' }
+                    color='gray'
+                    onClick={(e) => currentUser !== null ? showUserBioModal(e) : showUserLoggedIn(e)}
+                  />
+                </>
+                :
+                <>
+                  <img
+                    alt={ `user avatar of ${userProfile.user.username}`}
+                    className='userhome-user-img'
+                    src={`${userProfile.user.user_self_img}`}
+                    onClick={(e) => currentUser !== null ? showUserBioModal(e) : showUserLoggedIn(e)}
+                  />
+                </>
+                }
+              </div>
+              <div className='p-2 username-title'>
+                {userProfile.user.username}
+              </div>
+              {/* need to check if we are in the current user profile or a different user, then return either settings or follow feature */}
+              {handleSettingsOrFollowFeature(currentUserPage.onPage)}
           </div>
 
           <div className='d-flex userhome-container-bottomspace flex-row'>
@@ -694,6 +693,7 @@ export default function UserHome(props) {
           </>
         ))}
         </div>
+        <div className='footer-space'></div>
       </div>
         <Footer currentUser={ currentUser }/>
       {/* modal */}

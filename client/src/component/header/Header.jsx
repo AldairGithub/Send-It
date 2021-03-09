@@ -38,7 +38,6 @@ export default function Header(props) {
       })
       setList(filtered)
     }
-
   }
 
   const handleChange = (e) => {
@@ -79,10 +78,10 @@ export default function Header(props) {
                                   <div className='search-img-container'>
                                     <img className='search-img-avatar' src={str.user_self_img} />
                                   </div>
-                                <div className='search-text-container d-flex flex-column justify-content-start align-items-stretch align-content-center'>
-                                  <p className='search-text-username'>{str.username}</p>
-                                  <p className='search-text-name'>{str.name}</p>
-                                </div>
+                                  <div className='search-text-container d-flex flex-column justify-content-start align-items-stretch align-content-center'>
+                                    <p className='search-text-username'>{str.username}</p>
+                                    <p className='search-text-name'>{str.name}</p>
+                                  </div>
                                 </div>
                               </Link>
                             </>
