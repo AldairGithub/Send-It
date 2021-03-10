@@ -76,7 +76,20 @@ export default function Header(props) {
                               <Link to={`/account/${str.username}`}>
                               <div className='search-container d-flex flex-row flex-wrap'>
                                   <div className='search-img-container'>
-                                    <img className='search-img-avatar' src={str.user_self_img} />
+                                    {str.user_self_img === null ?
+                                      <>
+                                        <FontAwesomeIcon
+                                          icon={faUser}
+                                          size='2x'
+                                          color='gray'
+                                          style={{paddingLeft: '10px'}}
+                                        />
+                                      </>
+                                      :
+                                      <>
+                                        <img alt={`user avatar of ${str.username}`} className='search-img-avatar' src={str.user_self_img} />
+                                      </>
+                                    }
                                   </div>
                                   <div className='search-text-container d-flex flex-column justify-content-start align-items-stretch align-content-center'>
                                     <p className='search-text-username'>{str.username}</p>
@@ -107,11 +120,11 @@ export default function Header(props) {
                 </a>
                 <div className='dropdown-menu'>
                   <Link to={`/account/${currentUser.username}`}><p className='dropdown-item'>Profile</p></Link>
-                    <p className='dropdown-item'>Saved</p>
-                    <Link to='/update_account'><p className='dropdown-item'>Settings</p></Link>
-                    <div className="dropdown-divider"></div>
-                      <p className='dropdown-item' onClick={handleLogOut}>Log Out</p>
-                    </div>
+                  <Link to='/search'><p className='dropdown-item'>Search</p></Link>
+                  <Link to='/update_account'><p className='dropdown-item'>Settings</p></Link>
+                  <div className="dropdown-divider"></div>
+                    <p className='dropdown-item' onClick={handleLogOut}>Log Out</p>
+                  </div>
                 </div>
             </nav>
         </> :

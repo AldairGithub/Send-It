@@ -9,6 +9,7 @@ import UpdateUser from './update_user/UpdateUser'
 import ForgotPassword from '../component/forgot_password/ForgotPassword'
 import ResetPassword from '../component/reset_password/ResetPassword'
 import UserHome from '../component/user_home/UserHome'
+import SearchBar from '../component/search_bar/SearchBar'
 
 export default function Main(props) {
   const { currentUser, setCurrentUser } = props
@@ -73,12 +74,20 @@ export default function Main(props) {
         />
       )} />
 
-      
       <Route path={`/account/:user`} render={(props) => (
         <UserHome
           {...props}
           currentUser={currentUser}
           setCurrentUser={setCurrentUser}
+        />
+      )} />
+
+      <Route path={'/search'} render={(props) => (
+        <SearchBar
+          {...props}
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
+          allUsers={allUsers}
         />
       )} />
     </main>

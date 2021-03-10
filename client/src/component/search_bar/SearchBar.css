@@ -1,0 +1,36 @@
+.searchbar-form {
+  margin-top: 100px;
+}
+.searchbar-dropdown-top {
+  top: 200px;
+  left: 400px;
+  position: absolute;
+  z-index: 2;
+  box-shadow: 0 0 5px 1px rgba(0,0,0,.0975);
+}
+.searchbar-menu-container {
+  background: white;
+  border-radius: 6px;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+}
+.searchbar-menu-list {
+  max-height: 362px;
+  width: 350px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 12px 0 0 0;
+}
+@media (max-width: 768px) {
+  .searchbar-dropdown-top {
+    left: 205px;
+  }
+}
+@media (max-width: 375px) {
+  .searchbar-dropdown-top {
+    left: 13px;
+  }
+}
