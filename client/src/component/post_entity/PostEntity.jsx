@@ -125,7 +125,7 @@ export default function PostEntity(props) {
         <Modal.Body className='post-entity-modal'>
           <div className='d-flex flex-column align-items-center justify-content-center'>
             <h4 className='post-entity-title'>Make a Post</h4>
-            <p style={{ color: 'gray', fontSize: '15px' }}>Please be adviced, uploading photos should be limited per account!</p>
+            <p style={{ color: 'gray', fontSize: '15px' }}>Please be advised, uploading photos should be limited to 3 posts per account!</p>
             <hr />
             <Form onSubmit={(e) => onSubmit(e)}>
               <div className='form-group'>
