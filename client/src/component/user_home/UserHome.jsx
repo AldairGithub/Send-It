@@ -154,7 +154,11 @@ export default function UserHome(props) {
   }
 
   useEffect(() => {
+    // because we use getUserProfile on other functions to update user profile, we cant avoid this error message
+    // we could go around this by simply writing the function inside useEffect and calling the function inside
     getUserProfile(props.match.params.user)
+    // this line solves the warning line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.match.params.user, currentUser])
 
   // updates DOM with their posts
@@ -383,7 +387,7 @@ export default function UserHome(props) {
           status: newStatus,
           last_user_action_id: lastActionId
         }
-        let unfollowUser = await updateUserRelationship(relationshipId, userData)
+        await updateUserRelationship(relationshipId, userData)
 
       } else if (newStatus === 'Accepted') {
         let userData = {
@@ -392,14 +396,14 @@ export default function UserHome(props) {
           status: newStatus,
           last_user_action_id: lastActionId
         }
-        let followBack = await updateUserRelationship(relationshipId, userData)
+        await updateUserRelationship(relationshipId, userData)
 
       } else {
-        let deleteFollow = await deleteUserRelationship(relationshipId)
+        await deleteUserRelationship(relationshipId)
 
       }
     } else {
-      let followUser = await postNewUserRelationship(userOneId, userTwoId, newStatus, lastActionId)
+      await postNewUserRelationship(userOneId, userTwoId, newStatus, lastActionId)
 
     }
     // updates list in DOM
@@ -573,10 +577,10 @@ export default function UserHome(props) {
     // finds the photo that was liked based on what modal is open currently
     let userLikedPost = userProfile.photos[isOpen.modalId][1].filter(action => action.type_of_action === 'Like' && action.user_id === currentUser.id)
     if (liked) {
-      let deleteLike = await deleteActionFromCurrentUser(userLikedPost[0].id)
+      await deleteActionFromCurrentUser(userLikedPost[0].id)
       setLikedPost(false)   
     } else {
-      let postLike = await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction)
+      await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction)
       setLikedPost(true)
     }
     // recalling all photos with updated likes
@@ -588,9 +592,9 @@ export default function UserHome(props) {
   // if no actionId, then its a new comment, posts and deletes comments from database
   const handleComment = async (actionId, entityId, userId, typeOfEntity, typeOfAction, contentFromUser) => {
     if (actionId) {
-      let deleteUserComment = await deleteActionFromCurrentUser(actionId)
+      await deleteActionFromCurrentUser(actionId)
     } else {
-      let postComment = await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction, contentFromUser)
+      await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction, contentFromUser)
     }
     getUserProfile(props.match.params.user)
   }
@@ -610,41 +614,42 @@ export default function UserHome(props) {
       <Header
         currentUser={currentUser}
         setCurrentUser={setCurrentUser}
+        allUsers={allUsers}
       />
       <div className='userhome-container-topspace container'>
 
-        <div className='d-flex position-relative flex-row justify-content-center align-items-stretch'>
+        <div className='d-flex position-relative flex-column justify-content-center align-items-center'>
 
-          {/* user self image */}
-          <div className='userhome-user-img-container'>
-            {userProfile.user.user_self_img === undefined || userProfile.user.user_self_img === null ? 
-              <>
-                <FontAwesomeIcon
-                  icon={faUserCircle}
-                  size='10x'
-                  color='gray'
-                  onClick={(e) => currentUser !== null ? showUserBioModal(e) : showUserLoggedIn(e)}
-                />
-              </>
-              :
-              <>
-                <img
-                  className='userhome-user-img'
-                  src={`${userProfile.user.user_self_img}`}
-                  onClick={(e) => currentUser !== null ? showUserBioModal(e) : showUserLoggedIn(e)}
-                />
-              </>
-            }
-          </div>
-
-          <div className='d-flex position-relative userhome-container-info flex-column align-items-stretch'>
+          <div className='d-flex position-relative flex-column align-items-stretch'>
           
-          <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center'>
-            <div className='p-2 username-title'>
-              {userProfile.user.username}
-            </div>
-            {/* need to check if we are in the current user profile or a different user, then return either settings or follow feature */}
-            {handleSettingsOrFollowFeature(currentUserPage.onPage)}
+            <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center'>
+              <div className='userhome-user-img-container'>
+                {/* user self image */}
+                {userProfile.user.user_self_img === undefined || userProfile.user.user_self_img === null ? 
+                <>
+                  <FontAwesomeIcon
+                    icon={faUserCircle}
+                    size={ window.innerWidth === 375 ? '3x' : '10x' }
+                    color='gray'
+                    onClick={(e) => currentUser !== null ? showUserBioModal(e) : showUserLoggedIn(e)}
+                  />
+                </>
+                :
+                <>
+                  <img
+                    alt={ `user avatar of ${userProfile.user.username}`}
+                    className='userhome-user-img'
+                    src={`${userProfile.user.user_self_img}`}
+                    onClick={(e) => currentUser !== null ? showUserBioModal(e) : showUserLoggedIn(e)}
+                  />
+                </>
+                }
+              </div>
+              <div className='p-2 username-title'>
+                {userProfile.user.username}
+              </div>
+              {/* need to check if we are in the current user profile or a different user, then return either settings or follow feature */}
+              {handleSettingsOrFollowFeature(currentUserPage.onPage)}
           </div>
 
           <div className='d-flex userhome-container-bottomspace flex-row'>
@@ -661,10 +666,10 @@ export default function UserHome(props) {
 
           <div className='d-flex userhome-container-bio userhome-container-bottomspace flex-column align-items-start'>
             <div className='p-2'>
-                {userProfile.user.name === null ? '' : userProfile.user.name}
+                {userProfile.user.name === null ? 'User has not updated their name yet' : userProfile.user.name}
             </div>
             <div className='p-2'>
-              {userProfile.user.bio === null ? '' : userProfile.user.bio}
+              {userProfile.user.bio === null ? 'User has not updated their bio yet' : userProfile.user.bio}
             </div>
           </div>
 
@@ -678,7 +683,7 @@ export default function UserHome(props) {
         {userProfile.photos.map((arr, index) => (
           <>
             <div className='user-img-container' key={index} onClick={(e) => currentUser !== null ? showModal(e, index) : showUserLoggedIn(e)}>
-              <img className='user-img flex-fill' src={arr[0].url} />
+              <img alt={ `posted by ${userProfile.user.username}, content: ${arr[0].content}` } className='user-img flex-fill' src={arr[0].url} />
               <div className='user-img-text'>
                 <FontAwesomeIcon icon={faHeart} size='1x' />{getActionNumber(arr[1], 'Like')}
                 <div className='userhome-right-space'/>
@@ -688,6 +693,7 @@ export default function UserHome(props) {
           </>
         ))}
         </div>
+        <div className='footer-space'></div>
       </div>
         <Footer currentUser={ currentUser }/>
       {/* modal */}
@@ -712,6 +718,7 @@ export default function UserHome(props) {
       {userBio.show && userProfile.user.id === currentUser.id ?
         <UserBioImg
           currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
           show={userBio.show}
           hide={hideUserBioModal}
           getUserProfile={getUserProfile}
@@ -735,7 +742,11 @@ export default function UserHome(props) {
           currentUser={currentUser}
           getUserProfile={getUserProfile}
           postLength={userProfile.photos.length}
-      /> : null}
+        /> : null}
+      {userProfile.photos.length === 0 && 
+        <>
+          <p className='no-photos-yet'>User has not posted anything yet</p>
+        </>}
       {userLoggedIn.show ? 
         <NotLoggedIn show={userLoggedIn.show} hide={ hideUserLoggedIn }/>
       : null}

@@ -23,7 +23,6 @@ export default function HomePhotoPop(props) {
     hide,
     entity,
     user,
-    actions,
     comments,
     likes,
     liked,
@@ -134,7 +133,7 @@ export default function HomePhotoPop(props) {
         return (
           <>
             <div className='home-user-img-container'>
-              <img className='home-user-img' src={ result [0][1].user_self_img}/>
+              <img alt={ `user avatar of ${result[0][1].username}` }className='home-user-img' src={ result[0][1].user_self_img}/>
             </div>
             <div className='home-user-text'>
               {likedByUsers(result)}
@@ -150,22 +149,22 @@ export default function HomePhotoPop(props) {
       return null
     } else if (arr.length === 0 || likes.length === 0) {
       return (
-        <> 
-          <p style={{color: 'gray'}}>No one liked this post yet</p>
+        <>
+          <p style={{ color: 'gray' }}>No one liked this post yet</p>
         </>
       )
     } else if (arr.length === 1) {
       return (
         <>
-          <p>Liked by 
+          <p>Liked by
             <Link
               to={`/account/${arr[0][1].username}`}
               className='home-link-text'
             > {arr[0][1].username}</Link>
             {likes.length > 1 ?
-            <>
-                <strong onClick={ (e)=> showLikesModal(e)} style={{ cursor: 'pointer' }}> and {likes.length - 1} other{likes.length - 1 === 1 ? "" : "s"}</strong>
-            </> : null}
+              <>
+                <strong onClick={(e) => showLikesModal(e)} style={{ cursor: 'pointer' }}> and {likes.length - 1} other{likes.length - 1 === 1 ? "" : "s"}</strong>
+              </> : null}
           </p>
         </>
       )
@@ -183,7 +182,7 @@ export default function HomePhotoPop(props) {
             > {arr[1][1].username}</Link>
             {likes.length > 2 ?
               <>
-                <strong onClick={ (e)=> showLikesModal(e)} style={{cursor: 'pointer'}}> and { likes.length - 1} others</strong>
+                <strong onClick={(e) => showLikesModal(e)} style={{ cursor: 'pointer' }}> and {likes.length - 2} others</strong>
               </> : null}
           </p>
         </>
@@ -210,7 +209,7 @@ export default function HomePhotoPop(props) {
               <div className='d-flex flex-row flex-nowrap'>
 
                 <div className='home-user-img-container'>
-                  <img className='home-user-img' src={ user.user_self_img }/>
+                  <img alt={ `user avatar of ${user.username}` } className='home-user-img' src={ user.user_self_img }/>
                 </div>
                 <div className='home-user-text'>
                   <p style={{cursor: 'pointer', fontWeight: 'bold'}}>{ user.username }</p>
@@ -222,7 +221,7 @@ export default function HomePhotoPop(props) {
 
               <div className='d-flex flex-row flex-nowrap'>
                 <div className='home-user-img-container'>
-                  <img className='home-user-img' src={ user.user_self_img }/>
+                  <img alt={ `user avatar of ${user.username}` } className='home-user-img' src={ user.user_self_img }/>
                 </div>
                 <div className='home-user-text'>
                   <p><strong style={{cursor: 'pointer'}}>{user.username}</strong> { entity.content }</p>
@@ -241,17 +240,17 @@ export default function HomePhotoPop(props) {
                         </>
                         : 
                         <div className='home-user-img-container'>
-                          <img className='home-user-img' src={ comment[1].user_self_img }/>
+                          <img alt={ `comment made by ${comment[1].username}` } className='home-user-img' src={ comment[1].user_self_img }/>
                         </div>
                       }
                       <div className='home-user-text flex-wrap'>
                         {/* because the link is a different address, no need to hide modal on user click */}
                         <p><Link className='home-link-text' to={`/account/${comment[1].username}`}>{comment[1].username}</Link> { comment[0].content }</p>
                       </div>
-                      <div className='home-comment-delete-button position-absolute'>
+                      <div className='home-comment-delete-button'>
                         <FontAwesomeIcon
                           icon={faEllipsisH}
-                          size='2x'
+                          size='1x'
                           onClick={(e) => showCommentModal(e, comment[0].id, comment[1].id)}
                         />
                       </div>

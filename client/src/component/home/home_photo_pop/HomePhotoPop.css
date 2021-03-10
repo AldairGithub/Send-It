@@ -5,7 +5,7 @@
 .homephoto-container {
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
 }
 .home-img-container {
   width: 1500px;
@@ -37,6 +37,7 @@
 .home-user-text {
   padding: 5px;
   margin-left: 5px;
+  width: 85%;
 }
 .home-link-text {
   color: black;
@@ -62,17 +63,58 @@
 .home-input-button {
   margin-left: 55px;
 }
+.homephoto-comment-container {
+  max-height: 75px;
+  overflow: scroll;
+  position: relative;
+  background-color: rgb(248,248,248)
+}
 .home-comment-delete-button {
-  margin-right: 15px;
+  position: absolute;
+  margin-right: 5px;
+  bottom: 1;
   right: 0;
   color: transparent;
 }
 .home-comment-delete-button:hover {
   color: gray;
 }
-.homephoto-comment-container {
-  height: 200px;
-  overflow: scroll;
+
+@media (max-width: 768px) {
+  .modal-90w{
+    width: 100%;
+    margin: 0 auto;
+  }
+  .homephoto-container {
+    flex-direction: column;
+  }
+  .home-img-container {
+    width: 100%;
+    height: 100%;
+  }
+  .home-img {
+    max-height: 250px;
+  }
+  .home-features-container {
+    position: static;
+  }
+  .home-info-container {
+    margin-top: 8px;
+    margin-left: 0px;
+    width: 100%;
+  }
+  .homephoto-comment-container {
+    height: 100%;
+    max-height: 100px;
+  }
+  .home-input-container{
+    margin-left: 0px;
+    margin-top: 0px;
+  }
+  .home-input-button{
+    margin-left: 20px;
+    width: 125px;
+  }
 }
 
 @media (max-width: 375px) {
@@ -113,38 +155,5 @@
   .home-input-button{
     margin-left: 0px;
     width: 105px;
-  }
-}
-@media (max-width: 768px) {
-  .modal-90w{
-    width: 100%;
-    margin: 0 auto;
-  }
-  .homephoto-container {
-    flex-direction: column;
-  }
-  .home-img-container {
-    width: 100%;
-    height: 100%;
-  }
-  .home-features-container {
-    position: static;
-  }
-  .home-info-container {
-    margin-top: 8px;
-    margin-left: 0px;
-    width: 100%;
-  }
-  .homephoto-comment-container {
-    height: 100%;
-    max-height: 100px;
-  }
-  .home-input-container{
-    margin-left: 0px;
-    margin-top: 0px;
-  }
-  .home-input-button{
-    margin-left: 20px;
-    width: 125px;
   }
 }

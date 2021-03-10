@@ -5,7 +5,10 @@ class UsersController < ApplicationController
   # GET /users
   def index
     @users = User.all
-    render json: @users
+    @data = @users.map do |k, v|
+      k.attributes.except("password_digest", "reset_password_token", "reset_password_sent_at")
+    end
+    render json: @data
   end
 
   # POST /users
@@ -13,12 +16,14 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     # render json: @user, status: :created, location: @user
     if @user.save
-      UserMailer.welcome_email(@user).deliver_now
+      # we use deliver_later instead of deliver_now because
+      #  it interferes with user being able to log in after sign up
+      UserMailer.welcome_email(@user).deliver_later
       @token = encode({id: @user.id})
       render json: {
         user: @user.attributes.except("password_digest"),
         token: @token
-      }, status: :created
+      }, status: :created, location: @user
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -44,12 +49,11 @@ class UsersController < ApplicationController
   end
 
   def delete_avatar_from_cloud
-    @url = params[:user][:user_self_img]
-    first = @url.index('send-it')
-    last = @url.index(@url.split(//).last(5).join)
-    @delete_this_url = @url[first..last]
-
-    result = Cloudinary::Api.delete_resources([@delete_this_url])
+    url = params[:user][:user_self_img]
+    first = url.index('send-it')
+    last = url.index(url.split(//).last(5).join)
+    delete_this_url = url[first..last]
+    result = Cloudinary::Uploader.destroy(delete_this_url)
 
     render json: result
   end

@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
-import { Link, useRouteMatch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 
 import './UserFollowList.css'
-import { faUserFriends } from '@fortawesome/free-solid-svg-icons'
 
 export default function UserFollowList(props) {
   const {
@@ -36,6 +37,7 @@ export default function UserFollowList(props) {
       type: type
     }
     getCurrentUserFriends(currentUser.id, data)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser])
 
   const handleUsersCircle = (user) => {
@@ -74,7 +76,22 @@ export default function UserFollowList(props) {
               <div key={index}>
                 <div className='userfollow-user-container d-flex flex-row flex-nowrap'>
                   <div className='userfollow-userbio-container'>
-                    <img className='userfollow-userbio-img' src={user[0].user_self_img === null ? 'https://i.imgur.com/FFn7QzH.jpg' : user[0].user_self_img}/>
+                    {user[0].user_self_img === null ?
+                      <>
+                        <FontAwesomeIcon
+                          icon={faUser}
+                          size='2x'
+                        />
+                      </>
+                      :
+                      <>
+                        <img
+                          alt={`user avatar by ${user[0].username}`}
+                          className='userfollow-userbio-img'
+                          src={user[0].user_self_img}
+                        />
+                      </>
+                    }
                   </div>
                   <div className='d-flex flex-column'>
                     <div>

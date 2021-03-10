@@ -7,10 +7,9 @@ import { updateUser } from '../../../services/user'
 import { deleteAvatarFromCloud } from '../../../services/user'
 
 import './UserBioImg.css'
-import { faRss } from '@fortawesome/free-solid-svg-icons'
 
 export default function UserBioImg(props) {
-  const { show, hide, currentUser, userOnPage, getUserProfile } = props
+  const { show, hide, currentUser, getUserProfile, setCurrentUser } = props
 
   const [userData, setUserData] = useState({
     image: ""
@@ -35,8 +34,12 @@ export default function UserBioImg(props) {
     form.append("upload_preset", "send-it")
 
     const updateUserImg = async (id, old_url, new_url) => {
-      const deletedFromDatabase = await deleteAvatarFromCloud(id, { user_self_img: old_url })
-      const updateUserAvata = await updateUser(id, { user_self_img: new_url })
+      await updateUser(id, { user_self_img: new_url })
+      setCurrentUser({
+        ...currentUser,
+        user_self_img: new_url
+      })
+      await deleteAvatarFromCloud(id, { user_self_img: old_url })
     }
 
     // we cant send the string directly to the api call (user controller can only take user parameters), so we are sending the complete url
@@ -49,7 +52,7 @@ export default function UserBioImg(props) {
 
     if (userData.image !== "") {
       if (typeOfFile === '.jpg' || typeOfFile === '.jpeg' || typeOfFile === '.png') {
-        const response = await fetch("https://api.cloudinary.com/v1_1/sendddditttt/image/upload", {
+        await fetch("https://api.cloudinary.com/v1_1/sendddditttt/image/upload", {
           method: 'POST',
           body: form
         }).then((res) => {

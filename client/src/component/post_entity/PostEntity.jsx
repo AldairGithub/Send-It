@@ -47,13 +47,13 @@ export default function PostEntity(props) {
     let fileType = userData.image.name.slice(findFileType)
 
     const returnPost = async (content, url, userId) => {
-      let result = await postEntity(content, url, userId)
+      await postEntity(content, url, userId)
     }
  
     if (postLength < 9) {
       if (userData.image !== "") {
         if (fileType === '.jpg' || fileType === '.jpeg' || fileType === '.png') {
-          const response = await fetch("https://api.cloudinary.com/v1_1/sendddditttt/image/upload", {
+          await fetch("https://api.cloudinary.com/v1_1/sendddditttt/image/upload", {
             method: 'POST',
             body: form
           }).then((res) => {
@@ -93,6 +93,8 @@ export default function PostEntity(props) {
               setUserData({
                 image: ""
               })
+              // updates user profile on successful upload
+              getUserProfile(currentUser.username)
             })
             .catch((error) => {
             console.log(error)

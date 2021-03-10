@@ -1,3 +1,7 @@
+.more-likes-container {
+  max-height: 400px;
+  overflow: scroll;
+}
 .userlikes-container {
   margin-bottom: 15px;
 }
