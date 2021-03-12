@@ -19,11 +19,7 @@ export default function UpdateUser(props) {
   const [userLoggedIn, setUserLoggedIn] = useState({
     show: currentUser === null ? true : false
   })
-  const showUserLoggedIn = (e) => {
-    setUserLoggedIn({
-      show: true
-    })
-  }
+
   const hideUserLoggedIn = (e) => {
     setUserLoggedIn({
       show: false
@@ -40,6 +36,7 @@ export default function UpdateUser(props) {
 
   useEffect(() => {
     defaultUserData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allUsers])
 
   const defaultUserData = () => {

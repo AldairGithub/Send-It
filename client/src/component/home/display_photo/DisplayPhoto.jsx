@@ -53,6 +53,7 @@ export default function DisplayPhoto(props) {
   useEffect(() => {
     checkForLike(actions)
     getUsernameFromAction()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // check if current user has liked or commented on post
@@ -71,17 +72,17 @@ export default function DisplayPhoto(props) {
     // update the actions or likes props, thus by calling the delete and post directly from the child, and updating the page on the parent
     // component, we can keep state updated whenever the user likes something 
     if (action !== null) {
-      const deleteLike = await deleteActionFromCurrentUser(action)
+      await deleteActionFromCurrentUser(action)
       setLiked(null)
     } else {
-      const postLike = await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction)
+      await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction)
       // actions array is empty when the like is called
       // need to update state with new Action id
       const newPhotos = await allUserPhotos(user.id)
       const result = newPhotos.filter(entity => entity[0].id === entityId)
       // cannot find actionId because it is undefined! Thats why it is not deleting the likes
       // need to filter through actions to get the correct id of the like, it was deleting other users likes otherwise
-      const actionId = result[0][1].filter(action => {
+      result[0][1].forEach(action => {
         if (action.type_of_action === 'Like' && action.user_id === currentUser.id) {
           setLiked(action.id)
         }
@@ -119,6 +120,29 @@ export default function DisplayPhoto(props) {
       }
     }
   }
+  const getUserComments = (arr) => {
+    let count = 0
+    if (arr !== null) {
+      arr.forEach(str => {
+        if (str.type_of_action === 'Comment') {
+          count += 1
+        } 
+      })
+      if (count === 0) {
+        return (
+          <>
+            <p style={{color: 'gray', cursor: 'pointer'}} onClick={(e) => showPhotoModal(e)}> No one has commented on this post yet</p>
+          </>
+        )
+      } else {
+        return (
+          <>
+            <p style={{ color: 'gray', cursor: 'pointer'}} onClick={(e) => showPhotoModal(e)}>View all comments</p>
+          </>
+        )
+      }
+    }
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -130,9 +154,9 @@ export default function DisplayPhoto(props) {
 
   const handleUserComment = async (commentExists, entityId, userId, typeOfEntity, typeOfAction, userComment) => {
     if (commentExists) {
-      const deleteComment = await deleteActionFromCurrentUser(commentExists)
+      await deleteActionFromCurrentUser(commentExists)
     } else {
-      const comment = await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction, userComment)
+      await postActionFromCurrentUser(entityId, userId, typeOfEntity, typeOfAction, userComment)
     }
     setUserInput({
       comment: ""
@@ -188,7 +212,8 @@ export default function DisplayPhoto(props) {
           status: newStatus,
           last_user_action_id: lastActionId
         }
-        let unfollowUser = await updateUserRelationship(relationshipId, userData)
+        // unfollow user
+        await updateUserRelationship(relationshipId, userData)
 
       } else if (newStatus === 'Accepted') {
         let userData = {
@@ -197,13 +222,16 @@ export default function DisplayPhoto(props) {
           status: newStatus,
           last_user_action_id: lastActionId
         }
-        let followBack = await updateUserRelationship(relationshipId, userData)
+        // follows user back
+        await updateUserRelationship(relationshipId, userData)
 
       } else {
-        let deleteFollow = await deleteUserRelationship(relationshipId)
+        //deletes follow
+        await deleteUserRelationship(relationshipId)
       }
     } else {
-      let followUser = await postNewUserRelationship(userOneId, userTwoId, newStatus, lastActionId)
+      // follows user
+      await postNewUserRelationship(userOneId, userTwoId, newStatus, lastActionId)
     }
     // clicked on following the user literally deletes user likes
     getUsernameFromAction()
@@ -217,8 +245,14 @@ export default function DisplayPhoto(props) {
         <div className='display-user-container d-flex flex-row justify-content-start'>
           <div className='display-user-self-img-container'>
             {user.user_img_self !== null ?
-              <img className='display-user-self-img' src={user.user_self_img} />
-              : <FontAwesomeIcon icon={faUserCircle} size='2x' />}
+              <>
+                <img alt={ `user avatar of ${user.username} ` } className='display-user-self-img' src={user.user_self_img} />
+              </>
+              :
+              <>
+                <FontAwesomeIcon icon={faUserCircle} size='2x' />
+              </>
+            }
           </div>
           <div className='display-username-container'>
             <Link to={`/account/${user.username}`} style={{color: 'black'}}><p className='display-username-text'>{user.username}</p></Link>
@@ -249,6 +283,9 @@ export default function DisplayPhoto(props) {
           </div>
           <div className='d-flex flex-row flex-wrap' style={{ marginLeft: '15px'}}>
             <Link to={`/account/${user.username}`} style={{ color: 'black' }}><strong>{user.username}</strong></Link><p style={{marginLeft: '10px'}}>{ entity.content }</p>
+          </div>
+          <div className='display-username-container'>
+            { getUserComments(actions) }
           </div>
           <div style={{ marginLeft: '15px', color: 'gray', cursor: 'pointer' }} onClick={(e) => showPhotoModal(e)}>
             {formatter.format(Date.parse(entity.created_at))}
@@ -289,7 +326,6 @@ export default function DisplayPhoto(props) {
           show={openPhotoModal.show}
           hide={hidePhotoModal}
           entity={entity}
-          actions={actions}
           user={user}
           comments={userAction.comments}
           likes={userAction.likes}

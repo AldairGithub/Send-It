@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import './Header.css'
 
@@ -13,9 +13,13 @@ import { useHistory } from 'react-router-dom'
 import { logOut } from '../log_out/LogOut'
 
 export default function Header(props) {
-  const { currentUser } = props
-  const { setCurrentUser } = props
+  const { currentUser, setCurrentUser, allUsers } = props
   const history = useHistory()
+
+  const [search, setSearch] = useState({
+    username: ""
+  })
+  const [list, setList] = useState([])
 
   const handleLogOut = () => {
     setCurrentUser(null)
@@ -23,12 +27,85 @@ export default function Header(props) {
     history.push('/')
   }
 
+  const filteredUsers = (str) => {
+    if (str.length === 0) {
+      // needed to reset list to zero on no input value
+      const noList = []
+      setList(noList)
+    } else {
+      const filtered = allUsers.filter(ele => {
+        return ele.username.toLowerCase().includes(str)
+      })
+      setList(filtered)
+    }
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setSearch({
+      ...search,
+      [name]: value
+    })
+    filteredUsers(value)
+  }
+
   return (
     <>
       {currentUser !== null ?
         <>
           <nav className='header-media-container sticky-top navbar-expand-lg navbar-light bg-light justify-content-between'>
-            <h1 style={{paddingLeft:'15px'}} className='navbar-brand'>Send It</h1>
+            <h1 style={{ paddingLeft: '15px' }} className='navbar-brand'>Send It</h1>
+            {/* search bar */}
+              <div style={{marginTop: '5px'}} className='search-bar-on-phone'>
+                <form className='form-inline'>
+                  <input
+                  className='form-control mr-sm-2'
+                  name='username'
+                  value={search.username}
+                  type='search'
+                  onChange={handleChange}
+                  placeholder='Search'
+                  aria-label='Search' />
+                <div className='dropdown-top'>
+                  <div className='dropdown-menu-container'>
+                    {list.length > 0 && 
+                      
+                        <div className='dropdown-menu-list'>
+                          {list.map(str => (
+                            <>
+                              <Link to={`/account/${str.username}`}>
+                              <div className='search-container d-flex flex-row flex-wrap'>
+                                  <div className='search-img-container'>
+                                    {str.user_self_img === null ?
+                                      <>
+                                        <FontAwesomeIcon
+                                          icon={faUser}
+                                          size='2x'
+                                          color='gray'
+                                          style={{paddingLeft: '10px'}}
+                                        />
+                                      </>
+                                      :
+                                      <>
+                                        <img alt={`user avatar of ${str.username}`} className='search-img-avatar' src={str.user_self_img} />
+                                      </>
+                                    }
+                                  </div>
+                                  <div className='search-text-container d-flex flex-column justify-content-start align-items-stretch align-content-center'>
+                                    <p className='search-text-username'>{str.username}</p>
+                                    <p className='search-text-name'>{str.name}</p>
+                                  </div>
+                                </div>
+                              </Link>
+                            </>
+                          ))}
+                        </div>
+                      
+                    }
+                  </div>
+                </div>
+                </form>
+              </div>
               <div className='justify-content-end flex-row navbar-nav navbar-space-right'>
               <Link style={{marginRight:'25px'}} className='nav-link' to='/home'><FontAwesomeIcon icon={faHouseUser} size='2x'/></Link>
                 <a
@@ -43,11 +120,11 @@ export default function Header(props) {
                 </a>
                 <div className='dropdown-menu'>
                   <Link to={`/account/${currentUser.username}`}><p className='dropdown-item'>Profile</p></Link>
-                    <p className='dropdown-item'>Saved</p>
-                    <Link to='/update_account'><p className='dropdown-item'>Settings</p></Link>
-                    <div className="dropdown-divider"></div>
-                      <p className='dropdown-item' onClick={handleLogOut}>Log Out</p>
-                    </div>
+                  <Link to='/search'><p className='dropdown-item'>Search</p></Link>
+                  <Link to='/update_account'><p className='dropdown-item'>Settings</p></Link>
+                  <div className="dropdown-divider"></div>
+                    <p className='dropdown-item' onClick={handleLogOut}>Log Out</p>
+                  </div>
                 </div>
             </nav>
         </> :

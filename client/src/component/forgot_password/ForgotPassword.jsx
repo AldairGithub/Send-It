@@ -20,7 +20,7 @@ export default function ForgotPassword(props) {
 
   const handleSubmit = async(e) => {
     e.preventDefault()
-    const sendResetEmail = await forgotPassword(email)
+    await forgotPassword(email)
     setEmail('')
     localStorage.removeItem("authToken")
     removeToken()

@@ -16,7 +16,7 @@ import DisplayPhoto from '../home/display_photo/DisplayPhoto'
 import Footer from '../footer/Footer'
 
 export default function Home(props) {
-  const { currentUser, setCurrentUser, allUsers, setUserPhotos, setAllUserPhotos } = props
+  const { currentUser, setCurrentUser, allUsers } = props
 
   const [feed, setFeed] = useState({
     available: false,
@@ -30,17 +30,9 @@ export default function Home(props) {
     if (currentUser === null) {
       return undefined
     } else {
-      getAllUserPhotos(currentUser.id)
       getFollowingPostsForTimeline(currentUser.id)
     }
-    // update userPhotos when a user likes a post
-    setAllUserPhotos(() => getAllUserPhotos)
   }, [currentUser])
-
-  const getAllUserPhotos = async (id) => {
-    const photos = await allUserPhotos(id)
-    setUserPhotos(photos)
-  }
 
   const getFollowingPostsForTimeline = async (id) => {
     const users = await readAllUsers()
@@ -75,6 +67,7 @@ export default function Home(props) {
           <Header
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
+            allUsers={allUsers}
           />
           <div className='container d-flex homepage-media'>
             <div className='homepage-container'>
@@ -83,6 +76,7 @@ export default function Home(props) {
                   <div className='homepage-user-self-img-container'>
                     <FontAwesomeIcon
                       icon={faUserCircle}
+                      color='gray'
                       size='3x'
                     />
                   </div>
@@ -90,7 +84,7 @@ export default function Home(props) {
                 : 
                 <>
                   <div className='homepage-user-self-img-container'>
-                    <img className='homepage-user-self-img' src={ currentUser.user_self_img}/>
+                    <img alt={ `user avatar by ${currentUser.username}` } className='homepage-user-self-img' src={ currentUser.user_self_img}/>
                   </div>
                 </>
               }
@@ -100,11 +94,12 @@ export default function Home(props) {
               </div>
             </div>
           </div>
-          <div style={{ marginTop: '25px'}}className='d-flex flex-column align-items-center'>
+          <div style={{ marginTop: '25px'}} className='d-flex flex-column align-items-center'>
             {feed.available ? feed.photos.map((user, id) => (
               user[1].map((str, index) => (
                 <>
                   <DisplayPhoto
+                    key={index}
                     currentUser={currentUser}
                     user={user[0][1]}
                     entity={user[1][index][0]}
@@ -115,6 +110,13 @@ export default function Home(props) {
                 </>
               ))
             )) : null}
+            {feed.photos.length === 0 &&
+              <>
+                <div style={{ marginTop: '5%'}}></div>
+                <hr />
+                <p style={{ color: 'gray'}}>User is not following anyone right now</p>
+              </>
+            }
           </div>
         </>
       ) : (
@@ -127,93 +129,9 @@ export default function Home(props) {
             </div>
         </>
         )}
+      <div style={{height: '50px'}}></div>
       <Footer currentUser={currentUser} />
     </div>
   )
 }
 
-// Links to images
-// 
-// racing, speedometer, sailing, wine, family gatherings, city views, sports, table settings, laughing 
-// 
-// https://i.imgur.com/y3AWTp0.jpg?1
-// Porsche WEC
-// https://unsplash.com/photos/6AtkTnXqeiI
-// Photo by Philip Veater
-// 
-// https://i.imgur.com/eK85Eul.jpg
-// Dirt bike racing
-// https://unsplash.com/photos/-GE-xOGTt3w
-// Photo by Harley-Davidson
-// 
-// https://i.imgur.com/zFnJN48.jpg
-// Red racecar with speed effect
-// https://unsplash.com/photos/yelIlsascr0
-// Photo by Severin Demchuk
-// 
-// https://i.imgur.com/MRO1YDK.jpg
-// Speedometer
-// https://unsplash.com/photos/NN8sIzRvk-k
-// Photo by Luís Sousa
-// 
-// https://i.imgur.com/qAaqtJP.jpg
-// Subaru STI speedometer
-// https://unsplash.com/photos/10x5iT14PLQ
-// Photo by Anton Jansson
-// 
-// https://i.imgur.com/Ttjuph8.jpg
-// sailing on clear water
-// https://unsplash.com/photos/KiS25n89ph4
-// Photo by Franz Schmitt
-// 
-// https://i.imgur.com/bBawAgq.jpg
-// Family gathering view
-// https://unsplash.com/photos/Hp6zYM9orZ4
-// Photo by Inés Castellano
-// 
-// https://i.imgur.com/yoL9hDh.jpg
-// Family dinner with wine serving
-// https://unsplash.com/photos/RygIdTavhkQ
-// Photo by Dave Lastovskiy
-// 
-// https://i.imgur.com/oduW6uk.jpg
-// Speedboat dashboard
-// https://unsplash.com/photos/jt8S_JhVn5A
-// Photo by Simon Goetz
-// 
-// https://i.imgur.com/79gNmEr.jpg
-// Plane view of mountains
-// https://unsplash.com/photos/nud0w51mC00
-// Photo by naomi tamar
-// 
-// https://i.imgur.com/BTRe0y8.jpg
-// View of plane
-// https://unsplash.com/photos/iUVqTyyRQGc
-// Photo by Red Dot
-// 
-// https://i.imgur.com/zSfkjl1.jpg
-// Highway speed
-// https://unsplash.com/photos/8As6hrLM4Ec
-// Photo by Scott Hewitt
-// 
-// https://i.imgur.com/JivmUBi.jpg
-// Archer overlooks target
-// https://unsplash.com/photos/jY9mXvA15W0
-// Photo by Annie Spratt
-// 
-// https://i.imgur.com/xKnpvOL.jpg
-// Cliff diving
-// https://unsplash.com/photos/PebwygRbPCo
-// Photo by Thijs Stoop
-// 
-// https://i.imgur.com/oxfLidC.jpg
-// HM store in Times Square
-// https://unsplash.com/photos/srNRVuOR_ZM
-// Photo by Zane Lee
-// 
-// https://i.imgur.com/juhY3QN.jpg
-// Flatiron Square
-// https://unsplash.com/photos/jRco0idtT0c
-// Photo by Lerone Pieters
-// 
-// 

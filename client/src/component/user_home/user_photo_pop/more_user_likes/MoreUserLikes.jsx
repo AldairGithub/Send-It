@@ -2,6 +2,8 @@ import React from 'react'
 import Modal from 'react-bootstrap/Modal'
 
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 import UserFollowButton from '../../user_follow_button/UserFollowButton'
 
 import './MoreUserLikes.css'
@@ -17,18 +19,29 @@ export default function MoreUserLikes(props) {
 
   return (
     <>
-      <Modal show={show} onHide={hide} centered>
+      <Modal show={show} onHide={hide} centered scrollable={true}>
         <Modal.Body>
           <div className='userlikes-title d-flex flex-column align-items-center justify-content-center'>
             Likes
           </div>
           <hr />
-            <div className='d-flex flex-column justify-content-start'>
+            <div className='more-likes-container d-flex flex-column justify-content-start'>
               {list.map((user, index) => (
                   <>
                     <div key={index} className='d-flex flex-row userlikes-container'>
                       <div className='userlikes-user-img-container'>
-                        <img className='userlikes-user-img' src={user[1].user_self_img === null ? 'https://i.imgur.com/FFn7QzH.jpg' : user[1].user_self_img} />
+                      {user[1].user_self_img === null ?
+                        <>
+                          <FontAwesomeIcon
+                            icon={faUser}
+                            sizee='2x'
+                          />
+                        </>
+                        :
+                        <>
+                          <img alt={ `liked by ${user[1].username}` }className='userlikes-user-img' src={user[1].user_self_img} />
+                        </>
+                      }
                       </div>
                       <div className='d-flex flex-column'>
                         <div>
@@ -37,8 +50,10 @@ export default function MoreUserLikes(props) {
                         <div>
                           {user[1].name}
                         </div>
-                    </div>
-                      {user[1].id === currentUser.id ? null : <UserFollowButton relationship={[user[1], user[2]]} currentUser={currentUser} handleFollow={handleFollow}/>}
+                      </div>
+                      <div className='ml-auto'>
+                        {user[1].id === currentUser.id ? null : <UserFollowButton relationship={[user[1], user[2]]} currentUser={currentUser} handleFollow={handleFollow}/>}
+                      </div>
                     </div>
                   </>
                 ))}
