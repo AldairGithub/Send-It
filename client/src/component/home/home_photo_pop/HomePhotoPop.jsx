@@ -113,34 +113,34 @@ export default function HomePhotoPop(props) {
           </div>
         </>
       )
-    } else if (likes.filter(like => like[2] !== undefined)) {
-      const result = likes.filter(like => like[2] !== undefined)
-      if (result[0][1].user_self_img === null) {
-        return (
-          <>
-            <div className='home-user-img-container'>
-              <FontAwesomeIcon
-                icon={faUser}
-                size='2x'
-              />
-            </div>
+    } else {
+      // returns avatar and img regardless of whether user that liked post follows user or not
+      return (
+        <>
+          <div className='home-user-img-container'>
+            {likes[0][1].user_self_img === null ?
+              <>
+                <FontAwesomeIcon
+                  icon={faUser}
+                  size='2x'
+                />
+              </>
+              :
+              <>
+                <img
+                  alt={`user avatar of ${likes[0][1].username}`}
+                  className='home-user-img'
+                  src={likes[0][1].user_self_img}
+                />
+              </>}
+          </div>
+          <div>
             <div className='home-user-text'>
-              {likedByUsers(result)}
+              {likedByUsers(likes)}
             </div>
-          </>
-        )
-      } else {
-        return (
-          <>
-            <div className='home-user-img-container'>
-              <img alt={ `user avatar of ${result[0][1].username}` }className='home-user-img' src={ result[0][1].user_self_img}/>
-            </div>
-            <div className='home-user-text'>
-              {likedByUsers(result)}
-            </div>
-          </>
-        )
-      }
+          </div>
+        </>
+      )
     }
   }
 

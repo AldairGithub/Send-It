@@ -11,6 +11,8 @@ export default function SignIn(props) {
     password: ""
   })
 
+  const [error, setError] = useState(false)
+
   const handleChange = (e) => {
     const { name, value } = e.target
     setNewUserData({
@@ -21,15 +23,22 @@ export default function SignIn(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const userData = await loginUser(newUserData)
-    setCurrentUser(userData)
-    props.history.push('/home')
+    try {
+      const userData = await loginUser(newUserData)
+      setCurrentUser(userData)
+      props.history.push('/home')
+    } catch (error) {
+      setError(true)
+    }
   }
 
   return (
     <>
     <div className='container-sm'>
-      <h1 className='title'>Send It</h1>
+        <h1 className='title'>Send It</h1>
+        <div className='error-message-on-signin'>
+          {error ? <p>Wrong username or password</p> : null}
+        </div>
       <form className='form' onSubmit={handleSubmit}>
         <input
           className='form-control'

@@ -40,16 +40,30 @@
   color: #0099CC;
   text-decoration: none;
 }
-
-@media (max-width: 375px) {
-  .container-sm {
-    margin: 25% auto;
-    width: 80%;
-  }
+.error-message-on-signin {
+  position: absolute;
+  margin: 0 auto;
+  left: 43%;
+  bottom: 72%;
+  color: darkred;
 }
 @media (max-width: 768px) {
   .container-sm {
     margin: 25% auto;
     width: 70%;
+  }
+  .error-message-on-signin {
+    left: 36%;
+    bottom: 65%;
+  }
+}
+@media (max-width: 375px) {
+  .container-sm {
+    margin: 25% auto;
+    width: 80%;
+  }
+  .error-message-on-signin{
+    left: 21%;
+    bottom: 73%;
   }
 }
