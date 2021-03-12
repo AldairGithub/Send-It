@@ -50,7 +50,7 @@ export default function PostEntity(props) {
       await postEntity(content, url, userId)
     }
  
-    if (postLength < 9) {
+    if (postLength < 3) {
       if (userData.image !== "") {
         if (fileType === '.jpg' || fileType === '.jpeg' || fileType === '.png') {
           await fetch("https://api.cloudinary.com/v1_1/sendddditttt/image/upload", {

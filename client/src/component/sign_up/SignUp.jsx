@@ -14,6 +14,19 @@ export default function SignUp(props) {
     password: ""
   })
 
+  const [errorUsername, setErrorUsername] = useState({
+    status: false,
+    message: ""
+  })
+  const [errorEmail, setErrorEmail] = useState({
+    status: false,
+    message: ""
+  })
+  const [errorPassword, setErrorPassword] = useState({
+    status: false,
+    message: ""
+  })
+
   const handleChange = (e) => {
     const { name, value } = e.target
     setNewUserData({
@@ -24,9 +37,24 @@ export default function SignUp(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const userData = await registerUser(newUserData)
-    setCurrentUser(userData)
-    history.push('/home')
+    try {
+      const userData = await registerUser(newUserData)
+      setCurrentUser(userData)
+      history.push('/home')
+    } catch (error) {
+      setErrorUsername({
+        status: error.response.data.username ? true : false,
+        message: error.response.data.username
+      })
+      setErrorEmail({
+        status: error.response.data.email ? true : false,
+        message: error.response.data.email
+      })
+      setErrorPassword({
+        status: error.response.data.password ? true : false,
+        message: error.response.data.password
+      })
+    }
   }
 
   return (
@@ -61,6 +89,35 @@ export default function SignUp(props) {
         <button className='btn btn-lg btn-info btn-block'>Submit</button>
         </form>
         <div className='bottom-space'></div>
+        <div>
+          {errorUsername.status ?
+            <>
+              {errorUsername.message.map(message => (
+                <>
+                  <p style={{color: '#8B0000'}}>Username { message }</p>
+                </>
+              ))}
+            </>
+            : null}
+          {errorEmail.status ?
+            <>
+              {errorEmail.message.map(message => (
+                <>
+                  <p style={{color: '#8B0000'}}>Email { message }</p>
+                </>
+              ))}
+            </>
+            : null}
+          {errorPassword.status ?
+            <>
+              {errorPassword.message.map(message => (
+                <>
+                  <p style={{color: '#8B0000'}}>Password { message }</p>
+                </>
+              ))}
+            </>
+            : null}
+        </div>
       </div>
       <div className='container-sm'>
         <div className='top-space'></div>
