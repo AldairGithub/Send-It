@@ -10,6 +10,8 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 import { faUserTimes } from '@fortawesome/free-solid-svg-icons'
+import { faUserAltSlash } from '@fortawesome/free-solid-svg-icons'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 
 import CommentButton from '../../user_home/user_photo_pop/comment_button/CommentButton'
@@ -236,8 +238,22 @@ export default function UserPhotoPop(props) {
 
               {/* top of column/user img and username */}
               <div className='userpop-user-container d-flex flex-row flex-nowrap'>
-                <div className='userpop-user-img-container userpop-user-left-margin-20px'>
-                  <img alt={ `user avatar of ${user.username}` }className='userpop-user-img' src={user.user_self_img}/>
+                <div className='userpop-user-img-container'>
+                  {user.user_self_img === null ?
+                    <>
+                      <FontAwesomeIcon
+                        icon={faUserAltSlash}
+                        size='2x'
+                      />
+                    </>
+                    :
+                    <>
+                      <img
+                        alt={`user avatar of ${user.username}`}
+                        className='userpop-user-img'
+                        src={user.user_self_img} />
+                    </>
+                  }
                 </div>
                 <div className='userpop-user-text font-weight-bold'>
                   <p style={{cursor: "pointer"}} onClick={() => {hide()}}>{user.username}</p>
@@ -257,7 +273,18 @@ export default function UserPhotoPop(props) {
               {/* username and content of photo */}
               <div className='d-flex flex-row flex-nowrap'>
                 <div className='userpop-user-img-container'>
-                  <img alt={ `user avatar of ${user.username}` }className='userpop-user-img' src={user.user_self_img}/>
+                  {user.user_self_img === null ?
+                    <>
+                      <FontAwesomeIcon
+                        icon={faUserAltSlash}
+                        size='2x'
+                      />
+                    </>
+                    :
+                    <>
+                      <img alt={ `user avatar of ${user.username}` }className='userpop-user-img' src={user.user_self_img}/>
+                    </>
+                  }
                 </div>
                 <div className='userpop-user-text'>
                   <p><strong style={{cursor: "pointer"}} onClick={() => {hide()}}>{user.username}</strong> {photo[0].content}</p>
@@ -269,7 +296,22 @@ export default function UserPhotoPop(props) {
                   <>
                     <div className='userpop-comment d-flex flex-row align-items-center flex-nowrap' key={index}>
                       <div className='userpop-user-img-container'>
-                        <img className='userpop-user-img' alt={action[1].username} src={action[1][0].user_self_img ? action[1][0].user_self_img : 'https://i.imgur.com/FFn7QzH.jpg'}/>
+                        {action[1][0].user_self_img === null ?
+                          <>
+                            <FontAwesomeIcon
+                              icon={faUserAltSlash}
+                              size='2x'
+                            />
+                          </>
+                          :
+                          <>
+                            <img
+                              className='userpop-user-img'
+                              alt={`user avatar of ${action[1].username}`}
+                              src={action[1][0].user_self_img}
+                            />
+                          </>
+                        }
                       </div>
                       <div className='userpop-user-text flex-wrap'>
                         <p><Link onClick={() => {hide()}} className='userpop-link-text' to={`/account/${action[1][0].username}`}>{action[1][0].username}</Link> {action[0].content}</p>
