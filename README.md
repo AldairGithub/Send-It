@@ -20,23 +20,25 @@
 
 ## Overview
 
-_Social media app._
+_Send It_
 
 
 <br>
 
 ## MVP
 
-_The user will be able to use CRUD, send friend requests to other users, post/like/tag from each other._
+_The user will be able to use CRUD, follow other users, post/like/comment from each other, and post and update their home page with new photos._
 
 <br>
 
 ### Goals
 
-- _Users will create, enter, update, and delete their account._
+- _Users will create, enter, update, and log out of their account._
 - _Users will post and comment on their own posts as well as others._
-- _Users will send friend requests to other users to add them to their friend circle._
-- _Users can tag other users on posts, as well as tag posts to other posts._
+- _Users will send follow requests to other users to add them to their friend circle._
+- _Users will post photos on their page, as well as see what others posted on their homepage._
+- _Users will update their avatar using jpeg and png files on their own desktops or phones._
+- _Users will reset their password by following a link sent to their account email._
 
 
 <br>
@@ -49,6 +51,11 @@ _The user will be able to use CRUD, send friend requests to other users, post/li
 | React Router Dom | _Links components together._ |
 |      Axios       | _Provides single API for database._ |
 |   Ruby on Rails  | _Structures database, provides CRUD methods._ |
+|     Bootstrap    | _Provides class styling to several components._ |
+|     Cloudinary   | _Hosts user photos and avatar._ |
+|    FontAwesome   | _Provides icons and symbols._ |
+|      Bcrypt      | _Encrypts user information._ |
+
 
 <br>
 
@@ -67,22 +74,61 @@ _The user will be able to use CRUD, send friend requests to other users, post/li
 
 src
 |__ components/
-      |__ Header.jsx
+      |__ Footer/
+          |__ Footer.jsx
+      |__ ForgotPassword
+          |__ ForgotPassword.jsx
+      |__ Header/
+          |__ Header.jsx
+      |__ Home/
+          |__ Home.jsx
+          |__ DisplayPhoto/
+              |__ DisplayPhoto.jsx
+          |__ HomePhotoModal/
+              |__ HomePhotoModal.jsx
+      |__ LogOut/
+          |__ LogOut.jsx
+      |__ NotLoggedIn/
+          |__ NotLoggedIn.jsx
+      |__ PostEntity/
+          |__ PostEntity.jsx
+      |__ ResetPassword/
+          |__ ResetPassword.jsx
+      |__ SearchBar/
+          |__ SearchBar.jsx
+      |__ SignIn/
+          |__ SignIn.jsx
+      |__ SignUp/
+          |__ SignUp.jsx
+      |__ UpdateUser/
+          |__ UpdateUser.jsx
+      |__ UserHome/
+          |__ UserBioImg/
+              |__ UserBioImg.jsx
+          |__ UserFollowButton/
+              |__ UserFollowButton.jsx
+          |__ UserPhotoModal/
+              |__CommentButton/
+                  |__ CommentButton.jsx
+              |__ DeletePost/
+                  |__ DeletePost.jsx
+              |__ MoreUserLikes/
+                  |__ MoreUserLikes.jsx
+              |__ UserPhotoModal.jsx
+          |__ UserFollowList/
+              |__ UserFollowList.jsx
+          |__ UserHome.jsx
+      |__ Utils/
+          |__ Functions.js
       |__ Main.jsx
-      |__ LogIn.jsx
-      |__ Register.jsx
-      |__ Home.jsx
-      |__ UpdateUser.jsx
-      |__ DeleteUser.jsx
-      |__ Post.jsx
-      |__ Comment.jsx
-      |__ Like.jsx
-      |__ Tag.jsx
 |__ services/
+      |__ actions.js
       |__ api-helper.js
       |__ auth.js
-      |__ users.js
-      |__ posts.js
+      |__ entity.js
+      |__ password.js
+      |__ user_relationship.js
+      |__ user.js
 
 ```
 
@@ -90,15 +136,20 @@ src
 
 |  Component   |    Type    | state | props | Description                                                      |
 | :----------: | :--------: | :---: | :---: | :--------------------------------------------------------------- |
+| Footer       | functional |   n   |   y   | _Displays links to home/searchbar/userhome pages._ |
+| ForgotPassword | functional | n   |   y   | _Sends link to users who want to reset their password._ |
 | Header       | functional |   y   |   y   | _The header will contain the navigation to the user CRUD, posts, and home._ |
-| Main         |   class    |   y   |   y   | _The main component will call for user data, as well as pass down posts._ |
-| Login        | functional |   n   |   y   | _Logs the user in._ |
-| Register     | functional |   n   |   n   | _Adds an user to the database._ |
 | Home         | functional |   y   |   y   | _Displays all the posts from the database._ |
-| Post         | functional |   y   |   y   | _Displays one post from the database, includes comments._ |
-| Comments     | functional |   y   |   y   | _Allows users to comment on post._ |
-| Like         | functional |   y   |   y   | _User can like a post and keep it in their history._ |
-| Tag          | functional |   y   |   y   | _User can tag a post or other user to the post._ |
+| LogOut       | functional |   y   |   y   | _Logs user out of their account._ |
+| NotLoggedIn  | functional |   n   |   y   | _Displays modal to suggest user to log in._ |
+| Main         | functional |   y   |   y   | _The main component will call for user data, as well as pass down posts._ |
+| PostEntity   | functional |   y   |   y   | _Post photo from user to their user page._ |
+| ResetPassword | functional |  n   |   y   | _User link to reset their password and use their account again._ |
+| SearchBar    | functional |   y   |   y   | _Search for other users._ |
+| SignIn       | functional |   y   |   y   | _Logs the user in._ |
+| SignUP       | functional |   y   |   y   | _Adds an user to the database._ |
+| UpdateUser   | functional |   y   |   y   | _Updates user data and updates database._ |
+| UserHome     | functional |   y   |   y   | _Displays current user photos/links to other components, displays follow buttons._ |
 
 #### Time Estimates
 
@@ -131,8 +182,6 @@ src
 ***
 
 ## Code Showcase
-
-
 
 
 ## Code Issues & Resolutions
