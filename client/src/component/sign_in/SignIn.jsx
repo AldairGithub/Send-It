@@ -32,6 +32,21 @@ export default function SignIn(props) {
     }
   }
 
+  const forTesting = async (e) => {
+    e.preventDefault()
+    try {
+      const user = {
+        username: 'admin',
+        password: 'sudoku'
+      }
+      const userData = await loginUser(user)
+      setCurrentUser(userData)
+      props.history.push('/home')
+    } catch (error) {
+      setError(true)
+    }
+  }
+
   return (
     <>
     <div className='container-sm'>
@@ -65,6 +80,12 @@ export default function SignIn(props) {
       <div className='container-sm'>
         <div className='top-space'></div>
         <p>Dont have an account? <Link className='sign-link' to='/register'>Sign Up</Link></p>
+      </div>
+      <div className='container-sm'>
+        <div className='top-space'></div>
+        {/* <p>Dont have an account? <Link className='sign-link' to='/register'>Sign Up</Link></p> */}
+        <label>For testing purposes</label>
+        <p>Click<strong style={{cursor: 'pointer'}} onClick={forTesting}> here</strong> to sign in to a testing account and check out some of the features</p>
       </div>
     </>
   )

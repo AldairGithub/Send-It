@@ -616,11 +616,11 @@ export default function UserHome(props) {
         setCurrentUser={setCurrentUser}
         allUsers={allUsers}
       />
-      <div className='userhome-container-topspace container'>
+      <div style={{marginTop: '5%'}} >
 
-        <div className='d-flex position-relative flex-column justify-content-center align-items-center'>
+        <div className='userhome-media '>
 
-          <div className='d-flex position-relative flex-column align-items-stretch'>
+          <div className='userhome-container'>
           
             <div className='d-flex username-container userhome-container-bottomspace flex-row align-items-center'>
               <div className='userhome-user-img-container'>

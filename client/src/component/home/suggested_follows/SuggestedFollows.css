@@ -1,0 +1,28 @@
+.suggested-list-container {
+  display: flex;
+  flex-flow: column nowrap;
+  margin-top: 50px;
+}
+.suggested-img-container {
+  display: flex;
+  flex-flow: row nowrap;
+}
+.suggested-avatar-img-container {
+  height: 25px;
+  width: 25px;
+  margin: 0 15px 15px 5px;
+}
+.suggested-avatar-img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+.suggested-text {
+  color: black;
+  text-decoration-style: none;
+  font-weight: 600;
+}
+.suggested-text:hover {
+  color: black;
+  text-decoration: underline;
+}

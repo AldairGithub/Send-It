@@ -14,6 +14,7 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import Header from '../header/Header'
 import DisplayPhoto from '../home/display_photo/DisplayPhoto'
 import Footer from '../footer/Footer'
+import SuggestedFollows from '../home/suggested_follows/SuggestedFollows'
 
 export default function Home(props) {
   const { currentUser, setCurrentUser, allUsers } = props
@@ -69,7 +70,7 @@ export default function Home(props) {
             setCurrentUser={setCurrentUser}
             allUsers={allUsers}
           />
-          <div className='container d-flex homepage-media'>
+          <div className='homepage-media'>
             <div className='homepage-container'>
               {currentUser.user_self_img === undefined || currentUser.user_self_img === null ?
                 <>
@@ -88,13 +89,19 @@ export default function Home(props) {
                   </div>
                 </>
               }
-              <div>
+              <div className='d-flex flex-column flex-nowrap'>
                 <Link className='homepage-link-text' to={`/account/${currentUser.username}`}><h4>{currentUser.username}</h4></Link>
                 <p style={{color: 'gray'}}>{ currentUser.name }</p>
               </div>
             </div>
+            <div>
+              <SuggestedFollows currentUser={ currentUser } allUsers={allUsers}/>
+            </div>
           </div>
-          <div style={{ marginTop: '25px'}} className='d-flex flex-column align-items-center'>
+          {/* <div className='suggested-list-component-container'>
+              <SuggestedFollows currentUser={ currentUser } allUsers={allUsers}/>
+          </div> */}
+          <div style={{ marginTop: '25px'}} className='d-flex flex-column align-items-center feed-container'>
             {feed.available ? feed.photos.map((user, id) => (
               user[1].map((str, index) => (
                 <>
@@ -112,9 +119,9 @@ export default function Home(props) {
             )) : null}
             {feed.photos.length === 0 &&
               <>
-                <div style={{ marginTop: '5%'}}></div>
-                <hr />
-                <p style={{ color: 'gray'}}>User is not following anyone right now</p>
+              <div style={{ marginTop: '5%' }}></div>
+              
+              <p style={{ color: 'gray'}}>User is not following anyone right now</p>
               </>
             }
           </div>
@@ -123,9 +130,9 @@ export default function Home(props) {
           <>
             <Header currentUser={ null }/>
             <div className='container-sm d-flex flex-column align-items-center'>
-              <h5 style={{marginTop: '15px'}}>You need to be logged in to use Send It</h5>
-              <p style={{ marginTop: '25px'}}>New to Send It? <Link to='register'>Sign up</Link></p>
-              <p style={{ marginBottom: '25px'}}>Already an user? <Link to='/'>Log in</Link></p>
+              <h5 style={{ marginTop: '15px'}}>You need to be logged in to use Send It</h5>
+              <p style={{ marginTop: '25px'}}>New to Send It? <Link to='register' style={{ color: '#0099CC' }}>Sign up</Link></p>
+              <p style={{ marginBottom: '25px'}}>Already an user? <Link to='/' style={{ color: '#0099CC' }}>Log in</Link></p>
             </div>
         </>
         )}
