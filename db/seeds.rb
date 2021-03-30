@@ -15,29 +15,29 @@ User.destroy_all
 # 1
 image = Cloudinary::Uploader.unsigned_upload('test_photos/IMG_1610.jpeg', 'send-it')
 
-@admin = User.create(username: 'admin', name:'admin', email: 'admin@email.com', password: 'aldair', user_self_img: image["url"], bio: "All images come from unsplash.com")
+@admin = User.create(username: 'admin', name:'admin', email: 'admin@email.com', password: 'sudoku', user_self_img: image["url"], bio: "All images come from unsplash.com")
 # 2
-@aldair = User.create(username: 'aldair', name:'Aldair',email: 'aldair@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/GVOQm5c.jpg', bio: 'Photo by Erik Mclean on https://unsplash.com/photos/ZRns2R5azu0')
+@aldair = User.create(username: 'aldair', name:'Aldair',email: 'aldair@email.com', password: 'gbemhw', user_self_img: 'https://i.imgur.com/GVOQm5c.jpg', bio: 'Photo by Erik Mclean on https://unsplash.com/photos/ZRns2R5azu0')
 # 3
-@chris = User.create(username: 'IdontCareYaBoi', name:'chris', email: 'chris@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/2RESNzV.jpg', bio: 'Photo by Сергей Орловский on https://unsplash.com/photos/1OfPse1qVLM')
+@chris = User.create(username: 'IdontCareYaBoi', name:'chris', email: 'chris@email.com', password: 'yphgiv', user_self_img: 'https://i.imgur.com/2RESNzV.jpg', bio: 'Photo by Сергей Орловский on https://unsplash.com/photos/1OfPse1qVLM')
 # 4
-@vasu = User.create(username: 'Vasectummie', name:'vasu', email: 'vasu@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/CtQSVZo.jpg', bio: 'Photo by LOGAN WEAVER on https://unsplash.com/photos/Apejl7P4-vk')
+@vasu = User.create(username: 'Vasectummie', name:'vasu', email: 'vasu@email.com', password: 'garxjo', user_self_img: 'https://i.imgur.com/CtQSVZo.jpg', bio: 'Photo by LOGAN WEAVER on https://unsplash.com/photos/Apejl7P4-vk')
 # 5
-@kelly = User.create(username: 'KittenLove', name:'kelly', email: 'kelly@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/PPZWjTg.jpg', bio: 'Photo by Tran Mau Tri Tam on https://unsplash.com/photos/FbhNdD1ow2g')
+@kelly = User.create(username: 'KittenLove', name:'kelly', email: 'kelly@email.com', password: 'zsxarj', user_self_img: 'https://i.imgur.com/PPZWjTg.jpg', bio: 'Photo by Tran Mau Tri Tam on https://unsplash.com/photos/FbhNdD1ow2g')
 # 6
-@yomar = User.create(username: 'IloveChris', name:'yomar', email: 'yomar@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/CHMIxWH.jpg', bio: 'Photo by Raoul Droog on https://unsplash.com/photos/yMSecCHsIBc')
+@yomar = User.create(username: 'IloveChris', name:'yomar', email: 'yomar@email.com', password: 'yxhrnm', user_self_img: 'https://i.imgur.com/CHMIxWH.jpg', bio: 'Photo by Raoul Droog on https://unsplash.com/photos/yMSecCHsIBc')
 # 7
-@moises = User.create(username: 'SixPack', name:'moises', email: 'moises@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/0smEQKu.jpg', bio:'Photo by Katerina Jerabkova on https://unsplash.com/photos/nV7WA07ikI4')
+@moises = User.create(username: 'SixPack', name:'moises', email: 'moises@email.com', password: 'ugewct', user_self_img: 'https://i.imgur.com/0smEQKu.jpg', bio:'Photo by Katerina Jerabkova on https://unsplash.com/photos/nV7WA07ikI4')
 # 8
-@nate = User.create(username: 'SkaterBoy', name:'nate', email: 'nate@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/INfUlXp.jpg', bio: 'Photo by Stefan Lehner on https://unsplash.com/photos/qJnmO3qi9ek')
+@nate = User.create(username: 'SkaterBoy', name:'nate', email: 'nate@email.com', password: 'nysjzm', user_self_img: 'https://i.imgur.com/INfUlXp.jpg', bio: 'Photo by Stefan Lehner on https://unsplash.com/photos/qJnmO3qi9ek')
 # 9
-@roffaden = User.create(username: 'MuscleBoy', name:'rof', email: 'ro@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/b0dNe1l.jpg', bio: 'Photo by Nathan Dumlao on https://unsplash.com/photos/pzLbV-NFT40')
+@roffaden = User.create(username: 'MuscleBoy', name:'rof', email: 'ro@email.com', password: 'egdjfx', user_self_img: 'https://i.imgur.com/b0dNe1l.jpg', bio: 'Photo by Nathan Dumlao on https://unsplash.com/photos/pzLbV-NFT40')
 # 10
-@jordon = User.create(username: 'NumberOneDraftPick', name:'jordon', email: 'jordon@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/jSAyvdC.jpg', bio: 'Photo by Courtney Schroedel on https://unsplash.com/photos/v1SS8Wiz-uI')
+@jordon = User.create(username: 'NumberOneDraftPick', name:'jordon', email: 'jordon@email.com', password: 'rgpcve', user_self_img: 'https://i.imgur.com/jSAyvdC.jpg', bio: 'Photo by Courtney Schroedel on https://unsplash.com/photos/v1SS8Wiz-uI')
 # 11
-@clive = User.create(username: 'RaceToTheFinish', name: 'clive', email: 'clive@email.com', password: 'aldair', user_self_img: 'https://i.imgur.com/OI6pd1i.jpg', bio: 'Photo by Photo by SwapnIl Dwivedi on https://unsplash.com/photos/Xcmfp0gBukI')
+@clive = User.create(username: 'RaceToTheFinish', name: 'clive', email: 'clive@email.com', password: 'qbxmvn', user_self_img: 'https://i.imgur.com/OI6pd1i.jpg', bio: 'Photo by Photo by SwapnIl Dwivedi on https://unsplash.com/photos/Xcmfp0gBukI')
 
-@noLogo = User.create(username: 'noAvatar', name: 'noavatar', email: 'noavatar@email.com', password: 'noAvatar', user_self_img: 'null', bio: 'testing in case no avatar is present')
+@noLogo = User.create(username: 'noAvatar', name: 'noavatar', email: 'noavatar@email.com', password: 'ndxkvy', user_self_img: 'null', bio: 'testing in case no avatar is present')
 puts "#{User.count} users created"
 
 # entities
@@ -184,10 +184,10 @@ puts "#{Action.count} actions created"
 # user relationships
 @admin_accepted_aldair = UserRelationship.create(user_one: @admin, user_two: @aldair, status: 'Pending', last_user_action: @admin)
 @admin_pending_chris = UserRelationship.create(user_one: @admin, user_two: @chris, status: 'Pending', last_user_action: @admin)
-@admin_accepted_roffaden = UserRelationship.create(user_one: @admin, user_two: @roffaden, status: 'Accepted', last_user_action: @roffaden)
-@admin_accepted_kelly = UserRelationship.create(user_one: @admin, user_two: @kelly, status: 'Accepted', last_user_action: @kelly)
 @admin_unfollowed_nate = UserRelationship.create(user_one: @admin, user_two: @nate, status: 'Denied', last_user_action: @admin)
 @clive_unfollowed_admin = UserRelationship.create(user_one: @admin, user_two: @clive, status: 'Denied', last_user_action: @clive)
+@admin_accepted_jordon = UserRelationship.create(user_one: @admin, user_two: @jordon, status: 'Accepted', last_user_action: @jordon)
+@admin_accepted_moises = UserRelationship.create(user_one: @admin, user_two: @moises, status: 'Accepted', last_user_action: @moises)
 
 @roffaden_accepted_yomar = UserRelationship.create(user_one: @roffaden, user_two: @yomar, status: 'Accepted', last_user_action: @yomar)
 @roffaden_accepted_kelly = UserRelationship.create(user_one: @roffaden, user_two: @kelly, status: 'Accepted', last_user_action: @kelly)

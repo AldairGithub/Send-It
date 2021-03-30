@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Header from '../header/Header'
 import Footer from '../footer/Footer'
+import SuggestedFollows from '../home/suggested_follows/SuggestedFollows'
 
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -90,6 +91,9 @@ export default function SearchBar(props) {
               </div>
             }
           </div>
+        </div>
+        <div className='search-suggest-list-container'>
+          <SuggestedFollows currentUser={currentUser} allUsers={allUsers}/>
         </div>
       </form>
       <Footer

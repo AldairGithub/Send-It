@@ -11,7 +11,6 @@ import { faComment } from '@fortawesome/free-solid-svg-icons'
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 import { faUserTimes } from '@fortawesome/free-solid-svg-icons'
 import { faUserAltSlash } from '@fortawesome/free-solid-svg-icons'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 
 import CommentButton from '../../user_home/user_photo_pop/comment_button/CommentButton'

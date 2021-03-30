@@ -1,5 +1,13 @@
-.userhome-container-topspace {
-  margin-top: 5%;
+.userhome-media {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+.userhome-container {
+  display: flex;
+  position: relative;
+  flex-flow: column nowrap;
+  align-items: stretch;
 }
 .userhome-container-bottomspace {
   margin-bottom: 20px;
