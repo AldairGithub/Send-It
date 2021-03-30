@@ -22,11 +22,11 @@ export default function UserFollowList(props) {
   const responseToNoFollows = (typeOfList) => {
     if (typeOfList === 'Followers') {
       return (
-        <p>This user does not have any followers right now</p>
+        <p style={{color: 'gray', textAlign:'center'}}>This user does not have any followers right now</p>
       )
     } else {
       return (
-        <p>This user is not following anyone right now</p>
+        <p style={{color: 'gray', textAlign:'center'}}>This user is not following anyone right now</p>
       )
     }
   }
